@@ -4,3 +4,8 @@ bin/
 /email_host_password.txt
 /secret_key.txt
 /mysql_key.txt
+whoosh_index/
+
+__pycache__/
+*.py[cod]
+*$py.class

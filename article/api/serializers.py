@@ -65,7 +65,7 @@ class ArticleListSerializer(ModelSerializer):
     )
     column = SerializerMethodField()
     course = SerializerMethodField()
-    comment_counts = SerializerMethodField()
+    # comment_counts = SerializerMethodField()
 
     class Meta:
         model = ArticlesPost
@@ -75,7 +75,7 @@ class ArticleListSerializer(ModelSerializer):
             'title',
             'column',
             'course',
-            'comment_counts',
+            # 'comment_counts',
             'total_views',
         ]
 
@@ -91,6 +91,6 @@ class ArticleListSerializer(ModelSerializer):
         else:
             return None
 
-    def get_comment_counts(self, obj):
-        c_qs = Comment.objects.filter(article=obj.id)
-        return c_qs.count()
+    # def get_comment_counts(self, obj):
+    #     c_qs = Comment.objects.filter(article=obj.id)
+    #     return c_qs.count()

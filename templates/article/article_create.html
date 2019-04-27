@@ -90,22 +90,5 @@
                 emoji: true
             })
         });
-
-        {#Markdown渲染#}
-        layui.use('form', function () {
-            var form = layui.form;
-            form.val("editform", {
-                "title": "{{ article.title }}",   // "name": "value"
-                "column": "{{ article.column }}",
-                "tags": "{{ article.tags.all|join:',' }}",
-                "body": "{{ article.body }}",
-                {% if article.avatar_thumbnail %}
-                    "url": "{{ article.url }}",
-                {% endif %}
-                {% if article.course %}
-                    "course": "{{ article.course.id }}",
-                {% endif %}
-            })
-        });
     </script>
 {% endblock %}

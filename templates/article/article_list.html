@@ -109,48 +109,4 @@
 
         {% include 'paginator.html' %}
     </div>
-
-
-    {#    <script>#}
-    {#        $(document).ready(function () {#}
-    {#            $("#add_rss").click(function () {#}
-    {#                layui.use('layer', function () {#}
-    {#                    var layer = layui.layer;#}
-    {#                    layer.open({#}
-    {#                        type: 1,#}
-    {#                        shadeClose: true,#}
-    {#                        title: '订阅栏目',#}
-    {#                        content: '<div class="layui-card">\n' +#}
-    {#                        '    <h2 class="layui-card-header">您想订阅哪一个栏目的文章？</h2>\n' +#}
-    {#                        '    <div class="layui-card-body">\n' +#}
-    {#                        '        <div class="rss">\n' +#}
-    {#                        '            <a href="{% url 'rss' %}" style="color: #ff5500">\n' +#}
-    {#                        '                <i class="layui-icon layui-icon-triangle-r"></i>综合</a>\n' +#}
-    {#                        '        </div>\n' +#}
-    {#                        '        {% for column in columns %}\n'+#}
-    {#                            '            <div class="column_rss">\n'+#}
-    {#                            '                <a href="{% url 'column_rss' column.id %}" style="color: #01a252">\n'#}
-    {#                            +#}
-    {#                            '                    <i class="layui-icon layui-icon-triangle-r"></i>{{ column.title }}</a>\n'#}
-    {#                            +#}
-    {#                            '            </div>\n'+#}
-    {#                            '        {% endfor %}\n' +#}
-    {#                        '    </div>\n' +#}
-    {#                        '</div>' //这里content是一个普通的String#}
-    {#                    });#}
-    {#layer.msg('hello');#}
-    {#                });#}
-    {##}
-    {#            });#}
-    {##}
-    {##}
-    {#        });#}
-    {#    </script>#}
-
-    {#    <style>#}
-    {#        a:hover {#}
-    {#            color: #01a252;#}
-    {#        }#}
-    {#    </style>#}
-
 {% endblock %}
