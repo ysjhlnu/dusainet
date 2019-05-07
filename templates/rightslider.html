@@ -1,19 +1,13 @@
 {% load staticfiles %}
 <div class="card mb-4 mt-4">
-    <a href="https://mp.weixin.qq.com/s/UsF3Pt_96vd6sRn1SNVtcg"
-       target="_blank">
-        <img src="{% static 'adv/想你.jpeg' %}"
-             class="card-img-top"
-        >
-    </a>
+    <div class="card-body">
+        <p class="card-title text-muted">
+            <i class="fas fa-bell" style="color: lightskyblue;"></i> 博主动态
+        </p>
+        <p class="cark-text" id="notification-text"></p>
+    </div>
 </div>
 
-<div class="card mb-4">
-    <a href="http://www.specube.cn/" target="_blank">
-        <img src="{% static 'adv/济南斯派克.jpg' %}"
-             class="card-img-top">
-    </a>
-</div>
 
 <div class="card mb-4">
     <div class="card-body">
@@ -81,3 +75,11 @@
 </div>
 <br/>
 <br/>
+
+{% block script %}
+    <script>
+        $(() => {
+            $.get({% url 'extends:' %})
+        })
+    </script>
+{% endblock %}

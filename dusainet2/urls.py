@@ -65,6 +65,9 @@ urlpatterns = [
     # notifications
     url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 
+    # extends
+    path('extends/', include('extends.urls', namespace='extends')),
+
     # rest-framework login view
     url(r'^api/auth/', include('rest_framework.urls')),
 

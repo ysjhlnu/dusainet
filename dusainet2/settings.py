@@ -27,7 +27,7 @@ with open('secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost ', '.dusaiphoto.com', '.dusai.net']
 
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'imagesource',  # 图库
     'vlog',  # 视频
     'aboutme',  # 作者
+    'extends',
 
     'utils',  # 工具
 
