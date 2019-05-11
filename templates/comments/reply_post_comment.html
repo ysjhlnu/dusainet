@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{% static 'ckeditor/ckeditor/plugins/prism/css/prism.css' %}">
 
     <div>
-        <div class="mt-4">
+        <div class="mt-4" style="word-break: break-all">
             <h4>{{ comment.user }} 说：</h4>
             <!-- 正文 -->
             {% if comment.is_deleted %}

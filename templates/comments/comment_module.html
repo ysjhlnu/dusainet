@@ -60,7 +60,7 @@
 <br>
 <br>
 <h5 id="Fcomments" class="mt-4 alert alert-info">共有{{ article.comments.count }}条评论</h5>
-<div>
+<div class="mb-2" id="comments_body" style="word-break: break-all">
     <div>
         {% recursetree comments %}
             <hr>
@@ -186,10 +186,23 @@
                             {% endif %}
                         </p>
                     </div>
+
+
                     {% if not node.is_leaf_node %}
-                        <div class="children">
-                            {{ children }}
+                        <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapse_{{ node.id }}"
+                           role="button"
+                           aria-expanded="false" aria-controls="collapseExample">
+                            展开此讨论..
+                        </a>
+
+                        <div class="collapse" id="collapse_{{ node.id }}">
+                            <div class="card card-body">
+                                <div class="children">
+                                    {{ children }}
+                                </div>
+                            </div>
                         </div>
+
                     {% endif %}
                 </div>
             </div>
@@ -197,52 +210,65 @@
     </div>
 </div>
 
+{% block script %}
+    <!-- ckeditor -->
+    <script type="text/javascript"
+            src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script>$(".django-ckeditor-widget").removeAttr('style');</script>
 
-<!-- ckeditor -->
-<script type="text/javascript"
-        src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
-<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-<script>$(".django-ckeditor-widget").removeAttr('style');</script>
+    <script>
+        // 删除文章的函数
+        confirm_delete = function (node_id) {
+            // 调用layer弹窗组件
+            layer.open({
+                // 弹窗标题
+                title: "当心！",
+                // 正文
+                content: "确认删除此回复吗？",
+                shadeClose: true,
+                anim: 6,
+                // 点击确定按钮后调用的回调函数
+                yes: function (index, layero) {
+                    // 指定应当前往的 url
+                    location.href = "{% url 'comments:soft_delete' %}?"
+                        + "comment_id=" + node_id +
+                        "&" + "article_type=" + "{{ article_type }}"
+                },
+            })
+        };
 
-<script>
-    // 删除文章的函数
-    confirm_delete = function (node_id) {
-        // 调用layer弹窗组件
-        layer.open({
-            // 弹窗标题
-            title: "当心！",
-            // 正文
-            content: "确认删除此回复吗？",
-            shadeClose: true,
-            anim: 6,
-            // 点击确定按钮后调用的回调函数
-            yes: function (index, layero) {
-                // 指定应当前往的 url
-                location.href = "{% url 'comments:soft_delete' %}?"
-                    + "comment_id=" + node_id +
-                    "&" + "article_type=" + "{{ article_type }}"
-            },
-        })
-    }
-    $('#github_a').on('mouseenter', function () {
-        this.index = layer.tips('以Github账号登录', this, {
-            time: -1,
-            maxWidth: 280,
-            tips: [3, 'dimgray']
+
+        $(() => {
+
+            const aQuery = window.location.href.split("#")[1];  //取得Get参数
+
+            console.log(aQuery);
+
+            $('#' + aQuery).parents('.collapse').addClass('show');
+            $('#F70').parent('.collapse').addClass('show');
+
+            $('#github_a').on('mouseenter', function () {
+                this.index = layer.tips('以Github账号登录', this, {
+                    time: -1,
+                    maxWidth: 280,
+                    tips: [3, 'dimgray']
+                });
+            }).on('mouseleave', function () {
+                layer.close(this.index);
+            });
+            $('#weibo_a').on('mouseenter', function () {
+                this.index = layer.tips('以新浪微博账号登录', this, {
+                    time: -1,
+                    maxWidth: 280,
+                    tips: [3, 'indianred']
+                });
+            }).on('mouseleave', function () {
+                layer.close(this.index);
+            });
         });
-    }).on('mouseleave', function () {
-        layer.close(this.index);
-    });
 
-    $('#weibo_a').on('mouseenter', function () {
-        this.index = layer.tips('以新浪微博账号登录', this, {
-            time: -1,
-            maxWidth: 280,
-            tips: [3, 'indianred']
-        });
-    }).on('mouseleave', function () {
-        layer.close(this.index);
-    });
 
-</script>
+    </script>
+{% endblock %}

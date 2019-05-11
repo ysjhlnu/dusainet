@@ -1,6 +1,7 @@
 from django.urls import path
 from django.conf.urls import url
 from . import views
+from . import feeds
 
 app_name = 'article'
 urlpatterns = [
@@ -27,4 +28,6 @@ urlpatterns = [
         views.ArticleUpdateView.as_view(),
         name='article_update',
     ),
+
+    path('get-columns-data/', feeds.get_columns_json_data, name='get_columns_data'),
 ]

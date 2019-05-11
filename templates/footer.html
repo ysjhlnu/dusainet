@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <nav class="navbar navbar-dark bg-dark mb-0" id="nav-footer">
     <div class="row col justify-content-center">
-        <h3 class="mr-3 ml-4">
+        <h3 class="mr-3">
             <a href="mailto:dusaiphoto@foxmail.com">
                 <i class="fas fa-envelope" style="color: lightskyblue;" id="layer_email"></i>
             </a>
@@ -11,9 +11,14 @@
                 <i class="fab fa-github" id="layer_github"></i>
             </a>
         </h3>
-        <h3>
+        <h3 class="mr-3">
             <a href="//weibo.com/saisaixuezhang" style="color: indianred;" target="_blank">
                 <i class="fab fa-weibo" id="layer_weibo"></i>
+            </a>
+        </h3>
+        <h3>
+            <a href="{% url 'aboutme:footpoint' %}#wechart_qr" style="color: yellowgreen;">
+                <i class="fab fa-weixin" id="footer_wechart"></i>
             </a>
         </h3>
     </div>
@@ -35,7 +40,7 @@
 </nav>
 <script>
     $('#layer_email').on('mouseenter', function () {
-        this.index = layer.tips('给作者发邮件', this, {
+        this.index = layer.tips('给博主发邮件', this, {
             time: -1,
             maxWidth: 280,
             tips: [1, 'lightskyblue']
@@ -45,7 +50,7 @@
     });
 
     $('#layer_weibo').on('mouseenter', function () {
-        this.index = layer.tips('关注作者微博', this, {
+        this.index = layer.tips('关注博主微博', this, {
             time: -1,
             maxWidth: 280,
             tips: [1, 'indianred']
@@ -55,10 +60,20 @@
     });
 
     $('#layer_github').on('mouseenter', function () {
-        this.index = layer.tips('在GitHub查看作者代码', this, {
+        this.index = layer.tips('在GitHub查看博主代码', this, {
             time: -1,
             maxWidth: 280,
             tips: [1, '#f0c674']
+        });
+    }).on('mouseleave', function () {
+        layer.close(this.index);
+    });
+
+    $('#footer_wechart').on('mouseenter', function () {
+        this.index = layer.tips('博主微博二维码', this, {
+            time: -1,
+            maxWidth: 280,
+            tips: [1, 'yellowgreen']
         });
     }).on('mouseleave', function () {
         layer.close(this.index);

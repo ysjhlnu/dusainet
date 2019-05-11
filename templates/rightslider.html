@@ -1,10 +1,50 @@
 {% load staticfiles %}
+
+<!-- RSS -->
+<div class="card mb-4 mt-4">
+    <div class="card-body">
+        <p class="card-title text-muted">
+            <i class="fas fa-rss" style="color: darkorange;"></i> RSS订阅
+        </p>
+        <!-- Button trigger modal -->
+        <div class="text-center">
+
+            <a href="#" class="cark-link" data-toggle="modal" data-target="#rss">
+                有新文章时通知我
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="rss" tabindex="-1" role="dialog" aria-labelledby="rss"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rss_title">您想订阅哪个栏目？</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <a href="{% url 'rss' %}" class="btn btn-success btn-block mb-2">综合</a>
+                <p id="rss-columns"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="card mb-4 mt-4">
     <div class="card-body">
         <p class="card-title text-muted">
             <i class="fas fa-bell" style="color: lightskyblue;"></i> 博主动态
         </p>
-        <p class="cark-text" id="notification-text"></p>
+        <p class="cark-text text-muted mb-0" id="notification_content"></p>
+        <br>
+        <p class="cark-text text-muted mb-0 text-right" id="notification_created"></p>
     </div>
 </div>
 
@@ -79,7 +119,16 @@
 {% block script %}
     <script>
         $(() => {
-            $.get({% url 'extends:' %})
+            $.get("{% url 'extends:site_message' %}", (data) => {
+                $('#notification_content').append(data.content);
+                $('#notification_created').append(data.created);
+            });
+            $.get('{% url "article:get_columns_data" %}', (data) => {
+                for (let item in data) {
+                    let context = "<a href='/all/rss/" + data[item] + "' class=\"btn btn-outline-dark btn-block\">" + item + "</a>";
+                    $('#rss-columns').append(context)
+                }
+            })
         })
     </script>
 {% endblock %}
