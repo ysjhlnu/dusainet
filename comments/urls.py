@@ -31,5 +31,7 @@ urlpatterns = [
         'edit/<int:pk>/',
         views.CommentUpdateView.as_view(),
         name='edit'
-    )
+    ),
+
+    path('count-validate/', views.comment_count_validate, name='count_validate')
 ]

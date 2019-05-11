@@ -4,6 +4,11 @@ from django.shortcuts import (
     redirect,
 )
 
+from django.http import HttpResponse, JsonResponse
+
+from django.utils import timezone
+import datetime
+
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -98,6 +103,12 @@ def comment_soft_delete(request):
     return redirect(redirect_url)
 
 
+def comment_count_validate(request):
+    pub_date = timezone.now() - datetime.timedelta(minutes=1)
+    comments_count = request.user.comments_user.filter(created_time__gte=pub_date).count()
+    return JsonResponse(comments_count, safe=False)
+
+
 class CommentCreateView(LoginRequiredMixin, CreateView):
     """
     发布博文、读书、vlog 的新评论的视图
@@ -125,6 +136,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         """
         处理get请求
         """
+
         article_id = kwargs.get('article_id')
         node_id = kwargs.get('node_id')
         article_type = kwargs.get('article_type')
@@ -149,6 +161,9 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         """
         处理post请求
         """
+        if int(comment_count_validate(request).content) > 1:
+            return HttpResponse('对不起，您发帖太频繁了。过10分钟再试试吧。')
+
         article = self.get_article(request, self.kwargs.get('article_id'))
         comment_form = CommentForm(request.POST)
 

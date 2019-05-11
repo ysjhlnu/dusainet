@@ -26,8 +26,11 @@
             <input type="hidden" name="article_type" value={{ article_type }}>
 
 
-            <button class="btn btn-primary mt-2" id="submit_btn" type="submit"
-                    name="submit"><i class="fas fa-paper-plane"></i> 发布
+            {#            <button class="btn btn-primary mt-2" id="submit_btn" type="submit"#}
+            {#                    name="submit"><i class="fas fa-paper-plane"></i> 发布#}
+            {#            </button>#}
+            <button class="btn btn-primary mt-2" onclick="submit_comment()">
+                <i class="fas fa-paper-plane"></i> 发布
             </button>
         </form>
     </div>
@@ -239,15 +242,28 @@
             })
         };
 
+        const submit_comment = () => {
+            console.log('test');
+            if (user_comments_count >= 1) {
+                event.preventDefault();
+                layer.msg('您评论得太频繁了。\n过几分钟再试试吧~')
+            }
+        };
+
 
         $(() => {
 
+            // 展开评论锚点
             const aQuery = window.location.href.split("#")[1];  //取得Get参数
-
-            console.log(aQuery);
-
             $('#' + aQuery).parents('.collapse').addClass('show');
             $('#F70').parent('.collapse').addClass('show');
+
+            // 获取当前用户评论数
+            $.get("{% url 'comments:count_validate' %}", function (result) {
+                console.log(result);
+                user_comments_count = result
+            });
+
 
             $('#github_a').on('mouseenter', function () {
                 this.index = layer.tips('以Github账号登录', this, {
