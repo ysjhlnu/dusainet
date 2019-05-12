@@ -47,5 +47,4 @@ def get_columns_json_data(request):
     context = {}
     for column in columns:
         context.update({column.title: column.id})
-    print(context)
     return JsonResponse(context)
