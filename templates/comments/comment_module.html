@@ -24,15 +24,19 @@
             </div>
 
             <input type="hidden" name="article_type" value={{ article_type }}>
-
-
-            {#            <button class="btn btn-primary mt-2" id="submit_btn" type="submit"#}
-            {#                    name="submit"><i class="fas fa-paper-plane"></i> 发布#}
-            {#            </button>#}
-            <button class="btn btn-primary mt-2" onclick="submit_comment()">
-                <i class="fas fa-paper-plane"></i> 发布
-            </button>
+            <button id="comment_submit"
+                    type="submit"
+                    name="submit"
+                    hidden
+            ></button>
         </form>
+        <div>
+            <button class="btn btn-primary mt-2"
+                    onclick="submit_comment('{% url 'comments:count_validate' %}')"
+                    id="on_submit"
+            ><i class="fas fa-paper-plane"></i> 发布
+            </button>
+        </div>
     </div>
 
 {% else %}
@@ -67,8 +71,8 @@
     <div>
         {% recursetree comments %}
             <hr>
-            <div class="row no-gutters">
-                <div class="col-2 col-sm-1" id="F{{ node.id }}">
+            <div class="row no-gutters" id="F{{ node.id }}">
+                <div class="col-2 col-sm-1">
                     <div style="text-align: center">
                         {% get_userinfo node.user.id as userinfo %}
                         {% if node.user.socialaccount_set.all.0.get_avatar_url %}
@@ -190,7 +194,6 @@
                         </p>
                     </div>
 
-
                     {% if not node.is_leaf_node %}
                         <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapse_{{ node.id }}"
                            role="button"
@@ -213,6 +216,8 @@
     </div>
 </div>
 
+<div style="color: #edf5fa;"></div>
+
 {% block script %}
     <!-- ckeditor -->
     <script type="text/javascript"
@@ -220,8 +225,11 @@
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
     <script>$(".django-ckeditor-widget").removeAttr('style');</script>
+    <script type="text/javascript" src="{% static 'utils/comment_submit.js' %}"></script>
+
 
     <script>
+
         // 删除文章的函数
         confirm_delete = function (node_id) {
             // 调用layer弹窗组件
@@ -242,29 +250,16 @@
             })
         };
 
-        const submit_comment = () => {
-            console.log('test');
-            if (user_comments_count >= 1) {
-                event.preventDefault();
-                layer.msg('您评论得太频繁了。\n过几分钟再试试吧~')
-            }
-        };
-
 
         $(() => {
 
-            // 展开评论锚点
-            const aQuery = window.location.href.split("#")[1];  //取得Get参数
-            $('#' + aQuery).parents('.collapse').addClass('show');
-            $('#F70').parent('.collapse').addClass('show');
+            // 展开/渲染评论锚点
+            const aQuery = window.location.href.split("#")[1];
+            const comment_selector = $('#' + aQuery);
+            comment_selector.parents('.collapse').addClass('show');
+            comment_selector.attr('style', 'background-color: #EDF5FA;border-radius: 10px;padding: 10px 10px 0 0;');
 
-            // 获取当前用户评论数
-            $.get("{% url 'comments:count_validate' %}", function (result) {
-                console.log(result);
-                user_comments_count = result
-            });
-
-
+            // 登录提示
             $('#github_a').on('mouseenter', function () {
                 this.index = layer.tips('以Github账号登录', this, {
                     time: -1,
@@ -284,7 +279,5 @@
                 layer.close(this.index);
             });
         });
-
-
     </script>
 {% endblock %}

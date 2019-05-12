@@ -104,7 +104,7 @@ def comment_soft_delete(request):
 
 
 def comment_count_validate(request):
-    pub_date = timezone.now() - datetime.timedelta(minutes=1)
+    pub_date = timezone.now() - datetime.timedelta(minutes=10)
     comments_count = request.user.comments_user.filter(created_time__gte=pub_date).count()
     return JsonResponse(comments_count, safe=False)
 
@@ -161,8 +161,8 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         """
         处理post请求
         """
-        if int(comment_count_validate(request).content) > 1:
-            return HttpResponse('对不起，您发帖太频繁了。过10分钟再试试吧。')
+        if int(comment_count_validate(request).content) >= 10:
+            return HttpResponse('403 error')
 
         article = self.get_article(request, self.kwargs.get('article_id'))
         comment_form = CommentForm(request.POST)

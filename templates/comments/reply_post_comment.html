@@ -46,21 +46,24 @@
                    name="article_type"
                    value="{{ article_type }}"
             >
-            <div class="mt-2 mb-4">
-                <button class="btn btn-primary"
-                        id="submit_btn"
-                        type="submit"
-                        name="submit"
-                >
-                    <i class="fas fa-paper-plane"></i> 发布
-                </button>
-                <button class="btn btn-secondary btn-sm ml-2"
-                        onclick="window.history.back(); return false;"
-                >
-                    返回
-                </button>
-            </div>
+            <button id="comment_submit"
+                    type="submit"
+                    name="submit"
+                    hidden
+            ></button>
         </form>
+        <div class="mt-2 mb-4">
+            <button class="btn btn-primary btn-sm"
+                    onclick="submit_comment('{% url 'comments:count_validate' %}')"
+                    id="on_submit"
+            ><i class="fas fa-paper-plane"></i> 发布
+            </button>
+            <button class="btn btn-secondary btn-sm ml-2"
+                    onclick="window.history.back(); return false;"
+            >
+                返回
+            </button>
+        </div>
         <br>
         <br>
         <br>
@@ -70,6 +73,7 @@
     <script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+    <script type="text/javascript" src="{% static 'utils/comment_submit.js' %}"></script>
     <script>$(".django-ckeditor-widget").removeAttr('style');</script>
 
 {% endblock %}
