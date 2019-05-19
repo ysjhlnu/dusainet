@@ -15,10 +15,6 @@
             $.get("{% url 'extends:site_message' %}", (data) => {
                 $('#notification_content').append(data.content);
                 $('#notification_created').append(data.created);
-
-                var stickySidebar = new StickySidebar('.baseSidebar');
-
-                stickySidebar.updateSticky();
             });
         })
     </script>

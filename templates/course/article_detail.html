@@ -47,6 +47,7 @@
     </div>
 
     {% block script %}
+        <script src="{% static 'sticky_sidebar/jquery.sticky-sidebar.min.js' %}"></script>
         <script>
             $(() => {
                 $('#sidebar').stickySidebar({
