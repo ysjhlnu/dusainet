@@ -20,29 +20,28 @@
                    name="article_type"
                    value="{{ article_type }}"
             >
-            <div class="mt-2 mb-4">
-                <button class="btn btn-primary"
-                        id="submit_btn"
-                        type="submit"
-                        name="submit"
-                >
-                    <i class="fas fa-paper-plane"></i> 更新
-                </button>
-                <button class="btn btn-secondary btn-sm"
-                        onclick="window.history.back(); return false;"
-                >
-                    返回
-                </button>
-            </div>
+            <button id="comment_submit"
+                    type="submit"
+                    name="submit"
+                    hidden
+            ></button>
         </form>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+        <div class="mt-2 mb-4">
+            <button class="btn btn-primary btn-sm"
+                    onclick="submit_comment('{% url 'comments:count_validate' %}')"
+                    id="on_submit"
+            >
+                <i class="fas fa-paper-plane"></i> 更新
+            </button>
+            <button class="btn btn-secondary btn-sm"
+                    onclick="window.history.back(); return false;"
+            >
+                返回
+            </button>
+            <span id="comment_char_count" class="text-muted ml-2"></span>
+            {% include 'utils/comment_submit.html' %}
+        </div>
     </div>
-
-
 
     <!-- ckeditor -->
     <script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>

@@ -36,8 +36,9 @@
             <!-- 右目录 -->
             <div class="col-2 card d-none d-lg-block collapse" id="right-sidebar" style="z-index: 1">
                 <div class="sidebar2" id="sidebar2">
-                    <div class="sidebar__inner2">
+                    <div class="sidebar2__inner">
                         {% include 'course/right_slider.html' %}
+                        {% include 'utils/notice_card.html' %}
                     </div>
                 </div>
             </div>
@@ -45,19 +46,30 @@
         </div>
     </div>
 
-    <script src="{% static 'sticky_sidebar/jquery.sticky-sidebar.min.js' %}"></script>
-    <script>
-        $('#sidebar').stickySidebar({
-            topSpacing: 0,
-            bottomSpacing: 20,
-        });
-        $('#sidebar2').stickySidebar({
-            topSpacing: 0,
-            bottomSpacing: 20,
-        });
+    {% block script %}
+        <script>
+            $(() => {
+                $('#sidebar').stickySidebar({
+                    topSpacing: 0,
+                    bottomSpacing: 20,
+                });
+                $('#sidebar2').stickySidebar({
+                    topSpacing: 0,
+                    bottomSpacing: 20,
+                });
 
 
-    </script>
+                $(window).scroll(function () {
+                    if ($(this).scrollTop() > 500) {
+                        $('#notice_card').fadeOut(2000);
+                    } else {
+                        $('#notice_card').stop().fadeIn(1000);
+                    }
+                }).scroll();
+            });
+        </script>
+
+    {% endblock %}
     <style>
         .sidebar {
             will-change: min-height;
@@ -72,7 +84,7 @@
             will-change: min-height;
         }
 
-        .sidebar__inner2 {
+        .sidebar2__inner {
             transform: translate(0, 0);
             will-change: position, transform;
         }

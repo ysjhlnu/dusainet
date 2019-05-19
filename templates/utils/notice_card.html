@@ -1,0 +1,25 @@
+<div class="card mb-4 mt-4" id="notice_card">
+    <div class="card-body">
+        <p class="card-title text-muted">
+            <i class="fas fa-bell" style="color: lightskyblue;"></i> 博主动态
+        </p>
+        <p class="cark-text text-muted mb-0" id="notification_content"></p>
+        <br>
+        <p class="cark-text text-muted mb-0 text-right" id="notification_created"></p>
+    </div>
+</div>
+
+{% block script %}
+    <script>
+        $(() => {
+            $.get("{% url 'extends:site_message' %}", (data) => {
+                $('#notification_content').append(data.content);
+                $('#notification_created').append(data.created);
+
+                var stickySidebar = new StickySidebar('.baseSidebar');
+
+                stickySidebar.updateSticky();
+            });
+        })
+    </script>
+{% endblock %}

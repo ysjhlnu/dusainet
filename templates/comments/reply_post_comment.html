@@ -63,6 +63,8 @@
             >
                 返回
             </button>
+            <span id="comment_char_count" class="text-muted ml-2"></span>
+            {% include 'utils/comment_submit.html' %}
         </div>
         <br>
         <br>
@@ -73,7 +75,6 @@
     <script src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-    <script type="text/javascript" src="{% static 'utils/comment_submit.js' %}"></script>
     <script>$(".django-ckeditor-widget").removeAttr('style');</script>
 
 {% endblock %}

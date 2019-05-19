@@ -1,0 +1,59 @@
+
+
+
+{% block script %}
+    <script>
+        // 限制评论频率和篇幅
+        const submit_comment = (url) => {
+            let contentLength = CKEDITOR.instances['id_body']
+                .getData().replace(/<[^>]+>/g, '')
+                .replace(/&nbsp;/g, 'X')
+                .replace(/\s/g, '')
+                .length;
+
+            if (contentLength <= 0) {
+                layer.msg('留言不能为空哦~');
+            } else if (contentLength >= 3000) {
+                layer.msg('评论篇幅请小于3000字哟~');
+            } else {
+                $('#on_submit').attr('disabled', 'disabled').empty().append('发布中.. ').append(
+                    '<span class="spinner-border spinner-border-sm text-light" role="status">\n' +
+                    '  <span class="sr-only">Loading...</span>\n' +
+                    '</span>'
+                );
+                $.get(url, function (result) {
+                    if (result >= 10) {
+                        layer.msg('您评论得太频繁了。\n过几分钟再试试吧~');
+                        $('#on_submit').removeAttr('disabled').empty().append('重新发布');
+                    } else {
+                        $('#comment_submit').trigger('click');
+                    }
+                });
+            }
+        };
+
+        // 显示评论字数
+        $(() => {
+            let ckeditor = CKEDITOR.instances['id_body'];
+
+            let comment_char_count = $('#comment_char_count');
+            ckeditor.on('change', () => {
+                let contentLength = CKEDITOR.instances['id_body']
+                    .getData().replace(/<[^>]+>/g, '')
+                    .replace(/&nbsp;/g, 'X')
+                    .replace(/\s/g, '').length;
+
+                if (contentLength < 3000) {
+                    comment_char_count.html(contentLength + '/3000字')
+                        .stop()
+                        .removeAttr('style')
+                        .fadeOut(3000);
+                } else {
+                    comment_char_count.html('<span style="color: red;">' + contentLength + '</span>' + '/3000字')
+                        .stop()
+                        .removeAttr('style');
+                }
+            });
+        });
+    </script>
+{% endblock %}

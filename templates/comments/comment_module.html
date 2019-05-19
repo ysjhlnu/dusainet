@@ -30,12 +30,14 @@
                     hidden
             ></button>
         </form>
-        <div>
-            <button class="btn btn-primary mt-2"
+        <div id="on_submit_outer" class="mt-2">
+            <button class="btn btn-primary"
                     onclick="submit_comment('{% url 'comments:count_validate' %}')"
                     id="on_submit"
             ><i class="fas fa-paper-plane"></i> 发布
             </button>
+            <span id="comment_char_count" class="text-muted ml-2"></span>
+            {% include 'utils/comment_submit.html' %}
         </div>
     </div>
 
@@ -225,8 +227,6 @@
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
     <script>$(".django-ckeditor-widget").removeAttr('style');</script>
-    <script type="text/javascript" src="{% static 'utils/comment_submit.js' %}"></script>
-
 
     <script>
 

@@ -13,12 +13,7 @@
     <title>{% block title %}{% endblock %}</title>
 
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet"
-          href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
-          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-          crossorigin="anonymous"
-    >
-
+    <link href="https://cdn.bootcss.com/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'monokai.css' %}">
     <link rel="stylesheet" href="{% static 'mystyle.css' %}">
 
@@ -54,13 +49,14 @@
 <script src="https://cdn.bootcss.com/popper.js/1.14.7/esm/popper.min.js"></script>
 <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="{% static 'layer/layer.js' %}"></script>
+<script src="{% static 'sticky_sidebar/jquery.sticky-sidebar.min.js' %}"></script>
 
 
-{% include "back_top_func.html" %}
+{% include "utils/back_top_func.html" %}
 {% include "header.html" %}
 <div class="container" id="wrapper">
     <div class="row">
-        <div class="col">
+        <div class="col-12 col-lg-9">
             {% block content %}{% endblock %}
         </div>
         <div class="col-3 d-none d-lg-block">
