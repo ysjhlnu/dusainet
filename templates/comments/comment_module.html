@@ -6,214 +6,191 @@
 <!-- ckeditor -->
 <link rel="stylesheet" href="{% static 'ckeditor/ckeditor/plugins/prism/css/prism.css' %}">
 
+<style>
+    .comment-hidden {
+        /* height: 500px; */
+        max-height: 500px;
+        overflow: hidden;
+    }
+</style>
+
 {#发表评论#}
 {% if user.is_authenticated %}
-    <div>
-        <form id="comment_form"
-              action="{% url 'comments:post_comment' article.id %}"
-              method="post">
-            {% csrf_token %}
-            <div>
-                <h5>
-                    发表评论：
-                </h5>
+<div>
+    <form id="comment_form" action="{% url 'comments:post_comment' article.id %}" method="post">
+        {% csrf_token %}
+        <div>
+            <h5>
+                发表评论：
+            </h5>
 
-                <!-- ckeditor 正文 -->
-                {{ comment_form.body }}
+            <!-- ckeditor 正文 -->
+            {{ comment_form.body }}
 
-            </div>
-
-            <input type="hidden" name="article_type" value={{ article_type }}>
-            <button id="comment_submit"
-                    type="submit"
-                    name="submit"
-                    hidden
-            ></button>
-        </form>
-        <div id="on_submit_outer" class="mt-2">
-            <button class="btn btn-primary"
-                    onclick="submit_comment('{% url 'comments:count_validate' %}')"
-                    id="on_submit"
-            ><i class="fas fa-paper-plane"></i> 发布
-            </button>
-            <span id="comment_char_count" class="text-muted ml-2"></span>
-            {% include 'utils/comment_submit.html' %}
         </div>
+
+        <input type="hidden" name="article_type" value={{ article_type }}>
+        <button id="comment_submit" type="submit" name="submit" hidden></button>
+    </form>
+    <div id="on_submit_outer" class="mt-2">
+        <button class="btn btn-primary" onclick="submit_comment('{% url 'comments:count_validate' %}')"
+            id="on_submit"><i class="fas fa-paper-plane"></i> 发布
+        </button>
+        <span id="comment_char_count" class="text-muted ml-2"></span>
+        {% include 'utils/comment_submit.html' %}
     </div>
+</div>
 
 {% else %}
-    <br/>
-    <br/>
-    <div style="text-align: center">
-        <div>
-            <h5 class="text-muted" id="weibologin">
-                <a href="{% url 'account_login' %}">
-                    登录
+<br />
+<br />
+<div style="text-align: center">
+    <div>
+        <h5 class="text-muted" id="weibologin">
+            <a href="{% url 'account_login' %}">
+                登录
+            </a>
+            后回复
+        </h5>
+        <div style="text-align: center" class="container-fluid mb-4">
+            <div>
+                <a href="/accounts/weibo/login/?process=login" class="mr-2" id="weibo_a">
+                    <i class="fab fa-weibo" style="font-size: 3em; color: indianred;"></i>
                 </a>
-                后回复
-            </h5>
-            <div style="text-align: center" class="container-fluid mb-4">
-                <div>
-                    <a href="/accounts/weibo/login/?process=login" class="mr-2" id="weibo_a"><i class="fab fa-weibo"
-                                                                                                style="font-size: 3em; color: indianred;"></i></a>
-                    <a href="/accounts/github/login/?process=login" id="github_a"><i class="fab fa-github"
-                                                                                     style="font-size: 3em; color: dimgray;"></i></a>
-                </div>
+                <a href="/accounts/github/login/?process=login" id="github_a">
+                    <i class="fab fa-github" style="font-size: 3em; color: dimgray;"></i>
+                </a>
             </div>
         </div>
     </div>
+</div>
 {% endif %}
 
 
-{#显示mptt层级评论#}
+<!-- 显示mptt层级评论 -->
 <br>
 <br>
 <h5 id="Fcomments" class="mt-4 alert alert-info">共有{{ article.comments.count }}条评论</h5>
 <div class="mb-2" id="comments_body" style="word-break: break-all">
     <div>
         {% recursetree comments %}
-            <hr>
-            <div class="row no-gutters" id="F{{ node.id }}">
-                <div class="col-2 col-sm-1">
-                    <div style="text-align: center">
-                        {% get_userinfo node.user.id as userinfo %}
-                        {% if node.user.socialaccount_set.all.0.get_avatar_url %}
-                            <!-- 第三方头像 -->
-                            <img src="{% translate_avatar_ssl node.user.socialaccount_set.all.0.get_avatar_url %}"
-                                 alt="avatar"
-                                    {% if node.reply_to %}
-                                 style="width: 70%; border-radius: 20%"
-                                    {% else %}
-                                 style="width: 80%; border-radius: 20%"
-                                    {% endif %}
-                            >
+        <hr>
+        <div class="row no-gutters" id="F{{ node.id }}">
+            <div class="col-2 col-sm-1">
+                <div style="text-align: center">
+                    {% get_userinfo node.user.id as userinfo %}
+                    {% if node.user.socialaccount_set.all.0.get_avatar_url %}
+                    <!-- 第三方头像 -->
+                    <img src="{% translate_avatar_ssl node.user.socialaccount_set.all.0.get_avatar_url %}" alt="avatar"
+                        {% if node.reply_to %} style="width: 70%; border-radius: 20%" {% else %}
+                        style="width: 80%; border-radius: 20%" {% endif %}>
 
-                        {% elif userinfo.avatar %}
-                            <!-- 本地头像 -->
-                            {% if 'static' in userinfo.avatar.url %}
-                                <img src="{{ userinfo.avatar }}"
-                                     alt="avatar"
-                                        {% if node.reply_to %}
-                                     style="width: 70%; border-radius: 20%"
-                                        {% else %}
-                                     style="width: 80%; border-radius: 20%"
-                                        {% endif %}
-                                >
-                            {% else %}
-                                <img src="{{ userinfo.avatar.url }}"
-                                     alt="avatar"
-                                        {% if node.reply_to %}
-                                     style="width: 70%; border-radius: 20%"
-                                        {% else %}
-                                     style="width: 80%; border-radius: 20%"
-                                        {% endif %}
-                                >
-                            {% endif %}
-
-                        {% else %}
-                            <!-- 无头像 -->
-                            <img src="{% static 'default_avatar.jpg' %}"
-                                 alt="avatar"
-                                    {% if node.reply_to %}
-                                 style="width: 70%; border-radius: 20%"
-                                    {% else %}
-                                 style="width: 80%; border-radius: 20%"
-                                    {% endif %}
-                            >
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="col-10 col-sm-11">
-                    <div style="color: gray;">
-                        {% if user == node.user %}
-                            <i class="fas fa-user-tie" style="color: orange;"></i>
-                        {% endif %}
-                        {{ node.user }}
-                        {% if node.user.is_superuser %}
-                            <i style="color: #ff5500;">[博主]</i>
-                        {% elif node.user.is_staff %}
-                            <i style="color: #5897fb;">[管理员]</i>
-                        {% endif %}
-                        {% if node.reply_to %}
-                            <i class="far fa-arrow-alt-circle-right" style="color: cornflowerblue;"></i>
-                            {{ node.reply_to }}
-                            {% if node.reply_to.is_superuser %}
-                                <i style="color: #ff5500;">[博主]</i>
-                            {% elif node.reply_to.is_staff %}
-                                <i style="color: #5897fb;">[管理员]</i>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-
-                    <!-- 正文 -->
-                    {% if node.is_deleted %}
-                        {% if node.is_deleted_by_staff %}
-                            <div style="text-align: center;"
-                                 class="alert alert-danger"
-                            >
-                                本回复已被 [博主] 删除
-                            </div>
-                        {% else %}
-
-                            <div style="text-align: center;"
-                                 class="alert alert-danger"
-                            >
-                                本回复已被 {{ node.user }} 删除
-                            </div>
-                        {% endif %}
+                    {% elif userinfo.avatar %}
+                    <!-- 本地头像 -->
+                    {% if 'static' in userinfo.avatar.url %}
+                    <img src="{{ userinfo.avatar }}" alt="avatar" {% if node.reply_to %}
+                        style="width: 70%; border-radius: 20%" {% else %} style="width: 80%; border-radius: 20%"
+                        {% endif %}>
                     {% else %}
-                        <p class="mt-3 mb-1">{{ node.body|safe }}</p>
+                    <img src="{{ userinfo.avatar.url }}" alt="avatar" {% if node.reply_to %}
+                        style="width: 70%; border-radius: 20%" {% else %} style="width: 80%; border-radius: 20%"
+                        {% endif %}>
                     {% endif %}
 
-                    <!-- 附加信息 -->
-                    <div style="color: #999999;">
-                        <p>{{ node.created_time|date:"Y/m/d H:i" }}
-                            <a href="{% url 'comments:reply_post_comment' article.id node.id article_type %}"
-                               style="color: #01a252">
-                                回复
-                            </a>
-
-                            <!-- 删除/编辑 -->
-                            {% if node.user == user or user.is_staff %}
-                                {% if not node.is_deleted %}
-                                    <a href="{% url 'comments:edit' node.id %}?article_type={{ article_type }}"
-                                       style="color: lightskyblue;">
-                                        编辑
-                                    </a>
-                                    <span style="float: right">
-                                        <a href="javascript:"
-                                           title="删除"
-                                           onclick="confirm_delete({{ node.id }});"
-                                        >
-                                            <i class="far fa-trash-alt"
-                                               style="color: darkred;"
-                                            ></i>
-                                        </a>
-                                    </span>
-                                {% endif %}
-                            {% endif %}
-                        </p>
-                    </div>
-
-                    {% if not node.is_leaf_node %}
-                        <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapse_{{ node.id }}"
-                           role="button"
-                           aria-expanded="false" aria-controls="collapseExample">
-                            展开此讨论..
-                        </a>
-
-                        <div class="collapse" id="collapse_{{ node.id }}">
-                            <div class="card card-body">
-                                <div class="children">
-                                    {{ children }}
-                                </div>
-                            </div>
-                        </div>
-
+                    {% else %}
+                    <!-- 无头像 -->
+                    <img src="{% static 'default_avatar.jpg' %}" alt="avatar" {% if node.reply_to %}
+                        style="width: 70%; border-radius: 20%" {% else %} style="width: 80%; border-radius: 20%"
+                        {% endif %}>
                     {% endif %}
                 </div>
             </div>
+
+            <div class="col-10 col-sm-11">
+                <div style="color: gray;">
+                    {% if user == node.user %}
+                    <i class="fas fa-user-tie" style="color: orange;"></i>
+                    {% endif %}
+                    {{ node.user }}
+                    {% if node.user.is_superuser %}
+                    <i style="color: #ff5500;">[博主]</i>
+                    {% elif node.user.is_staff %}
+                    <i style="color: #5897fb;">[管理员]</i>
+                    {% endif %}
+                    {% if node.reply_to %}
+                    <i class="far fa-arrow-alt-circle-right" style="color: cornflowerblue;"></i>
+                    {{ node.reply_to }}
+                    {% if node.reply_to.is_superuser %}
+                    <i style="color: #ff5500;">[博主]</i>
+                    {% elif node.reply_to.is_staff %}
+                    <i style="color: #5897fb;">[管理员]</i>
+                    {% endif %}
+                    {% endif %}
+                </div>
+
+                <!-- 正文 -->
+                {% if node.is_deleted %}
+                {% if node.is_deleted_by_staff %}
+                <div style="text-align: center;" class="alert alert-danger">
+                    本回复已被 [博主] 删除
+                </div>
+                {% else %}
+
+                <div style="text-align: center;" class="alert alert-danger">
+                    本回复已被 {{ node.user }} 删除
+                </div>
+                {% endif %}
+                {% else %}
+                <div id="comment_body_div">
+                    <div class="comment-hidden" id="comment_body_{{ node.id }}">
+                        <p class="mt-3 mb-1">{{ node.body|safe }}</p>
+                    </div>
+                    <a href="javascript:;" onclick="toggleContent('F{{ node.id }}')" id="unfold_link">展开</a>
+                </div>
+                {% endif %}
+
+                <!-- 附加信息 -->
+                <div style="color: #999999;">
+                    <p>{{ node.created_time|date:"Y/m/d H:i" }}
+                        <a href="{% url 'comments:reply_post_comment' article.id node.id article_type %}"
+                            style="color: #01a252">
+                            回复
+                        </a>
+
+                        <!-- 删除/编辑 -->
+                        {% if node.user == user or user.is_staff %}
+                        {% if not node.is_deleted %}
+                        <a href="{% url 'comments:edit' node.id %}?article_type={{ article_type }}"
+                            style="color: lightskyblue;">
+                            编辑
+                        </a>
+                        <span style="float: right">
+                            <a href="javascript:" title="删除" onclick="confirm_delete({{ node.id }});">
+                                <i class="far fa-trash-alt" style="color: darkred;"></i>
+                            </a>
+                        </span>
+                        {% endif %}
+                        {% endif %}
+                    </p>
+                </div>
+
+                {% if not node.is_leaf_node %}
+                <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapse_{{ node.id }}" role="button"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    展开此讨论..
+                </a>
+
+                <div class="collapse" id="collapse_{{ node.id }}">
+                    <div class="card card-body">
+                        <div class="children">
+                            {{ children }}
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %}
+            </div>
+        </div>
         {% endrecursetree %}
     </div>
 </div>
@@ -221,63 +198,77 @@
 <div style="color: #edf5fa;"></div>
 
 {% block script %}
-    <!-- ckeditor -->
-    <script type="text/javascript"
-            src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-    <script>$(".django-ckeditor-widget").removeAttr('style');</script>
+<!-- ckeditor -->
+<script type="text/javascript"
+    src="{% static 'ckeditor/ckeditor/plugins/prism/lib/prism/prism_patched.min.js' %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+<script>$(".django-ckeditor-widget").removeAttr('style');</script>
 
-    <script>
+<script>
 
-        // 删除文章的函数
-        confirm_delete = function (node_id) {
-            // 调用layer弹窗组件
-            layer.open({
-                // 弹窗标题
-                title: "当心！",
-                // 正文
-                content: "确认删除此回复吗？",
-                shadeClose: true,
-                anim: 6,
-                // 点击确定按钮后调用的回调函数
-                yes: function (index, layero) {
-                    // 指定应当前往的 url
-                    location.href = "{% url 'comments:soft_delete' %}?"
-                        + "comment_id=" + node_id +
-                        "&" + "article_type=" + "{{ article_type }}"
-                },
-            })
+    // 删除文章的函数
+    confirm_delete = function (node_id) {
+        // 调用layer弹窗组件
+        layer.open({
+            // 弹窗标题
+            title: "当心！",
+            // 正文
+            content: "确认删除此回复吗？",
+            shadeClose: true,
+            anim: 6,
+            // 点击确定按钮后调用的回调函数
+            yes: function (index, layero) {
+                // 指定应当前往的 url
+                location.href = "{% url 'comments:soft_delete' %}?"
+                    + "comment_id=" + node_id +
+                    "&" + "article_type=" + "{{ article_type }}"
+            },
+        })
+    };
+
+    toggleContent = (elem_id) => {
+        alert(elem_id);
+    };
+
+
+    $(() => {
+        const comment_body_divs = $('div#comment_body_div');
+        const unfold_links = $('a#unfold_link');
+        for (const div of comment_body_divs) {
+            console.log(div)
+            let comment_body_height = $(div).children('.comment-hidden').height();
+            if (comment_body_height < 500) {
+                console.log(comment_body_height);
+                $(div).children('a#unfold_link').hide();
+            }
         };
 
+        // 展开/渲染评论锚点
+        const aQuery = window.location.href.split("#")[1];
+        const comment_selector = $('#' + aQuery);
+        comment_selector.parents('.collapse').addClass('show');
+        comment_selector.attr('style', 'background-color: #EDF5FA;border-radius: 10px;padding: 10px 10px 0 0;');
 
-        $(() => {
-
-            // 展开/渲染评论锚点
-            const aQuery = window.location.href.split("#")[1];
-            const comment_selector = $('#' + aQuery);
-            comment_selector.parents('.collapse').addClass('show');
-            comment_selector.attr('style', 'background-color: #EDF5FA;border-radius: 10px;padding: 10px 10px 0 0;');
-
-            // 登录提示
-            $('#github_a').on('mouseenter', function () {
-                this.index = layer.tips('以Github账号登录', this, {
-                    time: -1,
-                    maxWidth: 280,
-                    tips: [3, 'dimgray']
-                });
-            }).on('mouseleave', function () {
-                layer.close(this.index);
+        // 登录提示
+        $('#github_a').on('mouseenter', function () {
+            this.index = layer.tips('以Github账号登录', this, {
+                time: -1,
+                maxWidth: 280,
+                tips: [3, 'dimgray']
             });
-            $('#weibo_a').on('mouseenter', function () {
-                this.index = layer.tips('以新浪微博账号登录', this, {
-                    time: -1,
-                    maxWidth: 280,
-                    tips: [3, 'indianred']
-                });
-            }).on('mouseleave', function () {
-                layer.close(this.index);
-            });
+        }).on('mouseleave', function () {
+            layer.close(this.index);
         });
-    </script>
+        $('#weibo_a').on('mouseenter', function () {
+            this.index = layer.tips('以新浪微博账号登录', this, {
+                time: -1,
+                maxWidth: 280,
+                tips: [3, 'indianred']
+            });
+        }).on('mouseleave', function () {
+            layer.close(this.index);
+        });
+    });
+</script>
 {% endblock %}

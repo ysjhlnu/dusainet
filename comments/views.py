@@ -22,6 +22,8 @@ from article.models import ArticlesPost
 from readbook.models import ReadBook
 from vlog.models import Vlog
 
+import re
+
 # from utils.utils import send_email_to_user
 
 from django.views.generic import CreateView, UpdateView
@@ -99,13 +101,16 @@ def comment_soft_delete(request):
     comment.is_deleted = True
     comment.save()
 
-    redirect_url = comment.content_object.get_absolute_url() + '#F' + str(comment.id)
+    redirect_url = comment.content_object.get_absolute_url() + '#F' + \
+        str(comment.id)
     return redirect(redirect_url)
 
 
 def comment_count_validate(request):
+    """用户近期评论计数"""
     pub_date = timezone.now() - datetime.timedelta(minutes=10)
-    comments_count = request.user.comments_user.filter(created_time__gte=pub_date).count()
+    comments_count = request.user.comments_user.filter(
+        created_time__gte=pub_date).count()
     return JsonResponse(comments_count, safe=False)
 
 
@@ -157,19 +162,32 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
              }
         )
 
+    def is_comment_too_long(self, request):
+        """验证评论是否太长"""
+        on_post_content = request.POST.get('body')
+        content_length = len(re.sub(r'&nbsp;', 'X', re.sub(
+            r'(<[^>]+>)|(\s)', '', on_post_content)))
+        print(content_length)
+        if content_length >= 3000:
+            return True
+        else:
+            return False
+
     def post(self, request, *args, **kwargs):
-        """
-        处理post请求
-        """
+        """处理post请求"""
+        # 限制评论频率
         if int(comment_count_validate(request).content) >= 10:
-            return HttpResponse('403 error')
+            return HttpResponse('403 comment too frequently')
+
+        if self.is_comment_too_long(request):
+            return HttpResponse('403 comment too long')
 
         article = self.get_article(request, self.kwargs.get('article_id'))
         comment_form = CommentForm(request.POST)
 
         # 暂时用这种方法来检查空值，需优化
         if request.POST['body'] == '':
-            return redirect(article)
+            return HttpResponse('403 blank comment')
 
         # 创建新评论
         if comment_form.is_valid():
