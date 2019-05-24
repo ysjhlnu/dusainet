@@ -5,25 +5,92 @@
 {% get_userinfo user.id as userinfo %}
 {% notifications_unread as unread_count %}
 
+<style>
+    /*Author: rozbo*/
+    .breath-box input:focus {
+        -webkit-animation: glow 800ms ease-out infinite alternate;
+        -moz-animation: glow 800ms ease-out infinite alternate;
+        -o-animation: glow 800ms ease-out infinite alternate;
+        -ms-animation: glow 800ms ease-out infinite alternate;
+        animation: glow 800ms ease-out infinite alternate;
+        border-color: #393;
+        box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+        outline: none;
+    }
+
+    /*动画帧*/
+    @-webkit-keyframes glow {
+        0% {
+            border-color: #393;
+            box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+        }
+
+        100% {
+            border-color: #6f6;
+            box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+        }
+    }
+
+    @-moz-keyframes glow {
+        0% {
+            border-color: #393;
+            box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+        }
+
+        100% {
+            border-color: #6f6;
+            box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+        }
+    }
+
+    @-o-keyframes glow {
+        0% {
+            border-color: #393;
+            box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+        }
+
+        100% {
+            border-color: #6f6;
+            box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+        }
+    }
+
+    @-ms-keyframes glow {
+        0% {
+            border-color: #393;
+            box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+        }
+
+        100% {
+            border-color: #6f6;
+            box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+        }
+    }
+
+    @keyframes glow {
+        0% {
+            border-color: #393;
+            box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+        }
+
+        100% {
+            border-color: #6f6;
+            box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+        }
+    }
+</style>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <!-- 导航 -->
     <a class="navbar-brand" href="/" style="font-size: 1.2em;">
         杜赛的个人网站
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         {% if unread_count %}
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 8 42"
-                 width="8px"
-                 height="42px">
-                <circle cx="4"
-                        cy="4"
-                        r="4"
-                        fill="#ff6b6b"
-                        fill-opacity="1.0"
-                ></circle>
-            </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
+            <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
+        </svg>
         {% endif %}
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -35,8 +102,7 @@
                 {% if 'article' in request.path or request.path == '/' %}
                 active
                 {% endif %}
-                "
-            >
+                ">
                 <a class="nav-link mr-2" href="/">
                     文章
                 </a>
@@ -46,8 +112,7 @@
                 {% if '/course' in request.path %}
                 active
                 {% endif %}
-                "
-            >
+                ">
                 <a class="nav-link mr-2" href="{% url 'course:course_list' %}">
                     教程
                 </a>
@@ -57,8 +122,7 @@
                 {% if '/book' in request.path %}
                 active
                 {% endif %}
-                "
-            >
+                ">
                 <a class="nav-link mr-2" href="{% url 'readbook:book_list' %}">
                     知识
                 </a>
@@ -68,8 +132,7 @@
                 {% if '/album' in request.path %}
                 active
                 {% endif %}
-                "
-            >
+                ">
                 <a class="nav-link mr-2" href="{% url 'album:album_list' %}">
                     照片墙
                 </a>
@@ -79,8 +142,7 @@
                 {% if '/vlog' in request.path %}
                 active
                 {% endif %}
-                "
-            >
+                ">
                 <a class="nav-link mr-2" href="{% url 'vlog:list' %}">
                     视频
                 </a>
@@ -90,8 +152,7 @@
                 {% if '/aboutme' in request.path %}
                 active
                 {% endif %}
-                "
-            >
+                ">
                 <a class="nav-link mr-2" href="{% url 'aboutme:footpoint' %}">
                     关于
                 </a>
@@ -100,189 +161,99 @@
         <ul class="navbar-nav ml-md-auto" style="margin: -5px 0 -5px 0;">
 
             <!-- 搜索框 -->
-            <form role="search"
-                  class="form-inline my-2 my-lg-0"
-                  method="get"
-                  id="searchform"
-                  action="{% url 'haystack_search' %}"
-            >
-                <input style=" background-color: #dddddd"
-                       type="search"
-                       aria-label="Search"
-                       name="q"
-                       placeholder="搜索文章.."
-                       required
-                       class="form-control mr-sm-2"
-                >
+            <form role="search" class="form-inline my-2 my-lg-0 breath-box" method="get" id="searchform"
+                action="{% url 'haystack_search' %}">
+                <input style=" background-color: #dddddd" type="search" aria-label="Search" name="q"
+                    placeholder="搜索文章.." required class="form-control mr-sm-2">
             </form>
 
 
             <!-- 用户下拉条avatar -->
             {% if user.is_authenticated %}
-                <li class="nav-item dropdown" style="float: right;">
-                    {% if user.socialaccount_set.all.0.get_avatar_url %}
-                        <a class="nav-link dropdown-toggle"
-                           id="navbarDropdownMenuLink"
-                           role="button"
-                           data-toggle="dropdown"
-                           aria-haspopup="true"
-                           aria-expanded="false"
-                           href="#"
-                        >
-                            {% if unread_count %}
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 8 42"
-                                     width="8px"
-                                     height="42px">
-                                    <circle cx="4"
-                                            cy="4"
-                                            r="4"
-                                            fill="#ff6b6b"
-                                            fill-opacity="1.0"
-                                    ></circle>
-                                </svg>
-                            {% endif %}
-                            <img src="{% translate_avatar_ssl user.socialaccount_set.all.0.get_avatar_url %}"
-                                 style="max-height: 40px; border-radius: 20%"
-                                 alt="头像"
-                            >
-                        </a>
-                    {% elif userinfo.avatar %}
-                        {% if 'static' in userinfo.avatar.url %}
-                            <a class="nav-link dropdown-toggle"
-                               id="navbarDropdownMenuLink"
-                               role="button"
-                               data-toggle="dropdown"
-                               aria-haspopup="true"
-                               aria-expanded="false"
-                               href="#"
-                            >
-                                {% if unread_count %}
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         viewBox="0 0 8 42"
-                                         width="8px"
-                                         height="42px">
-                                        <circle cx="4"
-                                                cy="4"
-                                                r="4"
-                                                fill="#ff6b6b"
-                                                fill-opacity="1.0"
-                                        ></circle>
-                                    </svg>
-                                {% endif %}
-                                <img src="{{ userinfo.avatar }}"
-                                     alt="avatar"
-                                     style="max-height: 40px; border-radius: 20%"
-                                >
-                            </a>
-                        {% else %}
-                            <a class="nav-link dropdown-toggle"
-                               id="navbarDropdownMenuLink"
-                               role="button"
-                               data-toggle="dropdown"
-                               aria-haspopup="true"
-                               aria-expanded="false"
-                               href="#"
-                               style="color: gray;"
-                            >
-                                {% if unread_count %}
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         viewBox="0 0 8 42"
-                                         width="8px"
-                                         height="42px">
-                                        <circle cx="4"
-                                                cy="4"
-                                                r="4"
-                                                fill="#ff6b6b"
-                                                fill-opacity="1.0"
-                                        ></circle>
-                                    </svg>
-                                {% endif %}
-                                <img src="{{ userinfo.avatar.url }}"
-                                     alt="avatar"
-                                     style="max-height: 40px; border-radius: 20%"
-                                >
-                            </a>
-                        {% endif %}
-                    {% else %}
-                        <a class="nav-link dropdown-toggle"
-                           id="navbarDropdownMenuLink"
-                           role="button"
-                           data-toggle="dropdown"
-                           aria-haspopup="true"
-                           aria-expanded="false"
-                           href="#"
-                           style="color: gray;"
-                        >
-                            {% if unread_count %}
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 8 42"
-                                     width="8px"
-                                     height="42px">
-                                    <circle cx="4"
-                                            cy="4"
-                                            r="4"
-                                            fill="#ff6b6b"
-                                            fill-opacity="1.0"
-                                    ></circle>
-                                </svg>
-                            {% endif %}
-                            {{ user.username }}
-                        </a>
+            <li class="nav-item dropdown" style="float: right;">
+                {% if user.socialaccount_set.all.0.get_avatar_url %}
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" href="#">
+                    {% if unread_count %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
+                        <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
+                    </svg>
                     {% endif %}
+                    <img src="{% translate_avatar_ssl user.socialaccount_set.all.0.get_avatar_url %}"
+                        style="max-height: 40px; border-radius: 20%" alt="{{ user.username }}">
+                </a>
+                {% elif userinfo.avatar %}
+                {% if 'static' in userinfo.avatar.url %}
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" href="#">
+                    {% if unread_count %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
+                        <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
+                    </svg>
+                    {% endif %}
+                    <img src="{{ userinfo.avatar }}" alt="avatar" style="max-height: 40px; border-radius: 20%">
+                </a>
+                {% else %}
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" href="#" style="color: gray;">
+                    {% if unread_count %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
+                        <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
+                    </svg>
+                    {% endif %}
+                    <img src="{{ userinfo.avatar.url }}" alt="{{ user.username }}"
+                        style="max-height: 40px; border-radius: 20%">
+                </a>
+                {% endif %}
+                {% else %}
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" href="#" style="color: gray;">
+                    {% if unread_count %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
+                        <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
+                    </svg>
+                    {% endif %}
+                    {{ user.username }}
+                </a>
+                {% endif %}
 
 
-                    <!-- 用户下拉条item -->
-                    <div class="dropdown-menu dropdown-menu-right"
-                         aria-labelledby="navbarDropdownMenuLink"
-                    >
-                        <a href="{% url 'my_notifications:notify_box' %}"
-                           class="dropdown-item"
-                        >
-                            通知
-                            {% if unread_count %}
-                                <span class="badge badge-danger">
-                                    {{ unread_count }}
-                                </span>
-                            {% endif %}
-                        </a>
-                        <a href="{% url 'userinfo:detail' %}"
-                           class="dropdown-item"
-                        >
-                            个人信息
-                        </a>
-                        {% if user.is_superuser %}
-                            <a href="{% url 'article:article_create' %}" class="dropdown-item"
-                            >
-                                写文章
-                            </a>
-                            <a href="/admin" class="dropdown-item"
-                            >
-                                后台
-                            </a>
-                            <a href="{% url 'imagesource:imagesource_list' %}"
-                               class="dropdown-item"
-                            >
-                                图库
-                            </a>
+                <!-- 用户下拉条item -->
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                    <a href="{% url 'my_notifications:notify_box' %}" class="dropdown-item">
+                        通知
+                        {% if unread_count %}
+                        <span class="badge badge-danger">
+                            {{ unread_count }}
+                        </span>
                         {% endif %}
-                        <a href="javascript:"
-                           class="dropdown-item"
-                           data-toggle="modal"
-                           data-target="#logout"
-                        >
-                            退出登录
-                        </a>
-                    </div>
-                </li>
+                    </a>
+                    <a href="{% url 'userinfo:detail' %}" class="dropdown-item">
+                        个人信息
+                    </a>
+                    {% if user.is_superuser %}
+                    <a href="{% url 'article:article_create' %}" class="dropdown-item">
+                        写文章
+                    </a>
+                    <a href="/admin" class="dropdown-item">
+                        后台
+                    </a>
+                    <a href="{% url 'imagesource:imagesource_list' %}" class="dropdown-item">
+                        图库
+                    </a>
+                    {% endif %}
+                    <a href="javascript:" class="dropdown-item" data-toggle="modal" data-target="#logout">
+                        退出登录
+                    </a>
+                </div>
+            </li>
 
             {% else %}
-                <li class="nav-item"
-                >
-                    <a href="{% url 'account_login' %}" class="nav-link">
-                        登录
-                    </a>
-                </li>
+            <li class="nav-item">
+                <a href="{% url 'account_login' %}" class="nav-link">
+                    登录
+                </a>
+            </li>
             {% endif %}
         </ul>
     </div>
