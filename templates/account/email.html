@@ -16,7 +16,7 @@
             {% if user.socialaccount_set.all.0.get_avatar_url %}
                 <!-- 第三方头像 -->
                 <img src="{% translate_avatar_ssl user.socialaccount_set.all.0.get_avatar_url %}"
-                     alt="avatar"
+                     alt=""
                      style="max-width: 20%; border-radius: 20%"
                 >
             {% else %}
@@ -24,17 +24,17 @@
                     <!-- 本地头像 -->
                     {% if 'static' in userinfo.avatar.url %}
                         <img src="{{ userinfo.avatar }}"
-                             alt="avatar"
+                             alt=""
                              style="max-width: 20%; border-radius: 20%">
                     {% else %}
                         <img src="{{ userinfo.avatar.url }}"
-                             alt="avatar"
+                             alt=""
                              style="max-width: 20%; border-radius: 20%">
                     {% endif %}
                 {% else %}
                     <!-- 无头像 -->
                     <img src="{% static 'default_avatar.jpg' %}"
-                         alt="avatar"
+                         alt=""
                          style="max-width: 20%; border-radius: 20%">
                 {% endif %}
             {% endif %}

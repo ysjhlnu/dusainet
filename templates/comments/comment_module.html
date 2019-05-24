@@ -7,8 +7,22 @@
 <link rel="stylesheet" href="{% static 'ckeditor/ckeditor/plugins/prism/css/prism.css' %}">
 
 <style>
-    .comment-hidden {
-        overflow: hidden;
+    #unfold_link {
+        background-image: -webkit-linear-gradient(top, #0055a5, rgb(253, 253, 253) 25%, rgb(26, 83, 189) 50%, rgb(253, 253, 253) 75%, #0055a5);
+        -webkit-background-clip: text;
+        color: transparent;
+        background-size: 100% 200%;
+        animation: flowlight 6s linear infinite;
+    }
+
+    @keyframes flowlight {
+        0% {
+            background-position: 0 0;
+        }
+
+        100% {
+            background-position: 0 -100%;
+        }
     }
 
     #gradient_layer {
@@ -20,6 +34,40 @@
         z-index: 100000;
     }
 
+    .comment-hidden {
+        overflow: hidden;
+    }
+
+    .font_gradient {
+        background-color: rgb(241, 241, 241);
+        font-weight: bold;
+        border-radius: 5px;
+        padding: 2px;
+        color: #f35626;
+        -webkit-animation: hue 30s infinite linear;
+    }
+
+    @-webkit-keyframes hue {
+        0% {
+            color: #a70000;
+        }
+
+        25% {
+            color: #288f00;
+        }
+
+        50% {
+            color: #0055a5;
+        }
+
+        75% {
+            color: #5900a1;
+        }
+
+        100% {
+            color: #a70000;
+        }
+    }
 </style>
 
 {#发表评论#}
@@ -116,10 +164,7 @@
 
             <div class="col-10 col-sm-11">
                 <div style="color: gray;">
-                    {% if user == node.user %}
-                    <i class="fas fa-user-tie" style="color: orange;"></i>
-                    {% endif %}
-                    {{ node.user }}
+                    <span {% if user == node.user %} class="font_gradient" {% endif %}>{{ node.user }}</span>
                     {% if node.user.is_superuser %}
                     <i style="color: #ff5500;">[博主]</i>
                     {% elif node.user.is_staff %}
@@ -127,7 +172,7 @@
                     {% endif %}
                     {% if node.reply_to %}
                     <i class="far fa-arrow-alt-circle-right" style="color: cornflowerblue;"></i>
-                    {{ node.reply_to }}
+                    <span {% if user == node.reply_to %} class="font_gradient" {% endif %}>{{ node.reply_to }}</span>
                     {% if node.reply_to.is_superuser %}
                     <i style="color: #ff5500;">[博主]</i>
                     {% elif node.reply_to.is_staff %}
@@ -150,13 +195,13 @@
                 {% endif %}
                 {% else %}
                 <div id="comment_body_div">
-                    <div class="comment-hidden" id="comment_body_{{ node.id }}" style="max-height: 600px;">
+                    <div class="comment-hidden" id="comment_body_{{ node.id }}" style="max-height: 500px;">
                         <p class="mt-3 mb-1">{{ node.body|safe }}</p>
                     </div>
                     <div class="text-center link_elem_{{ node.id }}" id="gradient_layer">
                         <a href="javascript:;" onclick="unfoldContent({{ node.id }})" id="unfold_link"
                             style="font-size: 1.1em; position: relative; top: 80px;">
-                            <i class="fas fa-angle-double-down"></i> 展开内容..
+                            展开内容..
                         </a>
                     </div>
 
@@ -244,11 +289,11 @@
         })
     };
 
-    // 展开根评论 height <= 600px 时
+    // 展开根评论 height <= 500px 时
     const unfoldContent = (node_id) => {
         const comment_body = $("#comment_body_" + node_id);
         const link_elem = $(".link_elem_" + node_id);
-        if (comment_body.height() <= 600) {
+        if (comment_body.height() <= 500) {
             comment_body.css('max-height', '');
             link_elem.hide();
         }
