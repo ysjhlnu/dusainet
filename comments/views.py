@@ -167,7 +167,6 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         on_post_content = request.POST.get('body')
         content_length = len(re.sub(r'&nbsp;', 'X', re.sub(
             r'(<[^>]+>)|(\s)', '', on_post_content)))
-        print(content_length)
         if content_length >= 3000:
             return True
         else:
