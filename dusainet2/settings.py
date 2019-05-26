@@ -1,21 +1,23 @@
 import os
 import pymysql
 import django_smtp_ssl
+import json
 
 pymysql.install_as_MySQLdb()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# SECURITY WARNING: keep the secret key used in production secret!
-with open('secret_key.txt') as f:
-    SECRET_KEY = f.read().strip()
+with open('env.json') as env:
+    ENV = json.load(env)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+SECRET_KEY = ENV['SECRET_KEY']
+
+if ENV.get('ENV') == 'dev':
+    DEBUG = True
+else:
+    DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost ', '.dusaiphoto.com', '.dusai.net']
-
-# Application definition
 
 INSTALLED_APPS = [
     # admin增强
@@ -108,9 +110,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dusainet2.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-# 开发数据库
 
 if DEBUG:
     DATABASES = {
@@ -120,8 +119,7 @@ if DEBUG:
         }
     }
 else:
-    with open('mysql_key.txt') as f:
-        MYSQL_PASSWORD = f.read().strip()
+    MYSQL_PASSWORD = ENV.get('MYSQL_KEY')
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -133,8 +131,6 @@ else:
         }
     }
 
-# Password validation
-# https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -151,8 +147,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -164,8 +158,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'nginx_static')
@@ -192,22 +184,15 @@ SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
 
 # Email setting
 EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
-# SMTP服务器，我使用的是sendclound的服务
 EMAIL_HOST = 'smtp.qq.com'
 EMAIL_HOST_USER = 'dusaiphoto@foxmail.com'
-with open('email_host_password.txt') as f:
-    EMAIL_HOST_PASSWORD = f.read().strip()
+EMAIL_HOST_PASSWORD = ENV.get('EMAIL_HOST_KEY')
 EMAIL_PORT = 465
 
-# 是否使用了SSL 或者TLS
-# EMAIL_USE_SSL = True
-EMAIL_USE_TLS = True
-# 默认发件人，不设置的话django默认使用的webmaster@localhost
-DEFAULT_FROM_EMAIL = '杜赛的个人网站 <dusaiphoto@foxmail.com>'
-# LOGIN_REDIRECT_URL = '/account/weibo_login_success/'
-LOGIN_REDIRECT_URL = '/'
 
-# django的评论库是一个站点，所以需要添加sites的应用并设置当前django工程的站点id=1
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = '杜赛的个人网站 <dusaiphoto@foxmail.com>'
+LOGIN_REDIRECT_URL = '/'
 SITE_ID = 1
 
 # haystack相关配置
@@ -220,6 +205,7 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 20
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
+
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -230,7 +216,6 @@ REST_FRAMEWORK = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
-
 # ckeditor
 CKEDITOR_CONFIGS = {
     # django-ckeditor默认使用配置

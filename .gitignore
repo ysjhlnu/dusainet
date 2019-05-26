@@ -5,6 +5,7 @@ bin/
 /secret_key.txt
 /mysql_key.txt
 whoosh_index/
+/env.json
 
 __pycache__/
 *.py[cod]
