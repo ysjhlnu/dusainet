@@ -1,6 +1,7 @@
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.http import JsonResponse, HttpResponse
 
 from .forms import PhotoForm
 from .models import UserInfo, get_default_avatar_url
@@ -8,6 +9,27 @@ from .forms import UserInfoForm
 
 from allauth.account.views import EmailView
 from braces.views import LoginRequiredMixin
+
+from django.contrib.auth.models import User
+
+
+def user_signup_validate(request):
+    data = request.POST
+    on_validate_type = data.get('type')
+
+    if on_validate_type == 'username':
+        if User.objects.filter(username=data.get('username')).exists():
+            return HttpResponse('403')
+
+    elif on_validate_type == 'email':
+        if User.objects.filter(email=data.get('email')).exists():
+            return HttpResponse('403')
+
+    else:
+        if User.objects.filter(username=data.get('username')).exists() and User.objects.filter(email=data.get('email')).exists():
+            return HttpResponse('403')
+
+    return HttpResponse('200')
 
 
 class UserInfoView(LoginRequiredMixin, EmailView):
@@ -40,6 +62,7 @@ class UserInfoView(LoginRequiredMixin, EmailView):
             'userinfo_form': userinfo_form,
         }
         context.update(data)
+
         return context
 
 
