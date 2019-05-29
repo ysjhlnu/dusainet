@@ -1,5 +1,6 @@
 .vscode/
 .idea/
+.idea
 bin/
 /email_host_password.txt
 /secret_key.txt

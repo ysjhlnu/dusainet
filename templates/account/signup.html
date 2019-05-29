@@ -1,87 +1,4 @@
-{% extends "base.html" %}
-
-{% load i18n %}
-{% load staticfiles %}
-{% block title %}注册账号 - 杜赛的个人网站{% endblock %}
-
-{% block content %}
-
-<style>
-    /*Author: rozbo*/
-    .breath-input {
-        -webkit-animation: glow-signup 800ms ease-out infinite alternate;
-        -moz-animation: glow-signup 800ms ease-out infinite alternate;
-        -o-animation: glow-signup 800ms ease-out infinite alternate;
-        -ms-animation: glow-signup 800ms ease-out infinite alternate;
-        animation: glow-signup 800ms ease-out infinite alternate;
-        border-color: rgb(153, 51, 51);
-        box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
-        outline: none;
-    }
-
-    /*动画帧*/
-    @-webkit-keyframes glow-signup {
-        0% {
-            border-color: rgb(153, 51, 51);
-            box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
-        }
-
-        100% {
-            border-color: rgb(255, 102, 102);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-        }
-    }
-
-    @-moz-keyframes glow-signup {
-        0% {
-            border-color: rgb(153, 51, 51);
-            box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
-        }
-
-        100% {
-            border-color: rgb(255, 102, 102);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-        }
-    }
-
-    @-o-keyframes glow-signup {
-        0% {
-            border-color: rgb(153, 51, 51);
-            box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
-        }
-
-        100% {
-            border-color: rgb(255, 102, 102);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-        }
-    }
-
-    @-ms-keyframes glow-signup {
-        0% {
-            border-color: rgb(153, 51, 51);
-            box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
-        }
-
-        100% {
-            border-color: rgb(255, 102, 102);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-        }
-    }
-
-    @keyframes glow-signup {
-        0% {
-            border-color: rgb(153, 51, 51);
-            box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
-        }
-
-        100% {
-            border-color: rgb(255, 102, 102);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-        }
-    }
-</style>
-
-
+{% extends "base.html" %} {% load i18n %} {% load staticfiles %} {% block title %}注册账号 - 杜赛的个人网站{% endblock %} {% block content %}
 
 <link rel="stylesheet" href="{% static 'mystyle.css' %}">
 <br>
@@ -96,8 +13,7 @@
             <div class="form-group">
                 <label for="id_username">用户名：</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="username" placeholder="请输入用户名" autofocus="autofocus" minlength="1"
-                        maxlength="150" required id="id_username" class="form-control" />
+                    <input type="text" name="username" placeholder="请输入用户名" autofocus="autofocus" minlength="1" maxlength="150" required id="id_username" class="form-control" />
                 </div>
             </div>
             <div class="form-group">
@@ -106,14 +22,12 @@
             </div>
             <div class="form-group">
                 <label for="id_password1" class="layui-form-label">密码：</label>
-                <input type="password" name="password1" placeholder="8位或以上字母/数字组合" required id="id_password1"
-                    class="form-control" />
+                <input type="password" name="password1" placeholder="8位或以上字母/数字组合" required id="id_password1" class="form-control" />
             </div>
             <div class="form-group">
                 <label for="id_password2" class="layui-form-label">重输密码：</label>
 
-                <input type="password" name="password2" placeholder="再次输入密码" required id="id_password2"
-                    class="form-control" />
+                <input type="password" name="password2" placeholder="再次输入密码" required id="id_password2" class="form-control" />
             </div>
             <button type="submit" class="btn btn-primary" id="submit_signup" hidden>确认 &raquo;</button>
             <button type="button" class="btn btn-primary" id="on_submit_signup">确认 &raquo;</button>
@@ -125,10 +39,7 @@
 
 </div>
 
-{% endblock %}
-
-
-{% block script %}
+{% endblock %} {% block script %}
 <script src="{% static 'csrf.js' %}"></script>
 <script>
     $(() => {
@@ -142,24 +53,26 @@
             username_validate(data);
         });
 
-        const username_validate = async (data) => {
+        const username_validate = async(data) => {
             if (!data.username) {
                 username_input.addClass('breath-input');
                 var username_tips = layer.tips('请填写用户名', username_input, {
                     time: 4000,
                     area: ['auto', 'auto'],
-                    tips: [2, 'indianred']
+                    tips: [2, 'indianred'],
+                    tipsMore: true
                 });
                 return false;
             }
             let res = await $.post("{% url 'userinfo:user_signup_validate' %}", data,
-                function (data, status) {
+                function(data, status) {
                     if (data === '403') {
                         username_input.addClass('breath-input');
-                        var username_tips = layer.tips('已被注册', username_input, {
+                        var username_tips = layer.tips('用户名已被注册', username_input, {
                             time: 4000,
                             area: ['auto', 'auto'],
-                            tips: [2, 'indianred']
+                            tips: [2, 'indianred'],
+                            tipsMore: true
                         });
                     } else {
                         username_input.removeClass('breath-input');
@@ -183,32 +96,37 @@
             email_validate(data);
         });
 
-        const email_validate = (data) => {
+        const email_validate = async(data) => {
             if (!data.email) {
                 email_input.addClass('breath-input');
                 var email_tips = layer.tips('请填写邮箱哟', email_input, {
                     time: 4000,
                     area: ['auto', 'auto'],
-                    tips: [2, 'indianred']
+                    tips: [2, 'indianred'],
+                    tipsMore: true
                 });
                 return false;
             }
-            $.post("{% url 'userinfo:user_signup_validate' %}", data,
-                function (data, status) {
+            let res = await $.post("{% url 'userinfo:user_signup_validate' %}", data,
+                function(data, status) {
                     if (data === '403') {
                         email_input.addClass('breath-input');
-                        var email_tips = layer.tips('已被注册', email_input, {
+                        var email_tips = layer.tips('此邮箱已被注册', email_input, {
                             time: 4000,
                             area: ['auto', 'auto'],
-                            tips: [2, 'indianred']
+                            tips: [2, 'indianred'],
+                            tipsMore: true
                         });
-                        return false;
                     } else {
                         email_input.removeClass('breath-input');
-                        return true;
                     }
                 },
             );
+            if (res === '200') {
+                return true;
+            } else {
+                return false;
+            };
         }
 
         // password1 验证
@@ -226,7 +144,8 @@
                 var password1_tips = layer.tips('请输入8位或以上字母/数字组合', password1_input, {
                     time: 4000,
                     area: ['auto', 'auto'],
-                    tips: [2, 'indianred']
+                    tips: [2, 'indianred'],
+                    tipsMore: true
                 });
                 return false;
             } else {
@@ -248,7 +167,8 @@
                 var password2_tips = layer.tips('两次输入密码不一致', password2_input, {
                     time: 4000,
                     area: ['auto', 'auto'],
-                    tips: [2, 'indianred']
+                    tips: [2, 'indianred'],
+                    tipsMore: true
                 });
                 return false;
             } else {
@@ -258,7 +178,7 @@
         };
 
         // 提交验证
-        $('#on_submit_signup').on('click', async function (event) {
+        $('#on_submit_signup').on('click', async function(event) {
             const params = $("#signup_form").serializeArray();
             let data = {};
             for (let x in params) {
@@ -268,13 +188,18 @@
 
             let is_password2_pass = password2_validate(data.password2);
             let is_password1_pass = password1_validate(data.password1);
-            let is_email_pass = email_validate({ 'type': 'email', 'email': data.email });
-            let is_username_pass = await username_validate({ 'type': 'username', 'username': data.username });
+            let is_email_pass = await email_validate({
+                'type': 'email',
+                'email': data.email
+            });
+            let is_username_pass = await username_validate({
+                'type': 'username',
+                'username': data.username
+            });
 
             if (is_password1_pass && is_password2_pass && is_username_pass && is_email_pass) {
                 $('#submit_signup').click();
             }
-            console.log(is_password1_pass, is_password2_pass, is_username_pass, is_email_pass)
         });
     });
 </script>

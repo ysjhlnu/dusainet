@@ -11,18 +11,20 @@ from allauth.account.views import EmailView
 from braces.views import LoginRequiredMixin
 
 from django.contrib.auth.models import User
+from allauth.account.models import EmailAddress
 
 
 def user_signup_validate(request):
     data = request.POST
     on_validate_type = data.get('type')
+    # print(EmailAddress.objects.all())
 
     if on_validate_type == 'username':
-        if User.objects.filter(username=data.get('username')).exists():
+        if User.objects.filter(username__iexact=data.get('username')).exists():
             return HttpResponse('403')
 
     elif on_validate_type == 'email':
-        if User.objects.filter(email=data.get('email')).exists():
+        if EmailAddress.objects.filter(email__iexact=data.get('email')).exists():
             return HttpResponse('403')
 
     else:

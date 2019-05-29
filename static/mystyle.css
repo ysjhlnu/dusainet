@@ -1,14 +1,16 @@
 /*固定底部导航栏*/
+
+
 /*https://css-tricks.com/couple-takes-sticky-footer/?utm_source=caibaojian.com*/
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
 }
 
 #wrapper {
     min-height: 100%;
-
     /* Equal to height of footer */
     /* But also accounting for potential margin-bottom of last child */
     margin-bottom: -120px;
@@ -17,4 +19,145 @@ html, body {
 #nav-footer,
 #push {
     height: 120px;
+}
+
+
+/*Author: rozbo*/
+
+.breath-box input:focus {
+    -webkit-animation: glow 800ms ease-out infinite alternate;
+    -moz-animation: glow 800ms ease-out infinite alternate;
+    -o-animation: glow 800ms ease-out infinite alternate;
+    -ms-animation: glow 800ms ease-out infinite alternate;
+    animation: glow 800ms ease-out infinite alternate;
+    border-color: #393;
+    box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    outline: none;
+}
+
+
+/*动画帧*/
+
+@-webkit-keyframes glow {
+    0% {
+        border-color: #393;
+        box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #6f6;
+        box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+    }
+}
+
+@-moz-keyframes glow {
+    0% {
+        border-color: #393;
+        box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #6f6;
+        box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+    }
+}
+
+@-o-keyframes glow {
+    0% {
+        border-color: #393;
+        box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #6f6;
+        box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+    }
+}
+
+@-ms-keyframes glow {
+    0% {
+        border-color: #393;
+        box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #6f6;
+        box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+    }
+}
+
+@keyframes glow {
+    0% {
+        border-color: #393;
+        box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #6f6;
+        box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+    }
+}
+
+.breath-input {
+    -webkit-animation: glow-red 800ms ease-out infinite alternate;
+    -moz-animation: glow-red 800ms ease-out infinite alternate;
+    -o-animation: glow-red 800ms ease-out infinite alternate;
+    -ms-animation: glow-red 800ms ease-out infinite alternate;
+    animation: glow-red 800ms ease-out infinite alternate;
+    border-color: rgb(153, 51, 51);
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+    outline: none;
+}
+
+
+/*动画帧*/
+
+@-webkit-keyframes glow-red {
+    0% {
+        border-color: rgb(153, 51, 51);
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+    }
+    100% {
+        border-color: rgb(255, 102, 102);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+    }
+}
+
+@-moz-keyframes glow-red {
+    0% {
+        border-color: rgb(153, 51, 51);
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+    }
+    100% {
+        border-color: rgb(255, 102, 102);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+    }
+}
+
+@-o-keyframes glow-red {
+    0% {
+        border-color: rgb(153, 51, 51);
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+    }
+    100% {
+        border-color: rgb(255, 102, 102);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+    }
+}
+
+@-ms-keyframes glow-red {
+    0% {
+        border-color: rgb(153, 51, 51);
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+    }
+    100% {
+        border-color: rgb(255, 102, 102);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+    }
+}
+
+@keyframes glow-red {
+    0% {
+        border-color: rgb(153, 51, 51);
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+    }
+    100% {
+        border-color: rgb(255, 102, 102);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+    }
 }
