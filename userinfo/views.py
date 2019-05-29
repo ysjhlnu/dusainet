@@ -2,6 +2,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.http import JsonResponse, HttpResponse
+from django.contrib.auth.hashers import check_password
 
 from .forms import PhotoForm
 from .models import UserInfo, get_default_avatar_url
@@ -15,20 +16,37 @@ from allauth.account.models import EmailAddress
 
 
 def user_signup_validate(request):
+    """登录/注册验证"""
     data = request.POST
     on_validate_type = data.get('type')
-    # print(EmailAddress.objects.all())
 
+    # signup
     if on_validate_type == 'username':
         if User.objects.filter(username__iexact=data.get('username')).exists():
             return HttpResponse('403')
-
     elif on_validate_type == 'email':
         if EmailAddress.objects.filter(email__iexact=data.get('email')).exists():
             return HttpResponse('403')
 
-    else:
-        if User.objects.filter(username=data.get('username')).exists() and User.objects.filter(email=data.get('email')).exists():
+    # login
+    elif on_validate_type == 'login':
+        password = data.get('password')
+
+        if User.objects.filter(username__iexact=data.get('login')).exists():
+            user = User.objects.get(username__iexact=data.get('login'))
+            if check_password(password, user.password):
+                return HttpResponse('200')
+            else:
+                return HttpResponse('403')
+
+        elif EmailAddress.objects.filter(email__iexact=data.get('login')).exists():
+            user = EmailAddress.objects.get(email__iexact=data.get('login')).user
+            if check_password(password, user.password):
+                return HttpResponse('200')
+            else:
+                return HttpResponse('403')
+
+        else:
             return HttpResponse('403')
 
     return HttpResponse('200')

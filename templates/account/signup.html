@@ -178,7 +178,15 @@
         };
 
         // 提交验证
-        $('#on_submit_signup').on('click', async function(event) {
+        const on_submit_signup = $('#on_submit_signup');
+        on_submit_signup.on('click', async function(event) {
+
+            on_submit_signup.attr('disabled', 'disabled').empty().append('确认中.. ').append(
+                '<span class="spinner-border spinner-border-sm text-light" role="status">\n' +
+                '  <span class="sr-only">Loading...</span>\n' +
+                '</span>'
+            );
+
             const params = $("#signup_form").serializeArray();
             let data = {};
             for (let x in params) {
@@ -199,6 +207,8 @@
 
             if (is_password1_pass && is_password2_pass && is_username_pass && is_email_pass) {
                 $('#submit_signup').click();
+            } else {
+                on_submit_signup.removeAttr('disabled').empty().append('确认 &raquo;');
             }
         });
     });
