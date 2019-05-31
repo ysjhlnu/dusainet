@@ -28,7 +28,8 @@
         <button class="btn btn-primary" onclick="submit_comment('{% url 'comments:count_validate' %}')"
             id="on_submit"><i class="fas fa-paper-plane"></i> 发布
         </button>
-        <span id="comment_char_count" class="text-muted ml-2"></span> {% include 'utils/comment_submit.html' %}
+        <span id="comment_char_count" class="text-muted ml-2"></span>
+        {% include 'utils/comment_submit.html' %}
     </div>
 </div>
 
@@ -73,20 +74,24 @@
                     <!-- 第三方头像 -->
                     <img src="{% translate_avatar_ssl node.user.socialaccount_set.all.0.get_avatar_url %}" alt="avatar"
                         {% if node.reply_to %} style="width: 70%; border-radius: 20%" {% else %}
-                        style="width: 80%; border-radius: 20%" {% endif %}> {% elif
-                    userinfo.avatar %}
+                        style="width: 80%; border-radius: 20%" {% endif %}>
+                    {% elif userinfo.avatar %}
                     <!-- 本地头像 -->
                     {% if 'static' in userinfo.avatar.url %}
                     <img src="{{ userinfo.avatar }}" alt="avatar" {% if node.reply_to %}
                         style="width: 70%; border-radius: 20%" {% else %} style="width: 80%; border-radius: 20%"
-                        {% endif %}> {% else %}
+                        {% endif %}>
+                    {% else %}
                     <img src="{{ userinfo.avatar.url }}" alt="avatar" {% if node.reply_to %}
                         style="width: 70%; border-radius: 20%" {% else %} style="width: 80%; border-radius: 20%"
-                        {% endif %}> {% endif %} {% else %}
+                        {% endif %}>
+                    {% endif %}
+                    {% else %}
                     <!-- 无头像 -->
                     <img src="{% static 'default_avatar.jpg' %}" alt="avatar" {% if node.reply_to %}
                         style="width: 70%; border-radius: 20%" {% else %} style="width: 80%; border-radius: 20%"
-                        {% endif %}> {% endif %}
+                        {% endif %}>
+                    {% endif %}
                 </div>
             </div>
 
@@ -94,17 +99,24 @@
                 <div style="color: gray;">
                     <span {% if user == node.user %} class="font_gradient" {% endif %}>{{ node.user }}</span>
                     {% if node.user.is_superuser %}
-                    <i style="color: #ff5500;">[博主]</i> {% elif node.user.is_staff %}
-                    <i style="color: #5897fb;">[管理员]</i> {% endif %} {% if node.reply_to %}
+                    <i style="color: #ff5500;">[博主]</i>
+                    {% elif node.user.is_staff %}
+                    <i style="color: #5897fb;">[管理员]</i>
+                    {% endif %}
+                    {% if node.reply_to %}
                     <i class="far fa-arrow-alt-circle-right" style="color: cornflowerblue;"></i>
                     <span {% if user == node.reply_to %} class="font_gradient" {% endif %}>{{ node.reply_to }}</span>
                     {% if node.reply_to.is_superuser %}
-                    <i style="color: #ff5500;">[博主]</i> {% elif node.reply_to.is_staff %}
-                    <i style="color: #5897fb;">[管理员]</i> {% endif %} {% endif %}
+                    <i style="color: #ff5500;">[博主]</i>
+                    {% elif node.reply_to.is_staff %}
+                    <i style="color: #5897fb;">[管理员]</i>
+                    {% endif %}
+                    {% endif %}
                 </div>
 
                 <!-- 正文 -->
-                {% if node.is_deleted %} {% if node.is_deleted_by_staff %}
+                {% if node.is_deleted %}
+                {% if node.is_deleted_by_staff %}
                 <div style="text-align: center;" class="alert alert-danger">
                     本回复已被 [博主] 删除
                 </div>
@@ -137,7 +149,8 @@
                         </a>
 
                         <!-- 删除/编辑 -->
-                        {% if node.user == user or user.is_staff %} {% if not node.is_deleted %}
+                        {% if node.user == user or user.is_staff %}
+                        {% if not node.is_deleted %}
                         <a href="{% url 'comments:edit' node.id %}?article_type={{ article_type }}"
                             style="color: lightskyblue;">
                             编辑
@@ -146,7 +159,9 @@
                             <a href="javascript:" title="删除" onclick="confirm_delete({{ node.id }});">
                                 <i class="far fa-trash-alt" style="color: darkred;"></i>
                             </a>
-                        </span> {% endif %} {% endif %}
+                        </span>
+                        {% endif %}
+                        {% endif %}
                     </p>
                 </div>
 
