@@ -22,6 +22,164 @@ body {
 }
 
 
+#unfold_link {
+    background-image: -webkit-linear-gradient(top, #0055a5, rgb(253, 253, 253) 25%, rgb(26, 83, 189) 50%, rgb(253, 253, 253) 75%, #0055a5);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -o-background-clip: text;
+    -ms-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 100% 200%;
+    animation: flowlight 6s linear infinite;
+}
+
+@keyframes flowlight {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 0 -100%;
+    }
+}
+
+#gradient_layer {
+    height: 60px;
+    position: relative;
+    top: -60px;
+    color: cornflowerblue;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgb(255, 255, 255));
+    z-index: 100000;
+}
+
+.comment-hidden {
+    overflow: hidden;
+}
+
+.font_gradient {
+    background-color: rgb(241, 241, 241);
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 2px;
+    color: #f35626;
+    -webkit-animation: hue 30s infinite linear;
+    -moz-animation: hue 30s infinite linear;
+    -ms-animation: hue 30s infinite linear;
+    -o-animation: hue 30s infinite linear;
+    animation: hue 30s infinite linear;
+}
+
+@-webkit-keyframes hue {
+    0% {
+        color: #a70000;
+    }
+
+    25% {
+        color: #288f00;
+    }
+
+    50% {
+        color: #0055a5;
+    }
+
+    75% {
+        color: #5900a1;
+    }
+
+    100% {
+        color: #a70000;
+    }
+}
+
+@-moz-keyframes hue {
+    0% {
+        color: #a70000;
+    }
+
+    25% {
+        color: #288f00;
+    }
+
+    50% {
+        color: #0055a5;
+    }
+
+    75% {
+        color: #5900a1;
+    }
+
+    100% {
+        color: #a70000;
+    }
+}
+
+@-ms-keyframes hue {
+    0% {
+        color: #a70000;
+    }
+
+    25% {
+        color: #288f00;
+    }
+
+    50% {
+        color: #0055a5;
+    }
+
+    75% {
+        color: #5900a1;
+    }
+
+    100% {
+        color: #a70000;
+    }
+}
+
+@-o-keyframes hue {
+    0% {
+        color: #a70000;
+    }
+
+    25% {
+        color: #288f00;
+    }
+
+    50% {
+        color: #0055a5;
+    }
+
+    75% {
+        color: #5900a1;
+    }
+
+    100% {
+        color: #a70000;
+    }
+}
+
+@keyframes hue {
+    0% {
+        color: #a70000;
+    }
+
+    25% {
+        color: #288f00;
+    }
+
+    50% {
+        color: #0055a5;
+    }
+
+    75% {
+        color: #5900a1;
+    }
+
+    100% {
+        color: #a70000;
+    }
+}
+
 /*Author: rozbo*/
 
 .breath-box input:focus {

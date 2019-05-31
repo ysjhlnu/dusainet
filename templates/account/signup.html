@@ -1,6 +1,9 @@
-{% extends "base.html" %} {% load i18n %} {% load staticfiles %} {% block title %}注册账号 - 杜赛的个人网站{% endblock %} {% block content %}
+{% extends "base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% block title %}注册账号 - 杜赛的个人网站{% endblock %}
+{% block content %}
 
-<link rel="stylesheet" href="{% static 'mystyle.css' %}">
 <br>
 <br>
 <div class="container">
@@ -13,7 +16,8 @@
             <div class="form-group">
                 <label for="id_username">用户名：</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="username" placeholder="请输入用户名" autofocus="autofocus" minlength="1" maxlength="150" required id="id_username" class="form-control" />
+                    <input type="text" name="username" placeholder="请输入用户名" autofocus="autofocus" minlength="1"
+                        maxlength="150" required id="id_username" class="form-control" />
                 </div>
             </div>
             <div class="form-group">
@@ -22,12 +26,14 @@
             </div>
             <div class="form-group">
                 <label for="id_password1" class="layui-form-label">密码：</label>
-                <input type="password" name="password1" placeholder="8位或以上字母/数字组合" required id="id_password1" class="form-control" />
+                <input type="password" name="password1" placeholder="8位或以上字母/数字组合" required id="id_password1"
+                    class="form-control" />
             </div>
             <div class="form-group">
                 <label for="id_password2" class="layui-form-label">重输密码：</label>
 
-                <input type="password" name="password2" placeholder="再次输入密码" required id="id_password2" class="form-control" />
+                <input type="password" name="password2" placeholder="再次输入密码" required id="id_password2"
+                    class="form-control" />
             </div>
             <button type="submit" class="btn btn-primary" id="submit_signup" hidden>确认 &raquo;</button>
             <button type="button" class="btn btn-primary" id="on_submit_signup">确认 &raquo;</button>
@@ -44,6 +50,7 @@
 <script>
     $(() => {
         // username 验证
+        const on_submit_signup = $('#on_submit_signup');
         const username_input = $('#id_username');
         username_input.on('change', (event) => {
             let data = {
@@ -53,7 +60,7 @@
             username_validate(data);
         });
 
-        const username_validate = async(data) => {
+        const username_validate = async (data) => {
             if (!data.username) {
                 username_input.addClass('breath-input');
                 var username_tips = layer.tips('请填写用户名', username_input, {
@@ -65,7 +72,7 @@
                 return false;
             }
             let res = await $.post("{% url 'userinfo:user_signup_validate' %}", data,
-                function(data, status) {
+                function (data, status) {
                     if (data === '403') {
                         username_input.addClass('breath-input');
                         var username_tips = layer.tips('用户名已被注册', username_input, {
@@ -78,7 +85,11 @@
                         username_input.removeClass('breath-input');
                     }
                 },
-            );
+            ).fail((response) => {
+                on_submit_signup.removeAttr('disabled').empty().append('确认 &raquo;');
+                layer.msg('与服务器通讯失败..<br/>重试一下呗o(╥﹏╥)o')
+            });
+
             if (res === '200') {
                 return true;
             } else {
@@ -96,7 +107,7 @@
             email_validate(data);
         });
 
-        const email_validate = async(data) => {
+        const email_validate = async (data) => {
             if (!data.email) {
                 email_input.addClass('breath-input');
                 var email_tips = layer.tips('请填写邮箱哟', email_input, {
@@ -108,7 +119,7 @@
                 return false;
             }
             let res = await $.post("{% url 'userinfo:user_signup_validate' %}", data,
-                function(data, status) {
+                function (data, status) {
                     if (data === '403') {
                         email_input.addClass('breath-input');
                         var email_tips = layer.tips('此邮箱已被注册', email_input, {
@@ -121,7 +132,11 @@
                         email_input.removeClass('breath-input');
                     }
                 },
-            );
+            ).fail((response) => {
+                on_submit_signup.removeAttr('disabled').empty().append('确认 &raquo;');
+                layer.msg('与服务器通讯失败..<br/>重试一下呗o(╥﹏╥)o')
+            });
+
             if (res === '200') {
                 return true;
             } else {
@@ -178,8 +193,7 @@
         };
 
         // 提交验证
-        const on_submit_signup = $('#on_submit_signup');
-        on_submit_signup.on('click', async function(event) {
+        on_submit_signup.on('click', async function (event) {
 
             on_submit_signup.attr('disabled', 'disabled').empty().append('确认中.. ').append(
                 '<span class="spinner-border spinner-border-sm text-light" role="status">\n' +
@@ -192,7 +206,6 @@
             for (let x in params) {
                 data[params[x].name] = params[x].value;
             }
-            // const data = JSON.stringify(values)
 
             let is_password2_pass = password2_validate(data.password2);
             let is_password1_pass = password1_validate(data.password1);
