@@ -234,11 +234,9 @@
 
     // 展开根评论及子评论
     const onUnfoldContent = (self, node_id) => {
-        console.log($(self));
         if ($(self).attr('aria-expanded') === 'false') {
             unfoldContent(node_id);
         };
-        console.log($(self).attr('aria-expanded'))
     };
 
     $(() => {
