@@ -104,7 +104,10 @@ def article_detail(request, article_id):
     :param article_id: 文章的id
     """
     article = ArticlesPost.objects.get(id=article_id)
-    # article.increase_views()
+    try:
+        article.increase_views()
+    except Exception as e:
+        print(e)
 
     md = markdown.Markdown(
         extensions=[
