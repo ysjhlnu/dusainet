@@ -107,7 +107,8 @@ def article_detail(request, article_id):
     try:
         article.increase_views()
     except BaseException as e:
-        print('article_detail_views_error: ' + e)
+        print('article_detail_views_error')
+        print(e)
 
     md = markdown.Markdown(
         extensions=[

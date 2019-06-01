@@ -119,7 +119,8 @@ class ArticlesPost(models.Model):
 
             super(ArticlesPost, self).save(*args, **kwargs)
         except BaseException as e:
-            print('ArticlesPostSaveError: ' + e)
+            print('ArticlesPostSaveError')
+            print(e)
 
     # 获取文章地址
     def get_absolute_url(self):
@@ -135,4 +136,5 @@ class ArticlesPost(models.Model):
             self.total_views += 1
             self.save(update_fields=['total_views'])
         except BaseException as e:
-            print('ArticlesPostModelIncreseViewsError: ' + e)
+            print('ArticlesPostModelIncreseViewsError')
+            print(e)
