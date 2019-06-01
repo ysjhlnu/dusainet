@@ -130,7 +130,8 @@ class ArticlesPost(models.Model):
     def increase_views(self):
         try:
             self.total_views += 1
-            self.save(update_fields=['total_views'])
+            # self.save(update_fields=['total_views'])
+            self.save()
         except BaseException as e:
             print('ArticlesPostModelIncreseViewsError')
             print(e)
