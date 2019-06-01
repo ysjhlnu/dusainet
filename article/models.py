@@ -112,11 +112,15 @@ class ArticlesPost(models.Model):
         try:
             if not self.course_title:
                 self.course_title = self.title
+        except BaseException as e:
+            print('SaveCourseTitleError')
+            print(e)
 
             # 跳过更新日期
             # if not kwargs.pop('skip_updated', False):
             #     self.updated = timezone.now()
 
+        try:
             super(ArticlesPost, self).save(*args, **kwargs)
         except BaseException as e:
             print('ArticlesPostSaveError')
