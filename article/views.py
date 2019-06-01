@@ -104,7 +104,7 @@ def article_detail(request, article_id):
     :param article_id: 文章的id
     """
     article = ArticlesPost.objects.get(id=article_id)
-    article.increase_views()
+    # article.increase_views()
 
     md = markdown.Markdown(
         extensions=[
