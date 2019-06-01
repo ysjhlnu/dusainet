@@ -115,8 +115,7 @@ class ArticlesPost(models.Model):
             # 跳过更新日期
             # if not kwargs.pop('skip_updated', False):
             #     self.updated = timezone.now()
-
-        super(ArticlesPost, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     # 获取文章地址
 
