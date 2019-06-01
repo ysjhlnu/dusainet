@@ -109,24 +109,17 @@ class ArticlesPost(models.Model):
         """
         重写save(), 自动填写教程序号
         """
-        try:
-            if not self.course_title:
-                self.course_title = self.title
-        except BaseException as e:
-            print('SaveCourseTitleError')
-            print(e)
+        if not self.course_title:
+            self.course_title = self.title
 
             # 跳过更新日期
             # if not kwargs.pop('skip_updated', False):
             #     self.updated = timezone.now()
 
-        try:
-            super(ArticlesPost, self).save(*args, **kwargs)
-        except BaseException as e:
-            print('ArticlesPostSaveError')
-            print(e)
+        super(ArticlesPost, self).save(*args, **kwargs)
 
     # 获取文章地址
+
     def get_absolute_url(self):
         return reverse('article:article_detail', args=[self.id])
 
