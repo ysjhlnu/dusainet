@@ -105,11 +105,11 @@ def article_detail(request, article_id):
     """
     article = ArticlesPost.objects.get(id=article_id)
 
-    try:
-        article.increase_views()
-    except BaseException as e:
-        print('article_detail_views_error')
-        print(e)
+    # try:
+    #     article.increase_views()
+    # except BaseException as e:
+    #     print('article_detail_views_error')
+    #     print(e)
 
     md = markdown.Markdown(
         extensions=[

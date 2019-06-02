@@ -12,3 +12,11 @@ class SiteMessage(models.Model):
 
     def __str__(self):
         return self.content[:20]
+
+    def save(self, *args, **kwargs):
+        try:
+            super().save(*args, **kwargs)
+            print('success')
+        except BaseException as e:
+            print('SiteMessage_error')
+            print(e)

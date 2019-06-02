@@ -129,8 +129,8 @@ class ArticlesPost(models.Model):
     # 统计浏览量
     def increase_views(self):
         try:
-            # self.total_views += 1
-            self.save(update_fields=['course_sequence'])
+            self.total_views += 1
+            self.save(update_fields=['total_views'])
             # self.save()
         except BaseException as e:
             print('ArticlesPostModelIncreseViewsError2')
