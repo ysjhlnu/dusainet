@@ -11,6 +11,9 @@ from taggit.managers import TaggableManager
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
 
+import traceback
+
+
 
 # Create your models here.
 
@@ -133,5 +136,5 @@ class ArticlesPost(models.Model):
             self.save(update_fields=['total_views'])
             # self.save()
         except BaseException as e:
-            print('ArticlesPostModelIncreseViewsError2')
-            print(e)
+            print('ArticlesPostModelIncreseViewsError3')
+            traceback.print_exc()
