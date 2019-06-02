@@ -12,6 +12,7 @@ from utils.utils import PaginatorMixin
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
 
 import markdown
+import traceback
 
 
 # Create your views here.
@@ -105,11 +106,12 @@ def article_detail(request, article_id):
     """
     article = ArticlesPost.objects.get(id=article_id)
 
-    # try:
-    #     article.increase_views()
-    # except BaseException as e:
-    #     print('article_detail_views_error')
-    #     print(e)
+    try:
+        article.increase_views()
+    except BaseException as e:
+        print('article_detail_views_error')
+        # print(e)
+        traceback.print_exc()
 
     md = markdown.Markdown(
         extensions=[

@@ -105,17 +105,17 @@ class ArticlesPost(models.Model):
     def __str__(self):
         return self.title
 
-    # def save(self, *args, **kwargs):
-    #     """
-    #     重写save(), 自动填写教程序号
-    #     """
-    #     if not self.course_title:
-    #         self.course_title = self.title
+    def save(self, *args, **kwargs):
+        """
+        重写save(), 自动填写教程序号
+        """
+        if not self.course_title:
+            self.course_title = self.title
 
     #         # 跳过更新日期
     #         # if not kwargs.pop('skip_updated', False):
     #         #     self.updated = timezone.now()
-    #     super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     # 获取文章地址
 
