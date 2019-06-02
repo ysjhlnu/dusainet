@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     'mynotifications',
 
     # haystack search
-    'haystack',
+    # 'haystack',
 
     # 富文本编辑器
     'ckeditor',
@@ -196,14 +196,14 @@ LOGIN_REDIRECT_URL = '/'
 SITE_ID = 1
 
 # haystack相关配置
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'article.whoosh_cn_backend.WhooshEngine',
-        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
-    },
-}
-HAYSTACK_SEARCH_RESULTS_PER_PAGE = 20
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'article.whoosh_cn_backend.WhooshEngine',
+#         'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+#     },
+# }
+# HAYSTACK_SEARCH_RESULTS_PER_PAGE = 20
+# HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 
 REST_FRAMEWORK = {

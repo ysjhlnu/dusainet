@@ -40,7 +40,7 @@ urlpatterns = [
     path('all/rss/<int:column_id>/', ArticlesPostColumnRssFeed(), name='column_rss'),
 
     # haystack search
-    url(r'^search/', include('haystack.urls')),
+    # url(r'^search/', include('haystack.urls')),
 
     # allauth
     path('accounts/', include('allauth.urls')),
