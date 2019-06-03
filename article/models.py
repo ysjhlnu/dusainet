@@ -14,9 +14,6 @@ from imagekit.processors import ResizeToFit
 import traceback
 
 
-
-# Create your models here.
-
 class ArticlesColumn(models.Model):
     """
     article栏目
