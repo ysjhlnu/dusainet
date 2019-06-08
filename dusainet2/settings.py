@@ -3,6 +3,10 @@ import pymysql
 import django_smtp_ssl
 import json
 
+import logging
+import django.utils.log
+import logging.handlers
+
 pymysql.install_as_MySQLdb()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

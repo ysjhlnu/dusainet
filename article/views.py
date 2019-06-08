@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, UpdateView
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
 
 from .models import ArticlesPost, ArticlesColumn
 from .forms import ArticleCreateForm
-
 from course.models import Course
 from comments.forms import CommentForm
 from utils.utils import PaginatorMixin
@@ -12,10 +12,12 @@ from utils.utils import PaginatorMixin
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
 
 import markdown
-import traceback
 
+from dusainet2.settings import LOGGING
+import logging
+logging.config.dictConfig(LOGGING)
+logger = logging.getLogger('django.request')
 
-# Create your views here.
 
 class ArticleMixin(PaginatorMixin):
     """
@@ -39,14 +41,10 @@ class ArticlePostView(ArticleMixin, ListView):
     template_name = 'article/article_list.html'
 
     def dispatch(self, request, *args, **kwargs):
-        """
-        init
-        """
+        """init"""
         self.column_id = self.request.GET.get('column_id')
         self.order = self.request.GET.get('order')
         self.tag = self.request.GET.get('tag')
-
-        # call the view
         return super(ArticlePostView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -54,20 +52,16 @@ class ArticlePostView(ArticleMixin, ListView):
         获取模型数组
         :return: queryset
         """
-
         queryset = super(ArticlePostView, self).get_queryset()
         if self.column_id:
             queryset = queryset.filter(column=self.column_id)
-
         if self.order == 'total_views':
             queryset = queryset.order_by('-total_views')
-
         if self.tag:
             try:
                 queryset = queryset.filter(tags__name__in=[self.tag])
             except:
                 pass
-
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -75,9 +69,7 @@ class ArticlePostView(ArticleMixin, ListView):
         获取上下文
         :return: context
         """
-
         context = super(ArticlePostView, self).get_context_data(**kwargs)
-
         # 更新栏目信息
         if self.column_id:
             c_data = {
@@ -104,8 +96,11 @@ def article_detail(request, article_id):
     文章详情的view
     :param article_id: 文章的id
     """
-    article = ArticlesPost.objects.get(id=article_id)
-    article.increase_views()
+    article = get_object_or_404(ArticlesPost, id=article_id)
+    try:
+        article.increase_viws()
+    except:
+        logger.error('article increase views went wrong!')
 
     md = markdown.Markdown(
         extensions=[
@@ -118,8 +113,6 @@ def article_detail(request, article_id):
 
     # 传递给模板文章类型，用于评论表单区分
     article_type = 'article'
-
-    # 评论
     comment_form = CommentForm()
 
     # 根据教程序号，取出教程中前一条和后一条文章
