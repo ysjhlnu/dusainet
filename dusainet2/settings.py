@@ -57,7 +57,7 @@ LOGGING = {
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['mail_admins', 'file'],
+            'handlers': ['file'],
             'level': 'ERROR',
             'propagate': False,
         },

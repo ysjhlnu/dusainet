@@ -98,7 +98,7 @@ def article_detail(request, article_id):
     """
     article = get_object_or_404(ArticlesPost, id=article_id)
     try:
-        article.increase_viws()
+        article.increase_views()
     except:
         logger.error('article increase views went wrong!')
 
