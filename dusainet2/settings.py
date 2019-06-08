@@ -19,6 +19,47 @@ else:
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost ', '.dusaiphoto.com', '.dusai.net']
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/dusainet.log'),
+            'formatter': 'verbose',
+            'when': 'midnight',
+            'backupCount': 30,
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admins', 'file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
+
 INSTALLED_APPS = [
     # admin增强
     'jet.dashboard',
@@ -94,8 +135,7 @@ ROOT_URLCONF = 'dusainet2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -189,6 +229,9 @@ EMAIL_HOST_USER = 'dusaiphoto@foxmail.com'
 EMAIL_HOST_PASSWORD = ENV.get('EMAIL_HOST_KEY')
 EMAIL_PORT = 465
 
+SERVER_EMAIL = 'dusaiphoto@foxmail.com'
+DEFAULT_FROM_EMAIL = 'dusaiphoto@foxmail.com'
+ADMINS = (('杜赛', 'dusaiphoto@foxmail.com'),)
 
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = '杜赛的个人网站 <dusaiphoto@foxmail.com>'
@@ -226,7 +269,8 @@ CKEDITOR_CONFIGS = {
         'tabSpaces': 4,
         'toolbar': 'Custom',
         'toolbar_Custom': [
-            ['Smiley', 'CodeSnippet', '-', 'Bold', 'Italic', 'Underline', 'RemoveFormat', ],
+            ['Smiley', 'CodeSnippet', '-', 'Bold',
+                'Italic', 'Underline', 'RemoveFormat', ],
             ['NumberedList', 'BulletedList'],
             ['TextColor', 'BGColor'],
             ['Link', 'Unlink'],

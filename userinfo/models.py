@@ -38,7 +38,7 @@ class UserInfo(models.Model):
 
 
 def get_default_avatar_url():
-    return '/static/img/user_default_avatar/0' + str(randint(1, 9)) + '.svg'
+    return '/static/img/user_default_avatar/0' + str(randint(1, 8)) + '.svg'
 
 
 @receiver(post_save, sender=User)
