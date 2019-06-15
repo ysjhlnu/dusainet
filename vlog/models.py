@@ -19,7 +19,6 @@ class Vlog(models.Model):
 
     comments = GenericRelation(Comment)
 
-
     title = models.CharField(max_length=200, verbose_name='标题')
     # 简介正文
     body = models.TextField(
