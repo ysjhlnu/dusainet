@@ -1,13 +1,13 @@
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.contrib.contenttypes.models import ContentType
 
-from .models import Comment
-from .forms import CommentForm
 from article.models import ArticlesPost
+from . import views
+from .models import Comment
 
 from uuid import uuid1
-import time
 
 
 def create_author():
@@ -23,9 +23,31 @@ def create_article():
     return article
 
 
-class CommentModelTests(TestCase):
-    """测试Comment Model"""
+class CommentViewTests(TestCase):
+    """测试Comment View"""
+
+    def setUp(self):
+        self.request_factory = RequestFactory()
+        self.user = create_author()
+
     def test_create_comment(self):
-        article = create_article()
-        comment = Comment(content_object=article, user=create_author(), body='test_create_comment', object_id=1)
-        comment.save()
+        # 测试创建 comment
+        article = ArticlesPost(
+            title='test_create_comment',
+            body='test_create_comment',
+            author=create_author()
+        )
+        article.save()
+        kwargs = {
+            'article_id': article.id
+        }
+        url = reverse('comments:post_comment', kwargs=kwargs)
+        body = str(uuid1())
+        data = {
+            'body': body,
+            'article_type': 'article'
+        }
+        request = self.request_factory.post(url, data)
+        request.user = self.user
+        response = views.CommentCreateView.as_view()(request, **kwargs)
+        self.assertEqual(article.comments.all()[0].body, body)
