@@ -5,6 +5,7 @@ from rest_framework.serializers import (
 )
 
 from comments.models import Comment
+from article.models import ArticlesPost
 
 
 class CommentCreateSerializer(ModelSerializer):
@@ -58,10 +59,12 @@ class CommentDetailSerializer(ModelSerializer):
         ]
 
     def get_article_url(self, obj):
-        return obj.article.get_api_url()
+        article = ArticlesPost.objects.get(comments=obj)
+        return article.get_api_url()
 
     def get_article(self, obj):
-        return obj.article.title
+        article = ArticlesPost.objects.get(comments=obj)
+        return article.title
 
     def get_user(self, obj):
         return obj.user.username

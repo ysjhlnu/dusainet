@@ -37,7 +37,7 @@ class ArticlesPost(models.Model):
         verbose_name='作者',
     )
 
-    comments = GenericRelation(Comment)
+    comments = GenericRelation(Comment, related_query_name='article')
 
     column = models.ForeignKey(
         ArticlesColumn,
@@ -123,4 +123,3 @@ class ArticlesPost(models.Model):
     def increase_views(self):
         self.total_views += 1
         self.save(update_fields=['total_views'])
-
