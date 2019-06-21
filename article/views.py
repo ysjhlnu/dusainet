@@ -61,7 +61,7 @@ class ArticlePostView(ArticleMixin, ListView):
             try:
                 queryset = queryset.filter(tags__name__in=[self.tag])
             except:
-                pass
+                logger.error('ArticlePostView get_queryset get_tag went wrong!')
         return queryset
 
     def get_context_data(self, **kwargs):
