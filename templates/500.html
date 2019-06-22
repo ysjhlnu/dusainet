@@ -2,8 +2,6 @@
 {% load staticfiles %}
 {% block title %}500 - 杜赛的个人网站{% endblock %}
 {% block content %}
-    <link rel="stylesheet" href="{% static 'mystyle.css' %}">
-
     <br/>
     <div style="text-align: center">
         <i class="fas fa-exclamation-triangle mb-4" style="color: orange; font-size: 8em"></i>
@@ -12,10 +10,9 @@
         <h3>ERROR 500</h3>
         <h3>服务器内部错误..</h3>
         <br/>
-        <!-- <h5 class="layui-text">好心人快<a href="mailto:dusaiphoto@foxmail.com">通知博主</a>来修bug啦！</h5> -->
-        <p>这两天服务器发生故障，经常出现无法打开网页的情况</p>
-        <p>读者请暂时移步博主的知乎专栏：<a href="https://zhuanlan.zhihu.com/django-blog">Django搭建个人博客</a></p>
-        <p>博主正在抢修，争取尽快恢复，非常抱歉</p>
+        <p>博主会知悉并尽快修复此bug，您也可以Email<a href="mailto:dusaiphoto@foxmail.com">通知博主</a></p>
+        <p>若此bug影响到您的阅读，请暂时移步博主的<a href="https://zhuanlan.zhihu.com/django-blog">知乎专栏</a></p>
+        <p>谢谢谅解！</p>
     </div>
     <br/>
     <hr/>
