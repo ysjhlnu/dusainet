@@ -4,11 +4,12 @@
     <a class="navbar-brand" href="/" style="font-size: 1.2em;">
         杜赛的个人网站
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         {% if unread_count %}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
-            <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
-        </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
+                <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
+            </svg>
         {% endif %}
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -86,78 +87,86 @@
 
             <!-- 用户下拉条avatar -->
             {% if user.is_authenticated %}
-            <li class="nav-item dropdown" style="float: right;">
-                {% if user.socialaccount_set.all.0.get_avatar_url %}
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
-                    {% if unread_count %}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
-                        <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
-                    </svg>
-                    {% endif %}
-                    <img src="{% translate_avatar_ssl user.socialaccount_set.all.0.get_avatar_url %}"
-                        style="max-height: 40px; border-radius: 20%" alt="{{ user.username }}">
-                </a> {% elif userinfo.avatar %} {% if 'static' in userinfo.avatar.url %}
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
-                    {% if unread_count %}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
-                        <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
-                    </svg>
-                    {% endif %}
-                    <img src="{{ userinfo.avatar }}" alt="avatar" style="max-height: 40px; border-radius: 20%">
-                </a> {% else %}
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" style="color: gray;">
-                    {% if unread_count %}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
-                        <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
-                    </svg>
-                    {% endif %}
-                    <img src="{{ userinfo.avatar.url }}" alt="{{ user.username }}"
-                        style="max-height: 40px; border-radius: 20%">
-                </a> {% endif %} {% else %}
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" style="color: gray;">
-                    {% if unread_count %}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
-                        <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
-                    </svg>
-                    {% endif %}
-                    {{ user.username }}
-                </a> {% endif %}
+                <li class="nav-item dropdown" style="float: right;">
+                    {% if user.socialaccount_set.all.0.get_avatar_url %}
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+                            {% if unread_count %}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
+                                    <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
+                                </svg>
+                            {% endif %}
+                            <img src="{% translate_avatar_ssl user.socialaccount_set.all.0.get_avatar_url %}"
+                                 style="max-height: 40px; border-radius: 20%" alt="{{ user.username }}">
+                        </a> {% elif userinfo.avatar %} {% if 'static' in userinfo.avatar.url %}
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+                            {% if unread_count %}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
+                                    <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
+                                </svg>
+                            {% endif %}
+                            <img src="{{ userinfo.avatar }}" alt="avatar" style="max-height: 40px; border-radius: 20%">
+                        </a> {% else %}
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"
+                           style="color: gray;">
+                            {% if unread_count %}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
+                                    <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
+                                </svg>
+                            {% endif %}
+                            <img src="{{ userinfo.avatar.url }}" alt="{{ user.username }}"
+                                 style="max-height: 40px; border-radius: 20%">
+                        </a> {% endif %} {% else %}
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"
+                           style="color: gray;">
+                            {% if unread_count %}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 42" width="8px" height="42px">
+                                    <circle cx="4" cy="4" r="4" fill="#ff6b6b" fill-opacity="1.0"></circle>
+                                </svg>
+                            {% endif %}
+                            {{ user.username }}
+                        </a> {% endif %}
 
 
-                <!-- 用户下拉条item -->
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                    <a href="{% url 'my_notifications:notify_box' %}" class="dropdown-item">
-                        通知
-                        {% if unread_count %}
-                        <span class="badge badge-danger">
+                    <!-- 用户下拉条item -->
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a href="{% url 'my_notifications:notify_box' %}" class="dropdown-item">
+                            通知
+                            {% if unread_count %}
+                                <span class="badge badge-danger">
                             {{ unread_count }}
                         </span>
+                            {% endif %}
+                        </a>
+                        <a href="{% url 'userinfo:detail' %}" class="dropdown-item">
+                            个人信息
+                        </a>
+                        {% if user.is_superuser %}
+                            <a href="{% url 'article:article_create' %}" class="dropdown-item">
+                                写文章
+                            </a>
+                            <a href="/admin-ds" class="dropdown-item">
+                                后台
+                            </a>
+                            <a href="{% url 'imagesource:imagesource_list' %}" class="dropdown-item">
+                                图库
+                            </a>
                         {% endif %}
-                    </a>
-                    <a href="{% url 'userinfo:detail' %}" class="dropdown-item">
-                        个人信息
-                    </a> {% if user.is_superuser %}
-                    <a href="{% url 'article:article_create' %}" class="dropdown-item">
-                        写文章
-                    </a>
-                    <a href="/admin" class="dropdown-item">
-                        后台
-                    </a>
-                    <a href="{% url 'imagesource:imagesource_list' %}" class="dropdown-item">
-                        图库
-                    </a> {% endif %}
-                    <a href="javascript:" class="dropdown-item" data-toggle="modal" data-target="#logout">
-                        退出登录
-                    </a>
-                </div>
-            </li>
+                        <a href="javascript:" class="dropdown-item" data-toggle="modal" data-target="#logout">
+                            退出登录
+                        </a>
+                    </div>
+                </li>
 
             {% else %}
-            <li class="nav-item">
-                <a href="{% url 'account_login' %}" class="nav-link">
-                    登录
-                </a>
-            </li>
+                <li class="nav-item">
+                    <a href="{% url 'account_login' %}" class="nav-link">
+                        登录
+                    </a>
+                </li>
             {% endif %}
         </ul>
     </div>

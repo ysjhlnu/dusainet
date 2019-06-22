@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
 
-    path('admin/', admin.site.urls),
+    path('admin-ds/', admin.site.urls),
     url(r'^$', ArticlePostView.as_view(), name='home'),
     path('admiration/', TemplateView.as_view(template_name='utils/admiration.html'), name='admiration'),
 
