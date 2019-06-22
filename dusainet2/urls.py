@@ -4,7 +4,7 @@ from django.conf.urls import url
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.staticfiles.views import serve
+from django.views.generic.base import RedirectView
 
 from article.views import ArticlePostView
 from article.feeds import ArticlesPostRssFeed, ArticlesPostColumnRssFeed
@@ -20,7 +20,7 @@ urlpatterns = [
     path('admiration/', TemplateView.as_view(template_name='utils/admiration.html'), name='admiration'),
 
     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
-    path('favicon.ico', serve, {'path': 'img/favicon.ico'}),
+    path('favicon.ico', RedirectView.as_view(url='static/img/favicon.ico')),
 
     path('userinfo/', include('userinfo.urls', namespace='userinfo')),
     path('article/', include('article.urls', namespace='article')),
