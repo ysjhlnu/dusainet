@@ -1,0 +1,9 @@
+User-agent: *
+
+Disallow: /userinfo/
+Disallow: /my-notifications/
+Disallow: /api/
+Disallow: /search/
+Disallow: /imagesource/
+Disallow: /accounts/
+Disallow: /admin/
