@@ -51,14 +51,14 @@ LOGGING = {
         }
     },
     'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'WARNING',
-            'propagate': True,
-        },
+        # 'django': {
+        #     'handlers': ['file'],
+        #     'level': 'WARNING',
+        #     'propagate': True,
+        # },
         'django.request': {
             'handlers': ['file'],
-            'level': 'ERROR',
+            'level': 'WARNING',
             'propagate': False,
         },
     },

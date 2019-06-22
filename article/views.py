@@ -42,7 +42,11 @@ class ArticlePostView(ArticleMixin, ListView):
 
     def dispatch(self, request, *args, **kwargs):
         """init"""
-        self.column_id = self.request.GET.get('column_id')
+        column_id_temp = self.request.GET.get('column_id')
+        if column_id_temp and column_id_temp.isdigit():
+            self.column_id = column_id_temp
+        else:
+            self.column_id = None
         self.order = self.request.GET.get('order')
         self.tag = self.request.GET.get('tag')
         return super(ArticlePostView, self).dispatch(request, *args, **kwargs)
