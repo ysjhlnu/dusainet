@@ -21,18 +21,17 @@
                                    target="_blank"
                                    class="list-group-item list-group-item-action"
                                 >
-                                <span style="color: #5897fb;">
+                                <span id="ds-blue">
                                     {{ unread.actor }}
                                 </span>
                                     {% if unread.actor.is_superuser %}
-                                        <span style="color: #FF5722">[博主]</span>
+                                        <span id="ds-red">[博主]</span>
                                     {% elif unread.actor.is_staff %}
-                                        <i style="color: #5897fb;">[管理员]</i>
+                                        <span id="ds-blue">[管理员]</span>
                                     {% endif %}
-                                    在 <span
-                                        style="color: #01a252;">《{{ unread.target }}》</span>
+                                    在 <span id="ds-green">《{{ unread.target }}》</span>
                                     中回复了你：
-                                    <span style="color: lightgray;">{{ unread.action_object.body|plain_text|truncatechars:50 }}</span>
+                                    <span style="color: lightgray;">{{ unread.action_object.body|plain_text|truncatechars:30 }}</span>
                                     <span style="float: right" class="text-muted">
                                         {{ unread.timestamp|timesince_zh }}
                                     </span>
@@ -65,6 +64,18 @@
 
     <link rel="stylesheet" href="{% static 'personal_style.css' %}">
     <style>
+        span#ds-red {
+            color: #FF5722
+        }
+
+        span#ds-green {
+            color: #01a252;
+        }
+
+        span#ds-blue {
+            color: #5897fb;
+        }
+
         #link_base a:link {
             color: black;
         }
