@@ -7,3 +7,4 @@ Disallow: /search/
 Disallow: /imagesource/
 Disallow: /accounts/
 Disallow: /admin/
+Disallow: /user/
