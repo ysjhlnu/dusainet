@@ -154,7 +154,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dusainet2.wsgi.application'
 
-
 if DEBUG:
     DATABASES = {
         'default': {
@@ -175,7 +174,6 @@ else:
         }
     }
 
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -191,7 +189,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Shanghai'
@@ -201,7 +198,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'nginx_static')
@@ -275,7 +271,7 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'Custom',
         'toolbar_Custom': [
             ['Smiley', 'CodeSnippet', '-', 'Bold',
-                'Italic', 'Underline', 'RemoveFormat', ],
+             'Italic', 'Underline', 'RemoveFormat', ],
             ['NumberedList', 'BulletedList'],
             ['TextColor', 'BGColor'],
             ['Link', 'Unlink'],
@@ -286,3 +282,5 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': ','.join(['codesnippet', 'prism', 'widget', 'lineutils', ]),
     }
 }
+
+DJANGO_NOTIFICATIONS_CONFIG = {'SOFT_DELETE': True}

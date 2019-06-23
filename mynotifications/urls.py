@@ -1,5 +1,4 @@
 from django.urls import path
-from django.conf.urls import url
 from . import views
 
 app_name = 'my_notifications'
@@ -18,5 +17,10 @@ urlpatterns = [
         'mark-as-read/<int:article_id>/<int:notify_id>/<article_type>/',
          views.comments_notification_mark_as_read,
         name='mark_as_read',
+    ),
+    path(
+        'soft-delete-all/',
+        views.comments_notification_soft_delete_all,
+        name='soft_delete_all',
     ),
 ]

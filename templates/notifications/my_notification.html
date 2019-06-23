@@ -4,38 +4,58 @@
 {% block title %}通知列表 - 杜赛的个人网站{% endblock %}
 {% block content %}
     <div class="container">
-        <div class="row mt-2">
-            <div class="">
-                <a class="btn btn-warning mb-2"
-                   href="{% url 'my_notifications:mark_all_read' %}"
-                >
-                    标记全部已读
-                </a>
-                <div class="list-group list-group-flush" id="link_base">
-                    {% for unread in unread_notify %}
-                        <a id="my_link"
-                           href="{% url 'my_notifications:mark_as_read' unread.target_object_id unread.id unread.description %}#F{{ unread.action_object.id }}"
-                           target="_blank"
-                           class="list-group-item list-group-item-action"
-                        >
-                        <span style="color: #5897fb;">
-                            {{ unread.actor }}
-                        </span>
-                            {% if unread.actor.is_superuser %}
-                                <span style="color: #FF5722">[博主]</span>
-                            {% elif unread.actor.is_staff %}
-                                <i style="color: #5897fb;">[管理员]</i>
+        {% if state == '200' %}
+            {% if unread_notify %}
+                <div class="row mt-2">
+                    <a class="btn btn-warning mb-2"
+                       href="{% url 'my_notifications:mark_all_read' %}"
+                    >
+                        标记全部已读
+                    </a>
+                    <div class="list-group list-group-flush col-12" id="link_base">
+                        {% for unread in unread_notify %}
+                            {% if unread.target_object_id and unread.action_object.id %}
+                                <a id="my_link"
+                                   href="{% url 'my_notifications:mark_as_read' unread.target_object_id unread.id unread.description %}#F{{ unread.action_object.id }}"
+                                   target="_blank"
+                                   class="list-group-item list-group-item-action"
+                                >
+                                <span style="color: #5897fb;">
+                                    {{ unread.actor }}
+                                </span>
+                                    {% if unread.actor.is_superuser %}
+                                        <span style="color: #FF5722">[博主]</span>
+                                    {% elif unread.actor.is_staff %}
+                                        <i style="color: #5897fb;">[管理员]</i>
+                                    {% endif %}
+                                    在 <span
+                                        style="color: #01a252;">《{{ unread.target }}》</span>
+                                    中回复了你。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ unread.timestamp|date:"Y-m-d H:i:s" }}
+                                </a>
                             {% endif %}
-                            在 <span
-                                style="color: #01a252;">《{{ unread.target }}》</span>
-                            中回复了你。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ unread.timestamp|date:"Y-m-d H:i:s" }}
-                        </a>
-                    {% endfor %}
-                    <hr>
+                        {% endfor %}
+                    </div>
                 </div>
-
+            {% else %}
+                <div class="row justify-content-center">
+                    <h5 class="col-4 mt-4 text-center">
+                        <i class="far fa-thumbs-up" style="color: green"></i> 暂无未读通知哦~
+                        去 <a href="{% url 'home' %}">首页</a> 逛逛吧
+                    </h5>
+                </div>
+            {% endif %}
+        {% elif state == '500' %}
+            <div class="row mt-4">
+                <div class="col justify-content-center">
+                    <p>非常抱歉，服务器数据似乎出现故障..</p>
+                    <p>请尝试 <a href="{% url 'my_notifications:soft_delete_all' %}"
+                              class="btn btn-danger btn-sm">删除所有通知</a> 进行修复</p>
+                    <p>或<a href="mailto:dusaiphoto@foxmail.com" style="color: #00aaaa">Email联系博主</a>解决</p>
+                    <p>感谢您对本站的支持！</p>
+                </div>
             </div>
-        </div>
+        {% endif %}
+
     </div>
 
     <link rel="stylesheet" href="{% static 'personal_style.css' %}">
