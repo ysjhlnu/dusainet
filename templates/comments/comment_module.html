@@ -2,6 +2,7 @@
 {% load weibo_utils %}
 {% load get_userinfo %}
 {% load staticfiles %}
+{% load filter_utils %}
 
 <!-- ckeditor -->
 <link rel="stylesheet" href="{% static 'ckeditor/ckeditor/plugins/prism/css/prism.css' %}">
@@ -142,7 +143,7 @@
 
                 <!-- 附加信息 -->
                 <div style="color: #999999;">
-                    <p>{{ node.created_time|date:"Y/m/d H:i" }}
+                    <p>{{ node.created_time|timesince_zh }}
                         <a href="{% url 'comments:reply_post_comment' article.id node.id article_type %}"
                             style="color: #01a252">
                             回复

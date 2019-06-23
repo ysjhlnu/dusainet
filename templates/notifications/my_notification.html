@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load notifications_tags %}
+{% load filter_utils %}
 {% block title %}通知列表 - 杜赛的个人网站{% endblock %}
 {% block content %}
     <div class="container">
@@ -30,7 +31,11 @@
                                     {% endif %}
                                     在 <span
                                         style="color: #01a252;">《{{ unread.target }}》</span>
-                                    中回复了你。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ unread.timestamp|date:"Y-m-d H:i:s" }}
+                                    中回复了你：
+                                    <span style="color: lightgray;">{{ unread.action_object.body|plain_text|truncatechars:50 }}</span>
+                                    <span style="float: right" class="text-muted">
+                                        {{ unread.timestamp|timesince_zh }}
+                                    </span>
                                 </a>
                             {% endif %}
                         {% endfor %}

@@ -1,5 +1,6 @@
 {% extends 'base_with_rslider.html' %}
 {% load staticfiles %}
+{% load filter_utils %}
 {% block title %}杜赛的个人网站{% endblock %}
 {% block content %}
     <div class="">
@@ -74,13 +75,13 @@
 
 
                             <!-- 附加信息 -->
-                            <p class="text-monospace mb-0" style="color: grey;">
+                            <p class="mb-0 text-monospace" style="color: grey;">
                                 <i class="fas fa-eye" style="color: lightskyblue;"></i>
                                 {{ article.total_views }}
                                 <i class="fas fa-comments" style="color: yellowgreen;"></i>
                                 {{ article.comments.count }}
                                 <i class="fas fa-clock" style="color: pink;"></i>
-                                {{ article.created|date:"Y/m/d" }}
+                                {{ article.created|timesince_zh }}
                                 <!-- 教程 -->
                                 {% if article.course_id %}
                                     <i class="fas fa-book" style="color: #f0c674;"></i>

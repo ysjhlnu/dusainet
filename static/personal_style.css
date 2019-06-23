@@ -1,6 +1,5 @@
 /*固定底部导航栏*/
 
-
 /*https://css-tricks.com/couple-takes-sticky-footer/?utm_source=caibaojian.com*/
 
 html,
@@ -20,7 +19,6 @@ body {
 #push {
     height: 120px;
 }
-
 
 #unfold_link {
     background-image: -webkit-linear-gradient(top, #0055a5, rgb(253, 253, 253) 25%, rgb(26, 83, 189) 50%, rgb(253, 253, 253) 75%, #0055a5);
@@ -193,7 +191,6 @@ body {
     outline: none;
 }
 
-
 /*动画帧*/
 
 @-webkit-keyframes glow {
@@ -261,7 +258,6 @@ body {
     box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
     outline: none;
 }
-
 
 /*动画帧*/
 
