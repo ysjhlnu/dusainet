@@ -25,7 +25,7 @@ def time_since_zh(value):
         return str(diff.days) + "天前"
 
     if diff.days >= 30 and diff.days < 365:
-        return str(math.floor(diff.days / 30)) + "月前"
+        return str(math.floor(diff.days / 30)) + "个月前"
 
     if diff.days >= 365:
         return str(math.floor(diff.days / 365)) + "年前"
