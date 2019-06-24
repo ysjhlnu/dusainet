@@ -34,4 +34,4 @@ def time_since_zh(value):
 # 获取 ckeditor plain text
 @register.filter(name='plain_text')
 def from_ckeditor_data_get_plain_text(value):
-    return re.sub(r'(<[^>]+>)|&nbsp', '', value)
+    return re.sub(r'(<[^>]+>)|&nbsp;', '', value)

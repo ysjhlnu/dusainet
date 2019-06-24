@@ -31,7 +31,14 @@
                                     {% endif %}
                                     在 <span id="ds-green">《{{ unread.target }}》</span>
                                     中回复了你：
-                                    <span style="color: lightgray;">{{ unread.action_object.body|plain_text|truncatechars:30 }}</span>
+                                    {% if unread.action_object.is_deleted or is_deleted_by_staff %}
+                                        <span style="color: red">[本回复已被删除]</span>
+                                    {% else %}
+                                        <span style="color: lightgray;">
+                                            {{ unread.action_object.body|plain_text|truncatechars:30 }}
+                                        </span>
+                                    {% endif %}
+
                                     <span style="float: right" class="text-muted">
                                         {{ unread.timestamp|timesince_zh }}
                                     </span>
