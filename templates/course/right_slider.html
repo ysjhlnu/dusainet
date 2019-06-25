@@ -27,14 +27,14 @@
 
     <!-- GitHub仓库的小卡片 -->
     {% if article.course.github_repo %}
-        <div class="card">
+        <div class="card hvr-glow" style="display: flex">
             <div class="card-body">
                 {% with article.course.github_repo as repo %}
                     <h6 class="card-title">
-
                         <a href="https://github.com/{{ repo.user }}/{{ repo.repo }}"
                            target="_blank"
                            style="word-break: break-all; color: dimgray;"
+                           class="no-underline hvr-forward"
                         >
                             {{ repo.repo }}
                         </a>

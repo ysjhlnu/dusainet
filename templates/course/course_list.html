@@ -8,16 +8,20 @@
         <div class="card-deck">
             {% for course in courses %}
                 <div class="">
-                    <div class="card mb-4 bg-dark text-white">
+                    <div class="card mb-4 bg-dark text-white hvr-float-shadow">
                         {% if course.avatar_thumbnail %}
-                            <img src="{{ course.avatar_thumbnail.url }}"
-                                 class="card-img-top"
-                            >
+                            <a href="{% url 'course:course_articles_list' course.id %}">
+                                <img src="{{ course.avatar_thumbnail.url }}"
+                                     class="card-img-top"
+                                >
+                            </a>
+
                         {% endif %}
                         <div class="card-body" style="padding-bottom: 0">
                             <h5 class="card-title">
                                 <a href="{% url 'course:course_articles_list' course.id %}"
                                    style="color: white;"
+                                   class="no-underline hvr-forward"
                                 >
                                     {{ course.title }}
                                 </a>

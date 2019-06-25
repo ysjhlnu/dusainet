@@ -1,7 +1,7 @@
 {% load staticfiles %} {% load notifications_tags %} {% load weibo_utils %} {% load get_userinfo %} {% get_userinfo user.id as userinfo %} {% notifications_unread as unread_count %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <!-- 导航 -->
-    <a class="navbar-brand" href="/" style="font-size: 1.2em;">
+    <a class="navbar-brand hvr-grow-rotate" href="/" style="font-size: 1.2em;">
         杜赛的个人网站
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -133,7 +133,7 @@
 
                     <!-- 用户下拉条item -->
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                        <a href="{% url 'my_notifications:notify_box' %}" class="dropdown-item">
+                        <a href="{% url 'my_notifications:notify_box' %}" class="dropdown-item hvr-forward">
                             通知
                             {% if unread_count %}
                                 <span class="badge badge-danger">
@@ -141,21 +141,21 @@
                         </span>
                             {% endif %}
                         </a>
-                        <a href="{% url 'userinfo:detail' %}" class="dropdown-item">
+                        <a href="{% url 'userinfo:detail' %}" class="dropdown-item hvr-forward">
                             个人信息
                         </a>
                         {% if user.is_superuser %}
-                            <a href="{% url 'article:article_create' %}" class="dropdown-item">
+                            <a href="{% url 'article:article_create' %}" class="dropdown-item hvr-forward">
                                 写文章
                             </a>
-                            <a href="/admin-ds" class="dropdown-item">
+                            <a href="/admin-ds" class="dropdown-item hvr-forward">
                                 后台
                             </a>
-                            <a href="{% url 'imagesource:imagesource_list' %}" class="dropdown-item">
+                            <a href="{% url 'imagesource:imagesource_list' %}" class="dropdown-item hvr-forward">
                                 图库
                             </a>
                         {% endif %}
-                        <a href="javascript:" class="dropdown-item" data-toggle="modal" data-target="#logout">
+                        <a href="javascript:" class="dropdown-item hvr-forward" data-toggle="modal" data-target="#logout">
                             退出登录
                         </a>
                     </div>

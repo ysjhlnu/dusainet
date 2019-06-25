@@ -8,7 +8,7 @@
         {% if state == '200' %}
             {% if unread_notify %}
                 <div class="row mt-2">
-                    <a class="btn btn-warning mb-2"
+                    <a class="btn btn-warning mb-2 hvr-buzz-out"
                        href="{% url 'my_notifications:mark_all_read' %}"
                     >
                         标记全部已读
@@ -19,7 +19,7 @@
                                 <a id="my_link"
                                    href="{% url 'my_notifications:mark_as_read' unread.target_object_id unread.id unread.description %}#F{{ unread.action_object.id }}"
                                    target="_blank"
-                                   class="list-group-item list-group-item-action"
+                                   class="list-group-item list-group-item-action hvr-forward"
                                 >
                                 <span id="ds-blue">
                                     {{ unread.actor }}

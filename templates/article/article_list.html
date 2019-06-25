@@ -18,14 +18,19 @@
 
         <!-- 列表循环 -->
         {% for article in articles %}
-            <div class="card mb-2">
+            <div class="card mb-2 hvr-glow" style="display: flex">
                 <div class="row no-gutters align-items-center">
                     {% if article.avatar_thumbnail %}
-                        <div class="col-4 d-none d-md-block">
-                            <img src="{{ article.avatar_thumbnail.url }}"
-                                 class="card-img"
-                                 alt="缩略图"
-                            >
+                        <div class="col-4 d-none d-md-block"
+                             style="overflow: hidden"
+                        >
+                            <a href="{{ article.get_absolute_url }}">
+                                <img src="{{ article.avatar_thumbnail.url }}"
+                                     class="card-img hvr-grow"
+                                     style="transition-duration: 1s;"
+                                     alt="缩略图"
+                                >
+                            </a>
                         </div>
                     {% endif %}
                     <div class="col">
@@ -35,6 +40,7 @@
                             <h4 class="mt-0">
                                 <a href="{{ article.get_absolute_url }}"
                                    style="font-weight: bold; color: black;"
+                                   class="hvr-forward no-underline"
                                 >
                                     {{ article.title }}
                                 </a>
@@ -48,6 +54,7 @@
                                        class="
                                     btn
                                     btn-sm
+                                    hvr-pop
                                     {% if article.column.title == '编程' %}
                                     btn-outline-success
                                     {% elif article.column.title == '摄影' %}
@@ -65,7 +72,7 @@
 
                                 <!-- 标签 -->
                                 {% for tag in article.tags.all %}
-                                    <a class="badge badge-pill badge-light"
+                                    <a class="badge badge-pill badge-light hvr-float-shadow"
                                        href="?tag={{ tag }}"
                                        style="color: grey;"
                                     >
@@ -84,9 +91,12 @@
                                 {{ article.created|timesince_zh }}
                                 <!-- 教程 -->
                                 {% if article.course_id %}
-                                    <i class="fas fa-book" style="color: #f0c674;"></i>
+
                                     <a href="{% url 'course:course_articles_list' article.course_id %}"
-                                       style="color: #8D8D8D;">
+                                       style="color: #8D8D8D;"
+                                       class="no-underline hvr-forward"
+                                    >
+                                        <i class="fas fa-book" style="color: #f0c674;"></i>
                                         {{ article.course.title }}
                                     </a>
                                 {% endif %}

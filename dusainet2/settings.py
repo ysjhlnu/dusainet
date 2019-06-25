@@ -45,10 +45,10 @@ LOGGING = {
             'when': 'midnight',
             'backupCount': 30,
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-        }
+        # 'mail_admins': {
+        #     'level': 'ERROR',
+        #     'class': 'django.utils.log.AdminEmailHandler',
+        # }
     },
     'loggers': {
         # 'django': {
@@ -259,7 +259,7 @@ REST_FRAMEWORK = {
     )
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 # ckeditor
 CKEDITOR_CONFIGS = {
     # django-ckeditor默认使用配置

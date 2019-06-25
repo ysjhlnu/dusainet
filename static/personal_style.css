@@ -8,6 +8,14 @@ body {
     margin: 0;
 }
 
+.no-underline {
+    vertical-align: inherit;
+}
+
+.no-underline:hover {
+    text-decoration: none;
+}
+
 #wrapper {
     min-height: 100%;
     /* Equal to height of footer */
@@ -57,7 +65,6 @@ body {
 
 .font_gradient {
     background-color: rgb(241, 241, 241);
-    font-weight: bold;
     border-radius: 5px;
     padding: 2px;
     color: #f35626;
