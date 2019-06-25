@@ -8,11 +8,12 @@
         {% for article in articles %}
             <div class="card mt-4 hvr-glow" style="display: flex">
                 <div class="row no-gutters align-items-center">
-                    <div class="col-4 d-none d-md-block">
+                    <div class="col-4 d-none d-md-block" style="overflow: hidden">
                         <a href="{{ article.get_absolute_url }}">
                             <img src="{{ article.avatar_url }}"
                                  alt="avatar"
-                                 class="card-img"
+                                 class="card-img hvr-grow"
+                                 style="transition-duration: 1s;"
                             >
                         </a>
                     </div>

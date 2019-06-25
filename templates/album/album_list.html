@@ -10,24 +10,26 @@
             </div>
             <div class="card-columns">
                 {% for image in album %}
-                    <div class="card" style="word-break: break-all">
+                    <div class="card hvr-float-shadow" style="word-break: break-all;">
                         <!-- Button trigger modal -->
                         <a href="javascript:"
                            data-toggle="modal"
                            data-target="#img_{{ image.id }}"
                            class="card-link text-muted"
                         >
-                            <img src="
+                            <div style="overflow: hidden">
+                                <img src="
                                 {% if image.image %}
                                 {{ image.image.url }}
                                 {% else %}
                                 {{ image.url }}
                                 {% endif %}
                                 "
-                                 style="max-width: 100%"
-                                 alt="图片"
-                                 class="card-img-top"
-                            >
+                                     style="max-width: 100%; transition-duration: 1s;"
+                                     alt="图片"
+                                     class="card-img-top hvr-grow"
+                                >
+                            </div>
                             <div class="card-body">
                                 <h5 class="card-title">
                                     {{ image.title }}
