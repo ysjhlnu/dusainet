@@ -24,3 +24,11 @@
         padding-left: 1em;
     }
 </style>
+
+{% block script %}
+    <script>
+        $(() => {
+            $('div.toc a').addClass('hvr-forward no-underline')
+        })
+    </script>
+{% endblock %}

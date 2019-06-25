@@ -64,3 +64,10 @@
     {% endif %}
 </div>
 
+{% block script %}
+    <script>
+        $(() => {
+            $('div.toc a').addClass('hvr-forward no-underline')
+        })
+    </script>
+{% endblock %}
