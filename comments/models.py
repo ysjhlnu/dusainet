@@ -29,6 +29,8 @@ class Comment(MPTTModel):
     body = RichTextField(verbose_name='正文')
     created_time = models.DateTimeField(auto_now_add=True)
 
+    likes = models.PositiveIntegerField(default=0)
+
     # 记录二级评论回复给谁, str
     reply_to = models.ForeignKey(
         User,

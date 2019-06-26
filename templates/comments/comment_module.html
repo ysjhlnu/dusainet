@@ -119,6 +119,16 @@
                                 <i style="color: #5897fb;">[管理员]</i>
                             {% endif %}
                         {% endif %}
+                        <span>
+                            <a href="javascript:"
+                               onclick="increase_likes('{% url 'extends:increase_likes' 'comment' node.id %}', {{ node.id }}, {{ node.likes }})"
+                                class="no-underline hvr-icon-grow-rotate"
+                               style="color: hotpink"
+                            >
+                                <i class="far fa-thumbs-up hvr-icon"></i>
+                                <span id="likes_{{ node.id }}">{{ node.likes }}</span>
+                            </a>
+                        </span>
                     </div>
 
                     <!-- 正文 -->
@@ -138,7 +148,7 @@
                                 <p class="mt-3 mb-1">{{ node.body|safe }}</p>
                             </div>
                             <div class="text-center link_elem_{{ node.id }}" id="gradient_layer">
-                                <a href="javascript:;" onclick="unfoldContent({{ node.id }})" id="unfold_link"
+                                <a href="javascript:" onclick="unfoldContent({{ node.id }})" id="unfold_link"
                                    style="font-size: 1.1em; position: relative; top: 80px;">
                                     展开内容..
                                 </a>
@@ -214,19 +224,52 @@
     </script>
 
     <script>
+        // 点赞
+        const increase_likes = (url, node_id, node_likes) => {
+            let storage = window.localStorage;
+            {#storage.clear();#}
+            const storage_str_data = storage.getItem("dusaiphoto_data");
+            let storage_json_data = JSON.parse(storage_str_data);
+
+            if (storage_json_data.comments[node_id] && storage_json_data.comments[node_id].is_like) {
+                alert('is like true');
+                return;
+            }
+
+            $.get(url, function (result) {
+                $('span#likes_' + node_id).text(node_likes + 1);
+                // 后台返回 success/fail
+                if (result.state === 200) {
+                    // 是否存在localStorage.comments
+                    if (!storage_json_data.comments) {
+                        storage_json_data = {
+                            comments: {}
+                        };
+                    }
+
+                    storage_json_data.comments[node_id] = {};
+                    storage_json_data.comments[node_id]["is_like"] = true;
+                    const d = JSON.stringify(storage_json_data);
+                    storage.setItem("dusaiphoto_data", d);
+
+                    const json = storage.getItem("dusaiphoto_data");
+                    const json_obj = JSON.parse(json);
+                    console.log(json_obj);
+
+                } else {
+
+                }
+            });
+        };
+
         // 删除文章的函数
         const confirm_delete = function (node_id) {
-            // 调用layer弹窗组件
             layer.open({
-                // 弹窗标题
                 title: "当心！",
-                // 正文
                 content: "确认删除此回复吗？",
                 shadeClose: true,
                 anim: 6,
-                // 点击确定按钮后调用的回调函数
                 yes: function (index, layero) {
-                    // 指定应当前往的 url
                     location.href = "{% url 'comments:soft_delete' %}?" +
                         "comment_id=" + node_id +
                         "&" + "article_type=" + "{{ article_type }}"
@@ -249,7 +292,6 @@
             if ($(self).attr('aria-expanded') === 'false') {
                 unfoldContent(node_id);
             }
-            ;
         };
 
         $(() => {
@@ -262,7 +304,6 @@
                     $(div).children('div#gradient_layer').hide();
                 }
             }
-            ;
             // 子评论解除隐藏
             const children_comments = $('.children').find('.comment-hidden').css('max-height', '');
 
