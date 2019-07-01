@@ -4,6 +4,7 @@ from django.http import JsonResponse
 
 from .models import SiteMessage
 from comments.models import Comment
+from article.models import ArticlesPost
 
 from dusainet2.settings import LOGGING
 import logging
@@ -27,9 +28,13 @@ def latest_site_message(request):
 
 # 点赞计数
 def increase_likes(request, obj_type, obj_id):
-    print(type(obj_type), type(obj_id))
+    response = {}
     if obj_type == 'comment':
         obj = get_object_or_404(Comment, id=obj_id)
+        response.update({'node_type': 'comment'})
+    elif obj_type == 'article':
+        obj = get_object_or_404(ArticlesPost, id=obj_id)
+        response.update({'node_type': 'article'})
     else:
         logger.error(
             'extends increase_likes: get object went wrong.\n    request url: {0}'.format(
@@ -37,6 +42,8 @@ def increase_likes(request, obj_type, obj_id):
             )
         )
         return JsonResponse({'state': 500})
+
     obj.likes += 1
     obj.save(update_fields=['likes'])
-    return JsonResponse({'state': 200})
+    response.update({'state': 200})
+    return JsonResponse(response)

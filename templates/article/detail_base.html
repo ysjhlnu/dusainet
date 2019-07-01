@@ -77,6 +77,21 @@
            style="text-align: center"
         >写的不错，朕要赏
         </a>
+        <a href="javascript:" class="hvr-icon-buzz-out no-underline"
+           style="color: #C0C1C3;"
+           onclick="animocons_handler(this, '{% url 'extends:increase_likes' 'article' article.id %}', {{ article.id }}, {{ article.likes }}, 'article')"
+        >
+            <button class="icobutton icobutton_{{ article.id }}">
+                <i class="fas fa-heart hvr-icon"></i>
+            </button>
+            <span id="likes_{{ article.id }}"
+                  class="icobutton--heart"
+                  data-id="{{ article.id }}"
+                  data-type="article"
+            >
+                {{ article.likes }}
+            </span>
+        </a>
     </div>
     <br/>
     <br/>
@@ -111,4 +126,5 @@
             let progressBar = new ProgressIndicator({color: '#1e90ff'});
         })
     </script>
+    <script src="{% static 'animocons_likes.js' %}"></script>
 {% endblock %}

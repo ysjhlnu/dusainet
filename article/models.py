@@ -78,6 +78,8 @@ class ArticlesPost(models.Model):
     # taggit
     tags = TaggableManager(blank=True, verbose_name='标签')
 
+    likes = models.PositiveIntegerField(default=0)
+
     body = models.TextField(verbose_name='正文')
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True)

@@ -19,7 +19,6 @@
 
                 <!-- ckeditor 正文 -->
                 {{ comment_form.body }}
-
             </div>
 
             <input type="hidden" name="article_type" value={{ article_type }}>
@@ -122,12 +121,12 @@
                         <span>
                             <a href="javascript:" class="hvr-icon-buzz-out no-underline"
                                style="color: #C0C1C3;"
-                               onclick="animocons_handler(this, '{% url 'extends:increase_likes' 'comment' node.id %}', {{ node.id }}, {{ node.likes }})"
+                               onclick="animocons_handler(this, '{% url 'extends:increase_likes' 'comment' node.id %}', {{ node.id }}, {{ node.likes }}, 'comment')"
                             >
                                 <button class="icobutton icobutton_{{ node.id }}">
                                     <i class="fas fa-heart hvr-icon"></i>
                                 </button>
-                                <span id="likes_{{ node.id }}" class="icobutton--heart" data-id="{{ node.id }}">
+                                <span id="likes_{{ node.id }}" class="icobutton--heart" data-id="{{ node.id }}" data-type="comment">
                                     {{ node.likes }}
                                 </span>
                             </a>
@@ -300,6 +299,4 @@
             });
         });
     </script>
-
-    <script src="{% static 'animocons_likes.js' %}"></script>
 {% endblock %}
