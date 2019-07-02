@@ -1,3 +1,4 @@
+// https://github.com/codrops/Animocons
 const is_node_liked = (storage_json_data, node_id, node_type) => {
     const obj_type_enum = {
         ARTICLE: 'article',
@@ -33,11 +34,11 @@ const increase_likes = (self, url, node_id, node_likes, node_type) => {
     const node_liked_status = is_node_liked(storage_json_data, node_id, node_type);
 
     if (node_liked_status) {
-        layer.msg('已经点过赞了');
+        layer.msg('已经点过赞了哟');
         return true;
     }
 
-    $(self).find('span').text(node_likes + 1).css('color', '#FF6767');
+    $(self).find('span.icobutton--heart').text(node_likes + 1).css('color', '#FF6767');
     layer.msg('么么哒~');
 
     $.get(url, function (result) {
@@ -116,14 +117,14 @@ const animocons = (self) => {
     let tweens3 = new mojs.Tween({
         duration: 500,
         onUpdate: function (progress) {
-            var translateProgress = translationCurve16(progress),
+            let translateProgress = translationCurve16(progress),
                 squashProgress = squashCurve16(progress),
                 scaleX = 1 - 2 * squashProgress,
                 scaleY = 1 + 2 * squashProgress;
 
             elspan.css('transform', 'translate3d(0,' + -180 * translateProgress + 'px,0) scale3d(' + scaleX + ',' + scaleY + ',1)');
 
-            var opacityProgress = opacityCurve16(progress);
+            let opacityProgress = opacityCurve16(progress);
             elspan.css('opacity', opacityProgress);
 
             el.css('color', progress >= 0.75 ? '#FF6767' : '#C0C1C3');
@@ -147,7 +148,7 @@ const clear_element = (el) => {
 const animocons_handler = (self, url, node_id, node_likes, node_type) => {
     const is_liked = increase_likes(self, url, node_id, node_likes, node_type);
     if (!is_liked) {
-        animocons($(self).find('button.icobutton'));
+        animocons($(self).find('.icobutton'));
     }
 };
 
@@ -155,7 +156,7 @@ const animocons_handler = (self, url, node_id, node_likes, node_type) => {
 $(() => {
     const item_get_color = (el) => {
         el.css('color', '#FF6767');
-        el.prev('button').css('color', '#FF6767');
+        el.prev('.icobutton').css('color', '#FF6767');
     };
 
     let storage = window.localStorage;

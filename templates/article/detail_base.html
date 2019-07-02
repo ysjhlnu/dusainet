@@ -70,28 +70,32 @@
     <!-- 知识产权署名 -->
     {% include 'utils/license.html' %}
 
-    <div style="text-align: center">
-        <a href="/admiration/" target="_blank"
-           class="btn btn-warning text-white btn-sm hvr-float-shadow"
-           role="button"
-           style="text-align: center"
-        >写的不错，朕要赏
-        </a>
-        <a href="javascript:" class="hvr-icon-buzz-out no-underline"
-           style="color: #C0C1C3;"
-           onclick="animocons_handler(this, '{% url 'extends:increase_likes' 'article' article.id %}', {{ article.id }}, {{ article.likes }}, 'article')"
-        >
-            <button class="icobutton icobutton_{{ article.id }}">
-                <i class="fas fa-heart hvr-icon"></i>
-            </button>
-            <span id="likes_{{ article.id }}"
-                  class="icobutton--heart"
-                  data-id="{{ article.id }}"
-                  data-type="article"
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-6 col btn-group" role="group" aria-label="likes and appreciate">
+            <button class="btn btn-outline-danger hvr-icon-buzz-out animo_fireworks"
+                    type="button"
+                    onclick="animocons_handler(this, '{% url 'extends:increase_likes' 'article' article.id %}', {{ article.id }}, {{ article.likes }}, 'article')"
             >
-                {{ article.likes }}
-            </span>
-        </a>
+                <span>点赞</span>
+                <span class="icobutton icobutton_{{ article.id }}">
+                    <i class="fas fa-heart hvr-icon"></i>
+                </span>
+                <span id="likes_{{ article.id }}"
+                      class="icobutton--heart"
+                      data-id="{{ article.id }}"
+                      data-type="article"
+                >
+                    {{ article.likes }}
+                </span>
+            </button>
+            <button onclick="location.href='/admiration/'"
+                    class="btn btn-outline-success btn-sm hvr-icon-up"
+                    type="button"
+            >打赏
+                <i class="fas fa-coffee hvr-icon"></i>
+            </button>
+        </div>
+
     </div>
     <br/>
     <br/>
@@ -127,4 +131,5 @@
         })
     </script>
     <script src="{% static 'animocons_likes.js' %}"></script>
+    <script src="{% static 'animo_fireworks.js' %}"></script>
 {% endblock %}
