@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from django.views.generic import ListView
 from django.http import HttpResponse
+from article.models import ArticlesPost
 
 from .models import Course
 
