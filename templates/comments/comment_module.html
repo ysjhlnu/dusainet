@@ -119,6 +119,7 @@
                             {% endif %}
                         {% endif %}
                         <span>
+                            <span class="ml13 ml13_{{ node.id }}" style="opacity: 0;">么么哒！</span>
                             <a href="javascript:" class="hvr-icon-buzz-out no-underline"
                                style="color: #C0C1C3;"
                                onclick="animocons_handler(this, '{% url 'extends:increase_likes' 'comment' node.id %}', {{ node.id }}, {{ node.likes }}, 'comment')"
@@ -126,7 +127,8 @@
                                 <button class="icobutton icobutton_{{ node.id }}">
                                     <i class="fas fa-heart hvr-icon"></i>
                                 </button>
-                                <span id="likes_{{ node.id }}" class="icobutton--heart" data-id="{{ node.id }}" data-type="comment">
+                                <span id="likes_{{ node.id }}" class="icobutton--heart" data-id="{{ node.id }}"
+                                      data-type="comment">
                                     {{ node.likes }}
                                 </span>
                             </a>

@@ -8,6 +8,17 @@ body {
     margin: 0;
 }
 
+.ml13 {
+    position: absolute;
+    top: -30px;
+}
+
+.ml13 .letter {
+    display: inline-block;
+    line-height: 1em;
+    color: #FF6767;
+}
+
 .no-underline {
     vertical-align: inherit;
 }

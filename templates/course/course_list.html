@@ -31,13 +31,10 @@
                             <p class="card-text mb-0">
                                 <i class="fas fa-eye" style="color: lightskyblue;"></i>
                                 {% course_total_views course.id %}&nbsp;&nbsp;
+                                <i class="fas fa-heart" style="color: #FF6767;"></i>
+                                {{ course.likes_count }}&nbsp;&nbsp;
                                 <i class="fas fa-file" style="color: #f0c674;"></i>
-                                {% course_total_articles course.id %}&nbsp;&nbsp;
-                                {% if course.is_finished %}
-                                    <span style="color: greenyellow">[<i class="fas fa-check-circle"></i>已完结]</span>
-                                {% else %}
-                                    <span style="color: lightpink">[撰写中..]</span>
-                                {% endif %}
+                                {% course_total_articles course.id %}
                             </p>
                             <br/>
                         </div>

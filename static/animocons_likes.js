@@ -1,3 +1,39 @@
+function moving_letters(self, node_id) {
+    // by @tobiasahlin
+
+    let el = $(self).prev('.ml13');
+
+    el.removeAttr('style');
+
+    el.each(function () {
+        $(this).html($(this).text().replace(/([^\x00-\x80]|\w)/g, "<span class='letter'>$&</span>"));
+    });
+
+
+    let timeline = anime.timeline({loop: false});
+    timeline.add({
+        targets: '.ml13_' + node_id + ' .letter',
+        translateY: [100, 0],
+        translateZ: 0,
+        opacity: [0, 1],
+        easing: "easeOutExpo",
+        duration: 1400,
+        delay: function (el, i) {
+            return 300 + 30 * i;
+        }
+    }).add({
+        targets: '.ml13_' + node_id + ' .letter',
+        translateY: [0, -100],
+        opacity: [1, 0],
+        easing: "easeInExpo",
+        duration: 1200,
+        delay: function (el, i) {
+            return 100 + 30 * i;
+        },
+    });
+}
+
+
 // https://github.com/codrops/Animocons
 const is_node_liked = (storage_json_data, node_id, node_type) => {
     const obj_type_enum = {
@@ -34,12 +70,13 @@ const increase_likes = (self, url, node_id, node_likes, node_type) => {
     const node_liked_status = is_node_liked(storage_json_data, node_id, node_type);
 
     if (node_liked_status) {
-        layer.msg('已经点过赞了哟');
+        // layer.msg('已经点过赞了哟');
+        moving_letters(self, node_id);
         return true;
     }
 
     $(self).find('span.icobutton--heart').text(node_likes + 1).css('color', '#FF6767');
-    layer.msg('么么哒~');
+    // layer.msg('么么哒~');
 
     $.get(url, function (result) {
         // 后台返回 success/fail

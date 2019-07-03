@@ -2,6 +2,7 @@ from django.shortcuts import redirect
 from django.views.generic import ListView
 from django.http import HttpResponse
 from article.models import ArticlesPost
+from django.db.models import Sum
 
 from .models import Course
 
@@ -14,6 +15,11 @@ class CourseListView(ListView):
     template_name = 'course/course_list.html'
     context_object_name = 'courses'
     model = Course
+
+    def get_queryset(self):
+        queryset = super(CourseListView, self).get_queryset()
+        queryset = queryset.annotate(likes_count=Sum('article__likes'))
+        return queryset
 
 
 def course_articles_list(request, course_id):
