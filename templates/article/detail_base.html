@@ -59,6 +59,9 @@
                 >
                     前往评论
                 </a>
+                {% if user.is_superuser %}
+                    <a href="{% url 'article:article_update' article.id %}" style="color: #00aaaa" class="hvr-grow no-underline">编辑</a>
+                {% endif %}
             </p>
         </div>
         <div id="article_body">
@@ -69,9 +72,10 @@
 
     <!-- 知识产权署名 -->
     {% include 'utils/license.html' %}
+    <br>
 
     <div class="row justify-content-center">
-        <div class="col-lg-5 col-md-6 col btn-group" role="group" aria-label="likes and appreciate">
+        <div class="col-lg-6 col-md-8 col btn-group btn-group-lg" role="group" aria-label="likes and appreciate">
             <button class="btn btn-outline-danger hvr-icon-buzz-out animo_fireworks"
                     type="button"
                     onclick="animocons_handler(this, '{% url 'extends:increase_likes' 'article' article.id %}', {{ article.id }}, {{ article.likes }}, 'article')"
@@ -100,11 +104,11 @@
     <br/>
 
     {% if pre_article %}
-        <a class="btn btn-info btn-sm"
+        <a class="btn btn-info btn-sm hvr-grow"
            href="{{ pre_article.get_absolute_url }}"><< {{ pre_article.course_title }}</a>
     {% endif %}
     {% if next_article %}
-        <a class="btn btn-info btn-sm" style="float: right;"
+        <a class="btn btn-info btn-sm hvr-grow" style="float: right;"
            href="{{ next_article.get_absolute_url }}">{{ next_article.course_title }} >></a>
         <br>
     {% endif %}

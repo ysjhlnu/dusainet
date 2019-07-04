@@ -15,6 +15,7 @@ import markdown
 
 from dusainet2.settings import LOGGING
 import logging
+
 logging.config.dictConfig(LOGGING)
 logger = logging.getLogger('django.request')
 
@@ -182,7 +183,7 @@ class ArticleCreateView(LoginRequiredMixin,
         'course_sequence',
     ]
 
-    login_url = "/accounts/login"
+    login_url = "/"
     template_name = 'article/article_create.html'
 
     def get_context_data(self, **kwargs):
@@ -211,14 +212,33 @@ class ArticleCreateView(LoginRequiredMixin,
 class ArticleUpdateView(LoginRequiredMixin,
                         StaffuserRequiredMixin,
                         View):
-    """
-    更新文章
-    废弃，暂用admin代替
-    """
+    """更新文章"""
+    login_url = "/"
+
+    def dispatch(self, request, *args, **kwargs):
+        """init"""
+        self.article = get_object_or_404(ArticlesPost, pk=kwargs.get('article_id'))
+        return super(ArticleUpdateView, self).dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
-        article_id = kwargs.get('article_id')
-        article = get_object_or_404(ArticlesPost, pk=article_id)
+
         context = {
-            'article': article
+            'article': self.article,
+            'columns': ArticlesColumn.objects.all(),
+            'courses': Course.objects.all(),
+            'tags': ','.join([x for x in self.article.tags.names()])
         }
         return render(request, 'article/article_update.html', context=context)
+
+    def post(self, request, *args, **kwargs):
+        post_data = request.POST
+        self.article.title = post_data.get('title')
+        self.article.course_title = post_data.get('course_title')
+        self.article.column = get_object_or_404(ArticlesColumn, pk=post_data.get('column')) if post_data.get('column') else None
+        self.article.course = get_object_or_404(Course, pk=post_data.get('course')) if post_data.get('course') else None
+        if self.article.course:
+            self.article.course_sequence = post_data.get('course_sequence') if post_data.get('course_sequence') else 9000
+        self.article.tags.set(*post_data.get('tags').split(','), clear=True)
+        self.article.body = post_data.get('body')
+        self.article.save()
+        return redirect(self.article)

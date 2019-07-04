@@ -234,7 +234,6 @@ DEFAULT_FROM_EMAIL = 'dusaiphoto@foxmail.com'
 ADMINS = (('杜赛', 'dusaiphoto@foxmail.com'),)
 
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = '杜赛的个人网站 <dusaiphoto@foxmail.com>'
 LOGIN_REDIRECT_URL = '/'
 SITE_ID = 1
 

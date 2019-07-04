@@ -32,7 +32,11 @@
                         <select name="column" class="custom-select mr-sm-2">
                             <option value="">请选择栏目..</option>
                             {% for column in columns %}
-                                <option value="{{ column.id }}">{{ column.title }}</option>
+                                {% if column == article.column %}
+                                    <option value="{{ column.id }}" selected>{{ column.title }}</option>
+                                {% else %}
+                                    <option value="{{ column.id }}">{{ column.title }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
@@ -41,7 +45,11 @@
                         <select name="course" class="custom-select mr-sm-2">
                             <option value="">请选择教程..</option>
                             {% for course in courses %}
-                                <option value="{{ course.id }}">{{ course.title }}</option>
+                                {% if course == article.course %}
+                                    <option value="{{ course.id }}" selected>{{ course.title }}</option>
+                                {% else %}
+                                    <option value="{{ course.id }}">{{ course.title }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                     </div>
@@ -52,32 +60,38 @@
                                placeholder="教程序号.."
                                autocomplete="off"
                                class="form-control"
+                                {% if article.course %}
+                               value="{{ article.course_sequence }}"
+                                {% endif %}
                         >
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="layui-form-label">标签</label>
-                    <input type="text" name="tags" placeholder="标签" autocomplete="off"
-                           class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="url">标题图</label>
                     <input type="text"
-                           name="url"
-                           placeholder="请输入url"
+                           name="tags"
+                           placeholder="标签"
                            autocomplete="off"
                            class="form-control"
-                           {% if article.avatar_thumbnail %}
-                           value="{{ article.avatar_thumbnail.url }}"
-                           {% endif %}
+                           value="{{ tags }}"
                     >
                 </div>
+{#                <div class="form-group">#}
+{#                    <label for="url">标题图</label>#}
+{#                    <input type="text"#}
+{#                           name="url"#}
+{#                           placeholder="请输入url"#}
+{#                           autocomplete="off"#}
+{#                           class="form-control"#}
+{#                            {% if article.avatar_thumbnail %}#}
+{#                           value="{{ request.get_host }}{{ article.avatar_thumbnail.url }}"#}
+{#                            {% endif %}#}
+{#                    >#}
+{#                </div>#}
                 <div class="form-group">
-                    <label>内容</label>
-                    <div id="editormd">
-                        <textarea id="id_body" name="body" required></textarea>
-                    </div>
+                    <label for="id_body">内容</label>
+                    <textarea id="id_body" name="body" required class="form-control" rows="30">{{ article.body }}</textarea>
                 </div>
                 <input type="submit" value="提交" class="btn btn-primary">
             </form>
