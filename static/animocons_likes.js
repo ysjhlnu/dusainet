@@ -70,8 +70,11 @@ const increase_likes = (self, url, node_id, node_likes, node_type) => {
     const node_liked_status = is_node_liked(storage_json_data, node_id, node_type);
 
     if (node_liked_status) {
-        // layer.msg('已经点过赞了哟');
-        moving_letters(self, node_id);
+        if (node_type === 'article') {
+            layer.msg('已经点过赞了哟');
+        } else {
+            moving_letters(self, node_id);
+        }
         return true;
     }
 
