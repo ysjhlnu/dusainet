@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView, UpdateView
-from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, View
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 
 from .models import ArticlesPost, ArticlesColumn
 from .forms import ArticleCreateForm
@@ -210,14 +210,15 @@ class ArticleCreateView(LoginRequiredMixin,
 
 class ArticleUpdateView(LoginRequiredMixin,
                         StaffuserRequiredMixin,
-                        ArticleMixin,
-                        UpdateView):
+                        View):
     """
     更新文章
     废弃，暂用admin代替
     """
-    success_url = reverse_lazy("article:article_list")
-    context_object_name = 'article'
-    template_name = 'article/article_create.html'
-    fields = ['title', 'column', 'tags', 'body']
-    login_url = "/accounts/login"
+    def get(self, request, *args, **kwargs):
+        article_id = kwargs.get('article_id')
+        article = get_object_or_404(ArticlesPost, pk=article_id)
+        context = {
+            'article': article
+        }
+        return render(request, 'article/article_update.html', context=context)

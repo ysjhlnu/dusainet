@@ -23,8 +23,8 @@ urlpatterns = [
     ),
 
     # 更新文章
-    url(
-        r'update/(?P<pk>\d+)/$',
+    path(
+        'update/<int:article_id>/',
         views.ArticleUpdateView.as_view(),
         name='article_update',
     ),
