@@ -30,6 +30,7 @@ class Vlog(models.Model):
     # video url
     video_url = models.URLField(verbose_name='视频链接')
 
+    likes = models.PositiveIntegerField(default=0)
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True)
     total_views = models.PositiveIntegerField(default=0, verbose_name='浏览量')

@@ -38,19 +38,35 @@ function moving_letters(self, node_id) {
 const is_node_liked = (storage_json_data, node_id, node_type) => {
     const obj_type_enum = {
         ARTICLE: 'article',
-        COMMENT: 'comment'
+        COMMENT: 'comment',
+        ALBUM: 'album',
+        VLOG: 'vlog'
     };
-    if (node_type === obj_type_enum.COMMENT) {
-        if (node_id in storage_json_data.comments && storage_json_data.comments[node_id].is_like) {
-            return true
+    try {
+        if (node_type === obj_type_enum.COMMENT) {
+            if (node_id in storage_json_data.comments && storage_json_data.comments[node_id].is_like) {
+                return true
+            }
+        } else if (node_type === obj_type_enum.ARTICLE) {
+            if (node_id in storage_json_data.articles && storage_json_data.articles[node_id].is_like) {
+                return true
+            }
+        } else if (node_type === obj_type_enum.ALBUM) {
+            if (node_id in storage_json_data.album && storage_json_data.album[node_id].is_like) {
+                return true
+            }
+        } else if (node_type === obj_type_enum.VLOG) {
+            if (node_id in storage_json_data.vlog && storage_json_data.vlog[node_id].is_like) {
+                return true
+            }
+        } else {
+            return false
         }
-    } else if (node_type === obj_type_enum.ARTICLE) {
-        if (node_id in storage_json_data.articles && storage_json_data.articles[node_id].is_like) {
-            return true
-        }
-    } else {
+    } catch (e) {
+        localStorage.clear();
         return false
     }
+
 };
 
 // validate and record likes
@@ -63,34 +79,48 @@ const increase_likes = (self, url, node_id, node_likes, node_type) => {
     if (!storage_json_data) {
         storage_json_data = {
             comments: {},
-            articles: {}
+            articles: {},
+            album: {},
+            vlog: {}
         }
     }
 
     const node_liked_status = is_node_liked(storage_json_data, node_id, node_type);
 
     if (node_liked_status) {
-        if (node_type === 'article') {
-            layer.msg('已经点过赞了哟');
-        } else {
+        if (node_type === 'comment') {
             moving_letters(self, node_id);
+        } else {
+            layer.msg('已经点过赞了哟');
         }
         return true;
     }
 
     $(self).find('span.icobutton--heart').text(node_likes + 1).css('color', '#FF6767');
-    // layer.msg('么么哒~');
 
     $.get(url, function (result) {
         // 后台返回 success/fail
         if (result.state === 200) {
-            if (result.node_type === 'comment') {
-                storage_json_data.comments[node_id] = {};
-                storage_json_data.comments[node_id]["is_like"] = true;
-            } else if (result.node_type === 'article') {
-                storage_json_data.articles[node_id] = {};
-                storage_json_data.articles[node_id]["is_like"] = true;
+
+            try {
+                if (result.node_type === 'comment') {
+                    storage_json_data.comments[node_id] = {};
+                    storage_json_data.comments[node_id]["is_like"] = true;
+                } else if (result.node_type === 'article') {
+                    storage_json_data.articles[node_id] = {};
+                    storage_json_data.articles[node_id]["is_like"] = true;
+                } else if (result.node_type === 'album') {
+                    storage_json_data.album[node_id] = {};
+                    storage_json_data.album[node_id]["is_like"] = true;
+                } else if (result.node_type === 'vlog') {
+                    storage_json_data.vlog[node_id] = {};
+                    storage_json_data.vlog[node_id]["is_like"] = true;
+                }
+            } catch (e) {
+                localStorage.clear();
             }
+
+
             const d = JSON.stringify(storage_json_data);
             try {
                 storage.setItem("dusaiphoto_data", d);

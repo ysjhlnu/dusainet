@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from .models import SiteMessage
 from comments.models import Comment
 from article.models import ArticlesPost
+from album.models import Album
+from vlog.models import Vlog
 
 from dusainet2.settings import LOGGING
 import logging
@@ -35,6 +37,12 @@ def increase_likes(request, obj_type, obj_id):
     elif obj_type == 'article':
         obj = get_object_or_404(ArticlesPost, id=obj_id)
         response.update({'node_type': 'article'})
+    elif obj_type == 'album':
+        obj = get_object_or_404(Album, id=obj_id)
+        response.update({'node_type': 'album'})
+    elif obj_type == 'vlog':
+        obj = get_object_or_404(Vlog, id=obj_id)
+        response.update({'node_type': 'vlog'})
     else:
         logger.error(
             'extends increase_likes: get object went wrong.\n    request url: {0}'.format(

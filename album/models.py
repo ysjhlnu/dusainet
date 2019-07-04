@@ -25,7 +25,7 @@ class Album(models.Model):
     image = models.ImageField(upload_to='image/album/%Y%m%d', blank=True, null=True)
     created = models.DateField(auto_now_add=True, db_index=True)
     # 点赞功能。暂未使用
-    total_likes = models.PositiveIntegerField(default=0)
+    likes = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ('-created',)
@@ -38,10 +38,10 @@ class Album(models.Model):
         self.slug = slugify(self.title)
         super(Album, self).save(*args, **kwargs)
 
-    # 评论数+1
-    def increase_comments(self):
-        self.total_likes += 1
-        self.save(update_fields=['total_likes'])
+    # like +1
+    def increase_likes(self):
+        self.likes += 1
+        self.save(update_fields=['likes'])
 
     # 获取文章地址
     def get_absolute_url(self):

@@ -33,6 +33,21 @@
                             <div class="card-body">
                                 <h5 class="card-title">
                                     {{ image.title }}
+                                    <span>
+                                        <a href="javascript:" class="hvr-icon-buzz-out no-underline"
+                                           style="color: #C0C1C3; float: right"
+                                           onclick="animocons_handler(this, '{% url 'extends:increase_likes' 'album' image.id %}', {{ image.id }}, {{ image.likes }}, 'album')"
+                                        >
+                                            <button class="icobutton icobutton_{{ image.id }}">
+                                                <i class="fas fa-heart hvr-icon"></i>
+                                            </button>
+                                            <span id="likes_{{ image.id }}" class="icobutton--heart"
+                                                  data-id="{{ image.id }}"
+                                                  data-type="album">
+                                                {{ image.likes }}
+                                            </span>
+                                        </a>
+                                    </span>
                                 </h5>
                             </div>
                         </a>
@@ -68,16 +83,10 @@
         </div>
     </div>
     {% include 'utils/paginator.html' %}
-    <br/>
-    <script>
-        $('#layer_warning').on('mouseenter', function () {
-            this.index = layer.tips('高清图片可能会消耗较多流量', this, {
-                time: -1,
-                maxWidth: 280,
-                tips: [3, 'black']
-            });
-        }).on('mouseleave', function () {
-            layer.close(this.index);
-        });
-    </script>
+{% endblock %}
+
+{% block script %}
+
+    <script src="{% static 'animocons_likes.js' %}"></script>
+
 {% endblock %}

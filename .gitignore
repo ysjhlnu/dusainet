@@ -8,6 +8,8 @@ bin/
 whoosh_index/
 /env.json
 /db.sqlite3
+media/
+media
 
 __pycache__/
 *.py[cod]
