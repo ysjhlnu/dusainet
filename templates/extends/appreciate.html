@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}赞赏 - 杜赛的个人网站{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="">
+            <h3 class="alert alert-success mt-4">小额赞赏</h3>
+
+            <div class="row mb-4">
+                <h5 class="text-muted mb-4 col-12" style="text-align: center">
+                    感谢你的鼓励，我会继续努力写出高质量文章
+                </h5>
+                <div style="text-align: center" class="col">
+                    <h3>微信赞赏码</h3>
+                    <img src="{{ payjs_response.qrcode }}" style="max-width: 80%">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(() => {
+            setInterval(() => {
+                let data = {
+                    'payjs_order_id': '{{ payjs_response.payjs_order_id }}'
+                };
+                $.post("{% url 'extends:payjs-notify-wechat' %}", data)
+            }, 3000)
+        })
+    </script>
+
+{% endblock %}
