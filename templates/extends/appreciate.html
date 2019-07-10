@@ -3,32 +3,56 @@
 {% block title %}赞赏 - 杜赛的个人网站{% endblock %}
 {% block content %}
     <div class="container">
-        <div class="">
-            <h3 class="alert alert-success mt-4">小额赞赏</h3>
-
-            <div class="row mb-4">
-                <h5 class="text-muted mb-4 col-12" style="text-align: center">
-                    感谢你的鼓励，我会继续努力写出高质量文章
-                </h5>
-                <div style="text-align: center" class="col">
-                    <h3>微信赞赏码</h3>
-                    <img src="{{ payjs_response.qrcode }}" style="max-width: 80%">
+        <h4 class="alert alert-success mt-4">小额赞赏</h4>
+        <br>
+        <div class="row align-items-center">
+            <div class="col appreciate-form">
+                <div class="row mb-4 appreciate">
+                    <div style="text-align: center" class="col">
+                        <h5>微信赞赏码</h5>
+                        <img src="{{ payjs_response.qrcode }}" style="max-width: 80%">
+                    </div>
                 </div>
             </div>
+            <div class="col">
+                <div class="text-muted mb-4 col-12 pre-pay" style="text-align: center">
+                    <p>原创小站欲要生存</p>
+                    <p>又何须假装圣人</p>
+                    <p>请用小额赞赏鼓舞博主吧</p>
+                </div>
+                <div class="paid-success" style="text-align: center; color: forestgreen; display: none">
+                    <h5>
+                        <i class="far fa-check-circle"></i> 赞赏成功！感谢您的支持~
+                    </h5>
+                </div>
+            </div>
+
         </div>
+
+
     </div>
 {% endblock %}
 
 {% block script %}
     <script>
         $(() => {
-            setInterval(() => {
+            const setInte = setInterval(() => {
                 let data = {
                     'payjs_order_id': '{{ payjs_response.payjs_order_id }}'
                 };
-                $.post("{% url 'extends:payjs-notify-wechat' %}", data)
-            }, 3000)
+                $.post("{% url 'extends:check-payment' %}", data, (res) => {
+                    if (res.status === 200 && res.is_paid === 'T') {
+                        $('div.pre-pay').hide();
+                        $('div.paid-success').fadeIn('slow');
+                        clearInterval(setInte);
+                    } else if (res.status === 500) {
+
+                        // add here
+
+                        clearInterval(setInte);
+                    }
+                })
+            }, 5000)
         })
     </script>
-
 {% endblock %}

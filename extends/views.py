@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
-from django.urls import reverse
 
 from .models import SiteMessage, Payment
 from comments.models import Comment
@@ -13,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from dusainet2.settings import LOGGING, PAYJS_MCHID, PAYJS_KEY, PAYJS_NOTIFY_URL
 from time import strftime, localtime
+from random import randint
 
 import logging
 
@@ -69,18 +69,16 @@ def payjs_QRpay(request):
     payjs = PayJS(PAYJS_MCHID, PAYJS_KEY)
 
     # 扫码支付
-    OUT_TRADE_NO = strftime("%Y%m%d%H%M%S", localtime())
+    OUT_TRADE_NO = strftime("%Y%m%d%H%M%S", localtime()) + '-{}'.format(randint(10000, 99999))
     TOTAL_FEE = 1
     BODY = '文章赞赏'
     NOTIFY_URL = PAYJS_NOTIFY_URL
 
-    ATTACH = 'appreciate'
     payjs_response = payjs.QRPay(
         out_trade_no=OUT_TRADE_NO,
         total_fee=TOTAL_FEE,
         body=BODY,
         notify_url=NOTIFY_URL,
-        attach=ATTACH
     )
 
     if payjs_response:
@@ -89,7 +87,6 @@ def payjs_QRpay(request):
             out_trade_no=OUT_TRADE_NO,
             payjs_order_id=payjs_response.payjs_order_id,
             body=BODY,
-            attach=ATTACH
         )
         payment.save()
     else:
@@ -107,19 +104,31 @@ def payjs_QRpay(request):
 
 
 @csrf_exempt
+def check_payment(request):
+    if request.method == 'POST':
+        payjs_order_id = request.POST.get('payjs_order_id')
+
+        try:
+            payment = Payment.objects.get(payjs_order_id=payjs_order_id)
+        except:
+            logger.error('extends check_payment_is_paid: get payment failed.')
+            return JsonResponse({'status': 500})
+
+        if payment.is_paid == 'T':
+            return JsonResponse({'status': 200, 'is_paid': 'T'})
+        else:
+            return JsonResponse({'status': 200, 'is_paid': 'F'})
+
+
+@csrf_exempt
 def payjs_wechat_notify(request):
     if request.method == 'POST':
-        payjs = PayJS(PAYJS_MCHID, PAYJS_KEY)
-        payjs_check = payjs.check_status(payjs_order_id=request.POST.get('payjs_order_id'))
-        print(request.POST, request.POST.get('payjs_order_id'))
-        if payjs_check:
-            print(payjs_check.paid)
-            print('1')
-            return JsonResponse({'status': 'T'})
-        else:
-            print('2')
-            print(payjs_check.error_msg)
-            return JsonResponse({'status': 'F'})
-    else:
-        print('3')
-        return JsonResponse({'code': 403, 'msg': 'request method must POST.'})
+        payjs_order_id = request.POST.get('payjs_order_id')
+        return_code = request.POST.get('return_code')
+        if return_code == 1:
+            try:
+                payment = Payment.objects.get(payjs_order_id=payjs_order_id)
+                payment.is_paid = 'T'
+                payment.save()
+            except:
+                logger.error('extends payjs_wechat_notify: get payment failed.')
