@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
+from django.urls import reverse
 
-from .models import SiteMessage
+from .models import SiteMessage, Payment
 from comments.models import Comment
 from article.models import ArticlesPost
 from album.models import Album
@@ -10,7 +11,9 @@ from vlog.models import Vlog
 from payjs import PayJS, PayJSNotify
 from django.views.decorators.csrf import csrf_exempt
 
-from dusainet2.settings import LOGGING, PAYJS_MCHID, PAYJS_KEY
+from dusainet2.settings import LOGGING, PAYJS_MCHID, PAYJS_KEY, PAYJS_NOTIFY_URL
+from time import strftime, localtime
+
 import logging
 
 logging.config.dictConfig(LOGGING)
@@ -66,21 +69,37 @@ def payjs_QRpay(request):
     payjs = PayJS(PAYJS_MCHID, PAYJS_KEY)
 
     # 扫码支付
-    OUT_TRADE_NO = '20190708TEST'  # 外部订单号（自己的支付系统的订单号，请保证唯一）
-    TOTAL_FEE = 1  # 支付金额，单位为分，金额最低 0.01 元最多 10000 元
-    BODY = '测试支付'  # 订单标题
-    NOTIFY_URL = 'https://www.dusaiphoto.com/extends/payjs/notify/wechat'  # Notify 网址
-    ATTACH = 'info'  # Notify 内容
-    payjs_response = payjs.QRPay(out_trade_no=OUT_TRADE_NO, total_fee=TOTAL_FEE, body=BODY, notify_url=NOTIFY_URL, attach=ATTACH)
-    # if r:
-    #     print(r.code_url)  # 二维码地址（weixin:// 开头，请使用此地址构建二维码）
-    #     print(r.qrcode)  # 二维码地址（https:// 开头，为二维码图片的地址）
-    #     print(r.payjs_order_id)  # 订单号（PAYJS 的）
-    # else:
-    #     print(r.STATUS_CODE)  # HTTP 请求状态码
-    #     print(r.ERROR_NO)  # 错误码
-    #     print(r.error_msg)  # 错误信息
-    #     print(r)
+    OUT_TRADE_NO = strftime("%Y%m%d%H%M%S", localtime())
+    TOTAL_FEE = 1
+    BODY = '文章赞赏'
+    NOTIFY_URL = PAYJS_NOTIFY_URL
+
+    ATTACH = 'appreciate'
+    payjs_response = payjs.QRPay(
+        out_trade_no=OUT_TRADE_NO,
+        total_fee=TOTAL_FEE,
+        body=BODY,
+        notify_url=NOTIFY_URL,
+        attach=ATTACH
+    )
+
+    if payjs_response:
+        payment = Payment.objects.create(
+            total_fee=TOTAL_FEE,
+            out_trade_no=OUT_TRADE_NO,
+            payjs_order_id=payjs_response.payjs_order_id,
+            body=BODY,
+            attach=ATTACH
+        )
+        payment.save()
+    else:
+        logger.error(
+            'extends payjs_QRpay: get QRPay error.\n    code: {0}  error_no: {1}  error_msg: {2}'.format(
+                payjs_response.STATUS_CODE,
+                payjs_response.ERROR_NO,
+                payjs_response.error_msg
+            )
+        )
     context = {
         'payjs_response': payjs_response
     }

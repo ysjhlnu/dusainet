@@ -286,3 +286,4 @@ DJANGO_NOTIFICATIONS_CONFIG = {'SOFT_DELETE': True}
 
 PAYJS_MCHID = ENV.get('PAYJS_MCHID')
 PAYJS_KEY = ENV.get('PAYJS_KEY')
+PAYJS_NOTIFY_URL = 'https://www.dusaiphoto.com/extends/payjs/notify/wechat'
