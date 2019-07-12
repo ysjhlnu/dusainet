@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load filter_utils %}
+{% block title %}赞赏者名册 - 杜赛的个人网站{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="mt-4 alert alert-warning">小小赞赏，手有余香。或许这并没有多少物质支撑，却是有爱的表达方式，告诉博主不是一个人在战斗。</div>
+        </div>
+        <div class="row justify-content-center">
+            <h5 class="mt-2" style="font-weight: bold; color: darkorange;">赞赏者名册</h5>
+            <table class="table table-bordered mt-2" style="text-align: center;">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">赞赏者</th>
+                    <th scope="col">金额</th>
+                    <th scope="col">留言</th>
+                    <th scope="col">时间</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for sponsor in sponsors %}
+                    <tr>
+                        <td>
+                            {% if sponsor.user %}
+                                {{ sponsor.user.username }}
+                            {% elif sponsor.username %}
+                                {{ sponsor.username }}
+                            {% else %}
+                                <span style="font-style: italic; color: gray;">[匿名用户]</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span style="font-weight: bold; color: #FF6767;">{{ sponsor.total_fee|unit_conversion }}</span>
+                        </td>
+                        <td style="max-width: 200px;">
+                            {% if sponsor.message %}
+                                {{ sponsor.message }}
+                            {% else %}
+                                小小赞赏鼓励博主
+                            {% endif %}
+                        </td>
+                        <td class="text-muted">
+                            {{ sponsor.created|timesince_zh }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

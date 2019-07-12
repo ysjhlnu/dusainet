@@ -67,10 +67,15 @@ def increase_likes(request, obj_type, obj_id):
 def payjs_QRpay(request):
     # 初始化
     payjs = PayJS(PAYJS_MCHID, PAYJS_KEY)
+    try:
+        total_fee = int(request.POST.get('total_fee'))
+    except:
+        logger.error('extends payjs_QRpay: get total_fee failed.')
+        total_fee = 3000
 
     # 扫码支付
     OUT_TRADE_NO = strftime("%Y%m%d%H%M%S", localtime()) + '-{}'.format(randint(10000, 99999))
-    TOTAL_FEE = 1
+    TOTAL_FEE = total_fee
     BODY = '文章赞赏'
     NOTIFY_URL = PAYJS_NOTIFY_URL
 
@@ -107,7 +112,6 @@ def payjs_QRpay(request):
 def check_payment(request):
     if request.method == 'POST':
         payjs_order_id = request.POST.get('payjs_order_id')
-
         try:
             payment = Payment.objects.get(payjs_order_id=payjs_order_id)
         except:
@@ -132,3 +136,8 @@ def payjs_wechat_notify(request):
                 payment.save()
             except:
                 logger.error('extends payjs_wechat_notify: get payment failed.')
+
+
+def sponsor_list(request):
+    sponsors = Payment.objects.filter(is_paid='T').order_by('-created')
+    return render(request, 'extends/sponsor_list.html', {'sponsors': sponsors})

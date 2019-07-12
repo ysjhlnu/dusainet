@@ -29,6 +29,8 @@ class Payment(models.Model):
         null=True
     )
 
+    username = models.CharField(max_length=20, blank=True)
+
     # 支付来源文章
     paid_for_article = models.ForeignKey(
         ArticlesPost,
@@ -48,7 +50,7 @@ class Payment(models.Model):
     # PAYJS 平台订单号
     payjs_order_id = models.CharField(max_length=100)
     # 留空表示微信支付。支付宝交易传值：alipay
-    type = models.CharField(max_length=100, default='wechatpay')
+    type = models.CharField(max_length=100, default='wechat')
     # 订单标题
     body = models.CharField(max_length=100, blank=True)
     # 用户自定义数据
@@ -56,7 +58,7 @@ class Payment(models.Model):
     # 创建时间
     created = models.DateTimeField(default=timezone.now)
     # 支付留言
-    message = models.CharField(max_length=200, blank=True)
+    message = models.CharField(max_length=70, blank=True)
 
     class Meta:
         verbose_name_plural = '支付'
