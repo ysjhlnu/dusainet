@@ -9,5 +9,5 @@ urlpatterns = [
     path('payjs/qrpay/', views.payjs_QRpay, name='payjs-qrpay'),
     path('payjs/check_payment', views.check_payment, name='check-payment'),
     path('payjs/notify/wechat', views.payjs_wechat_notify, name='payjs-notify-wechat'),
-    path('sponsor/', views.sponsor_list, name='sponsor-list'),
+    path('sponsor-list', views.sponsor_list, name='sponsor-list'),
 ]

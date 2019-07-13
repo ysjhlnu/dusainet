@@ -11,7 +11,6 @@ from payjs import PayJS, PayJSNotify
 from django.views.decorators.csrf import csrf_exempt
 from utils.templatetags.filter_utils import time_since_zh
 
-
 from dusainet2.settings import LOGGING, PAYJS_MCHID, PAYJS_KEY, PAYJS_NOTIFY_URL
 from time import strftime, localtime
 from random import randint
@@ -71,8 +70,12 @@ def payjs_QRpay(request):
     payjs = PayJS(PAYJS_MCHID, PAYJS_KEY)
     try:
         total_fee = int(request.POST.get('total_fee'))
-        username = request.POST.get('username')
-        message = request.POST.get('message')
+        username = request.POST.get('username').strip()[:20]
+        message = request.POST.get('message').strip()[:70]
+        if not username:
+            username = '[匿名用户]'
+        if not message:
+            message = '小小赞赏鼓励博主'
     except:
         logger.error('extends payjs_QRpay: get total_fee failed.')
         total_fee = 3000
@@ -144,7 +147,6 @@ def payjs_wechat_notify(request):
                 payment.save()
             except:
                 logger.error('extends payjs_wechat_notify: get payment failed.')
-
 
 
 def sponsor_list(request):

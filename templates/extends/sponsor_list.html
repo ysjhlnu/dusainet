@@ -22,7 +22,7 @@
 
                 {% for sponsor in sponsors %}
                     <tr>
-                        <td>
+                        <th scope="row">
                             {% if sponsor.user %}
                                 {{ sponsor.user.username }}
                             {% elif sponsor.username %}
@@ -30,7 +30,7 @@
                             {% else %}
                                 <span style="font-style: italic; color: gray;">[匿名用户]</span>
                             {% endif %}
-                        </td>
+                        </th>
                         <td>
                             <span style="font-weight: bold; color: #FF6767;">{{ sponsor.total_fee|unit_conversion }}</span>
                         </td>
