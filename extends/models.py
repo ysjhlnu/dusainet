@@ -64,5 +64,12 @@ class Payment(models.Model):
         verbose_name_plural = '支付'
         ordering = ('-created',)
 
+    def save(self, *args, **kwargs):
+        if not self.username:
+            self.username = '[匿名用户]'
+        if not self.message:
+            self.message = '小额赞赏鼓励博主'
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.payjs_order_id

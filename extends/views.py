@@ -9,6 +9,8 @@ from vlog.models import Vlog
 
 from payjs import PayJS, PayJSNotify
 from django.views.decorators.csrf import csrf_exempt
+from utils.templatetags.filter_utils import time_since_zh
+
 
 from dusainet2.settings import LOGGING, PAYJS_MCHID, PAYJS_KEY, PAYJS_NOTIFY_URL
 from time import strftime, localtime
@@ -69,9 +71,13 @@ def payjs_QRpay(request):
     payjs = PayJS(PAYJS_MCHID, PAYJS_KEY)
     try:
         total_fee = int(request.POST.get('total_fee'))
+        username = request.POST.get('username')
+        message = request.POST.get('message')
     except:
         logger.error('extends payjs_QRpay: get total_fee failed.')
         total_fee = 3000
+        username = '[匿名用户]'
+        message = '小小赞赏鼓励博主'
 
     # 扫码支付
     OUT_TRADE_NO = strftime("%Y%m%d%H%M%S", localtime()) + '-{}'.format(randint(10000, 99999))
@@ -93,6 +99,8 @@ def payjs_QRpay(request):
             payjs_order_id=payjs_response.payjs_order_id,
             body=BODY,
         )
+        payment.username = username
+        payment.message = message
         payment.save()
     else:
         logger.error(
@@ -138,6 +146,17 @@ def payjs_wechat_notify(request):
                 logger.error('extends payjs_wechat_notify: get payment failed.')
 
 
+
 def sponsor_list(request):
     sponsors = Payment.objects.filter(is_paid='T').order_by('-created')
+    if request.is_ajax() and request.method == 'GET':
+        data = []
+        for sponsor in sponsors[:10]:
+            data.append({
+                'total_fee': int(sponsor.total_fee / 100),
+                'username': sponsor.username,
+                'message': sponsor.message,
+                'created': time_since_zh(sponsor.created)
+            })
+        return JsonResponse({'sponsors': data})
     return render(request, 'extends/sponsor_list.html', {'sponsors': sponsors})

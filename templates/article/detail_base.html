@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load filter_utils %}
 
 <style>
     div#article_body p img {
@@ -110,7 +111,7 @@
     <!-- zanshang_modal -->
     <div class="modal fade" id="zanshang_modal" tabindex="-1" role="dialog"
          aria-labelledby="zanshang_modal_title" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="zanshang_modal_title">请博主喝杯咖啡</h5>
@@ -146,6 +147,7 @@
                                     <label for="username"><span style="font-weight: bold">昵称：</span></label>
                                     <input type="text" class="form-control" id="username" name="username"
                                            aria-describedby="username" placeholder="大侠尊姓大名？"
+                                           value="[匿名用户]"
                                     >
                                 </div>
                                 <div class="form-group">
@@ -162,10 +164,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="text-align: center">
                     <hr>
-                    <p>是你们的支持，让我觉得不是一个人在战斗。</p>
-                    <a href="">赞赏者名册</a>
+                    <div style="font-weight: bold">
+                        <p>小站维护不易，创作高质量内容更是如此。</p>
+                        <p>千言万语，感谢你们的支持：</p>
+                    </div>
+                    <div style="text-align: center">
+                        <div class="spinner-border text-primary" role="status" id="part-sponsor-list">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <table class="table table-bordered mt-2" style="text-align: center;">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">赞赏者</th>
+                                        <th scope="col">金额</th>
+                                        <th scope="col">留言</th>
+                                        <th scope="col">时间</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="sponsors-tbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -202,17 +227,42 @@
 
             $('input.total_fee').change(() => {
                 $('span.fee_number').text($('input.total_fee').val() / 100);
-            })
+            });
+
+            const part_sponsor_list = () => {
+                let el = $('div#part-sponsor-list');
+                let tbody = $('tbody#sponsors-tbody');
+                const url = "{% url 'extends:sponsor-list' %}";
+                $.get(url, (res) => {
+                    el.remove();
+                    res.sponsors.forEach((item) => {
+                        tbody.append(
+                            '<tr>' +
+                            '<td>' + item.username + '</td>' +
+                            '<td>' + '<span style="font-weight: bold; color: #FF6767;">' + item.total_fee + '</span>' + '</td>' +
+                            '<td style="max-width: 200px;">' + item.message + '</td>' +
+                            '<td class="text-muted">' + item.created + '</td>' +
+                            '</tr>'
+                        )
+                    });
+                    tbody.append(
+                        '<tr>' +
+                        '<td colspan="4">' + '... <a href="' + "{% url 'extends:sponsor-list' %}" + '" target="_blank">完整赞赏者名册</a>' + '</td>' +
+                        '</tr>'
+                    )
+                })
+            };
+
+            part_sponsor_list();
 
         });
 
         const random_amount = () => {
-            const fee = Math.floor(Math.random() * 50) * 100;
+            let fee = (Math.floor(Math.random() * 50) * 100);
+            fee = fee < 100 ? 100 : fee;
             $('span.fee_number').text(fee / 100);
             $('input.total_fee').val(fee);
         };
-
-        console.log($('input.total_fee').val())
     </script>
     <script src="{% static 'animocons_likes.js' %}"></script>
     <script src="{% static 'animo_fireworks.js' %}"></script>
