@@ -89,6 +89,9 @@ def payjs_QRpay(request):
         username = '[游客]'
         message = '赞赏博主'
 
+    if request.user.is_superuser():
+        total_fee = 1
+
     # 扫码支付
     OUT_TRADE_NO = strftime("%Y%m%d%H%M%S", localtime()) + '-{}'.format(randint(10000, 99999))
     TOTAL_FEE = total_fee
