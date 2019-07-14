@@ -167,7 +167,6 @@ def check_payment(request):
 def payjs_wechat_notify(request):
     if request.method == 'POST':
         data = json.dumps(request.POST)
-        print(data)
         notify = PayJSNotify(PAYJS_KEY, data)
         return_code = notify.return_code
         order_id = notify.payjs_order_id
