@@ -15,6 +15,7 @@ from utils.templatetags.filter_utils import time_since_zh
 from dusainet2.settings import LOGGING, PAYJS_MCHID, PAYJS_KEY, PAYJS_NOTIFY_URL
 from time import strftime, localtime
 from random import randint
+import json
 
 import logging
 
@@ -162,9 +163,8 @@ def check_payment(request):
 @csrf_exempt
 def payjs_wechat_notify(request):
     if request.method == 'POST':
-        logger.warning(request.POST)
-        print(request.POST)
-        notify = PayJSNotify(PAYJS_KEY, request.POST)
+        print(request.POST[0])
+        notify = PayJSNotify(PAYJS_KEY, request.POST[0])
         return_code = notify.return_code
         order_id = notify.payjs_order_id
 
