@@ -77,6 +77,11 @@
                 肉松君
             </a>
         </p>
+        <p class="card-text hvr-forward col-12">
+            <a href="https://jerrycoding.com/" target="_blank" class="text-muted no-underline">
+                Jerry Coding
+            </a>
+        </p>
     </div>
 </div>
 
@@ -95,7 +100,6 @@
 {% block script %}
     <script>
         $(() => {
-
             $.get('{% url "article:get_columns_data" %}', (data) => {
                 for (let item in data) {
                     let context = "<a href='/all/rss/" + data[item] + "' class=\"btn btn-outline-dark btn-block\">" + item + "</a>";
