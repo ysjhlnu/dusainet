@@ -184,6 +184,8 @@ def payjs_wechat_notify(request):
             logger.error('extends payjs_wechat_notify: return_code is {}.'.format(return_code))
 
         return JsonResponse({'code': 200})
+    else:
+        logger.error('extends payjs_wechat_notify: just handle post method.')
 
 
 def sponsor_list(request):
