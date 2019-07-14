@@ -70,16 +70,21 @@ def payjs_QRpay(request):
     # 初始化
     payjs = PayJS(PAYJS_MCHID, PAYJS_KEY)
     try:
-        total_fee = int(request.POST.get('total_fee'))
-        username = request.POST.get('username').strip()[:20]
-        message = request.POST.get('message').strip()[:70]
-        if not username:
+        if request.method == 'POST':
+            total_fee = int(request.POST.get('total_fee'))
+            username = request.POST.get('username').strip()[:20]
+            message = request.POST.get('message').strip()[:70]
+            if not username:
+                username = '[游客]'
+            if not message:
+                message = '赞赏博主'
+        else:
+            total_fee = 800
             username = '[游客]'
-        if not message:
             message = '赞赏博主'
     except:
         logger.error('extends payjs_QRpay: get total_fee failed.')
-        total_fee = 3000
+        total_fee = 800
         username = '[游客]'
         message = '赞赏博主'
 
@@ -107,9 +112,11 @@ def payjs_QRpay(request):
         payment.username = username
         payment.message = message
         try:
-            (article_id, user_id) = (int(request.POST.get('article_id')), request.user.id)
-            if article_id:
-                payment.article = ArticlesPost.objects.get(pk=article_id)
+            if request.method == 'POST':
+                article_id = int(request.POST.get('article_id'))
+                if article_id:
+                    payment.article = ArticlesPost.objects.get(pk=article_id)
+            user_id = request.user.id
             if user_id:
                 payment.user = User.objects.get(pk=user_id)
                 payment.username = User.objects.get(pk=user_id).username
