@@ -28,6 +28,10 @@ def get_signature(key: str, data: dict):
     except KeyError:
         pass
 
+    for k, v in d.items():
+        if type(v) is list:
+            d.update({k: v[0]})
+
     # pop 掉无效字段
     p = sorted([x for x in d.items() if (x[1] or x[1] == 0)], key=lambda x: x[0])
 
@@ -58,9 +62,12 @@ def check_signature(key: str, data: dict, sign: str = None):
     if sign is None:
         sign = data.get('sign')
 
-        print('------------')
-        print('3: ', data, sign)
-        print('-----------')
+    if type(sign) is list:
+        sign = sign[0]
+
+    print('------------')
+    print('3: ', data, sign)
+    print('-----------')
 
     if get_signature(key, data) == sign:
         return True

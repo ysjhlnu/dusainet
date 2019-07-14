@@ -171,8 +171,8 @@ def payjs_wechat_notify(request):
         print('1: ', data)
         print('--------')
         notify = PayJSNotify(PAYJS_KEY, data)
-        return_code = notify.return_code
-        order_id = notify.payjs_order_id
+        return_code = notify.return_code[0] if notify.return_code is list else notify.return_code
+        order_id = notify.payjs_order_id[0] if notify.payjs_order_id is list else notify.payjs_order_id
 
         if return_code == 1:
             try:
