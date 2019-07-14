@@ -171,14 +171,14 @@ def payjs_wechat_notify(request):
         return_code = notify.return_code[0] if notify.return_code is list else notify.return_code
         order_id = notify.payjs_order_id[0] if notify.payjs_order_id is list else notify.payjs_order_id
 
-        if return_code == 1:
+        if return_code == '1':
             try:
                 payment = Payment.objects.get(payjs_order_id=order_id)
                 payment.is_paid = 'T'
                 payment.save()
             except:
                 logger.error('extends payjs_wechat_notify: get payment failed.')
-        elif return_code == 0:
+        elif return_code == '0':
             logger.error('extends payjs_wechat_notify: return_code is 0.')
         else:
             logger.error('extends payjs_wechat_notify: return_code is {}.'.format(return_code))
@@ -186,6 +186,7 @@ def payjs_wechat_notify(request):
         return JsonResponse({'code': 200})
     else:
         logger.error('extends payjs_wechat_notify: just handle post method.')
+        return JsonResponse({'code': 403})
 
 
 def sponsor_list(request):
