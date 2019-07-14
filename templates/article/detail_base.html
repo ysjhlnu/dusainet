@@ -121,7 +121,7 @@
                 <div class="modal-body">
                     <div class="container-fluid">
                         <div>
-                            <form action="{% url 'extends:payjs-qrpay' %}" method="post">
+                            <form action="{% url 'extends:payjs-qrpay' %}" method="post" target="_blank">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="total_fee">
@@ -168,7 +168,10 @@
                                 <input type="text" hidden name="article_id" value="{{ article.id }}" title="">
                                 <br>
                                 <div style="text-align: center">
-                                    <button type="submit" class="btn btn-warning text-white hvr-grow sponsor-submit">
+                                    <button type="submit"
+                                            class="btn btn-warning text-white hvr-grow sponsor-submit"
+                                            onclick="close_modal()"
+                                    >
                                         少废话，快给朕二维码！
                                     </button>
                                 </div>

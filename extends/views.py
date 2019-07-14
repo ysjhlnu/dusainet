@@ -116,6 +116,10 @@ def payjs_QRpay(request):
         except:
             logger.error('extends payjs_QRpay: get ArticlesPost or User failed.')
         payment.save()
+        context = {
+            'payjs_response': payjs_response,
+            'code': 200
+        }
     else:
         logger.error(
             'extends payjs_QRpay: get QRPay error.\n    code: {0}  error_no: {1}  error_msg: {2}'.format(
@@ -124,10 +128,11 @@ def payjs_QRpay(request):
                 payjs_response.error_msg
             )
         )
+        context = {
+            'payjs_response': payjs_response,
+            'code': 400
+        }
 
-    context = {
-        'payjs_response': payjs_response
-    }
     return render(request, 'extends/appreciate.html', context=context)
 
 
@@ -150,15 +155,21 @@ def check_payment(request):
 @csrf_exempt
 def payjs_wechat_notify(request):
     if request.method == 'POST':
-        payjs_order_id = request.POST.get('payjs_order_id')
-        return_code = request.POST.get('return_code')
+        notify = PayJSNotify(PAYJS_KEY, request.POST)
+        return_code = notify.return_code
+        order_id = notify.payjs_order_id
+
         if return_code == 1:
             try:
-                payment = Payment.objects.get(payjs_order_id=payjs_order_id)
+                payment = Payment.objects.get(payjs_order_id=order_id)
                 payment.is_paid = 'T'
                 payment.save()
             except:
                 logger.error('extends payjs_wechat_notify: get payment failed.')
+        elif return_code == 0:
+            logger.error('extends payjs_wechat_notify: return_code is 0.')
+        else:
+            logger.error('extends payjs_wechat_notify: return_code is {}.'.format(return_code))
 
 
 def sponsor_list(request):

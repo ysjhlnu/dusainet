@@ -98,3 +98,7 @@ const random_amount = () => {
     $('span.fee_number').text(fee / 100);
     $('input.total_fee').val(fee);
 };
+
+const close_modal = () => {
+    $('div#zanshang_modal').modal('hide');
+};

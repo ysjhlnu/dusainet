@@ -28,8 +28,15 @@
                 <div class="paid-success" style="text-align: center; display: none">
                     <p style="color: forestgreen;"><i class="far fa-check-circle"></i> 赞赏成功！感谢您的支持~</p>
                     <p>将在 <span id="count_down" style="color: dodgerblue;"></span>
-                        <span style="color: dodgerblue;">秒</span> 后前往 <a href="{% url 'extends:sponsor-list' %}">赞赏者名册</a>
+                        <span style="color: dodgerblue;">秒</span> 后前往 <a
+                                href="{% url 'extends:sponsor-list' %}">赞赏者名册</a>
                     </p>
+                </div>
+                <div class="paid-failed" style="text-align: center; display: none">
+                    <p>与支付系统通信似乎中断了..</p>
+                    <p>博主已知悉并会尽快抢修..</p>
+                    <p>您还可以通过<a href="/admiration/">赞赏码</a>打赏哦..</p>
+                    <p>感谢支持！</p>
                 </div>
             </div>
         </div>
@@ -44,8 +51,15 @@
             // 支付状态轮询
             const setInte = setInterval(() => {
                 let data = {
-                    'payjs_order_id': '{{ payjs_response.payjs_order_id }}'
+                    'payjs_order_id': {% if code == 200 %}'{{ payjs_response.payjs_order_id }}'{% else %}''{% endif %}
                 };
+
+                if (!data.payjs_order_id) {
+                    paid_failed();
+                    clearInterval(setInte);
+                    return;
+                }
+
                 $.post("{% url 'extends:check-payment' %}", data, (res) => {
                     if (res.status === 200 && res.is_paid === 'T') {
                         $('div.pre-pay').hide();
@@ -53,13 +67,16 @@
                         redirect_href();
                         clearInterval(setInte);
                     } else if (res.status === 500) {
-
-                        // add here
-
+                        paid_failed();
                         clearInterval(setInte);
                     }
                 })
             }, 5000);
+
+            const paid_failed = () => {
+                $('div.pre-pay').hide();
+                $('div.paid-failed').fadeIn('slow');
+            };
 
             // redirect
             const redirect_href = () => {
