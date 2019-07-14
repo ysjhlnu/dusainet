@@ -167,9 +167,6 @@ def check_payment(request):
 def payjs_wechat_notify(request):
     if request.method == 'POST':
         data = request.POST
-        print('------')
-        print('1: ', data)
-        print('--------')
         notify = PayJSNotify(PAYJS_KEY, data)
         return_code = notify.return_code[0] if notify.return_code is list else notify.return_code
         order_id = notify.payjs_order_id[0] if notify.payjs_order_id is list else notify.payjs_order_id
@@ -185,6 +182,8 @@ def payjs_wechat_notify(request):
             logger.error('extends payjs_wechat_notify: return_code is 0.')
         else:
             logger.error('extends payjs_wechat_notify: return_code is {}.'.format(return_code))
+
+        return JsonResponse({'code': 200})
 
 
 def sponsor_list(request):

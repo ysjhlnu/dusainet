@@ -44,10 +44,6 @@ def get_signature(key: str, data: dict):
 
     r = h.hexdigest().upper()
 
-    print('---------')
-    print('4: ', d, r)
-    print('----------')
-
     return r
 
 
@@ -64,10 +60,6 @@ def check_signature(key: str, data: dict, sign: str = None):
 
     if type(sign) is list:
         sign = sign[0]
-
-    print('------------')
-    print('3: ', data, sign)
-    print('-----------')
 
     if get_signature(key, data) == sign:
         return True

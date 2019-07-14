@@ -20,9 +20,6 @@ class PayJSNotify:
             if type(v) is list:
                 notify.update({k: v[0]})
 
-        print('------')
-        print('2: ', notify)
-        print('-------')
         check_signature(key, notify)
 
         self.mchid = notify['mchid']
