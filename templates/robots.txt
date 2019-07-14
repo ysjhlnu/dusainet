@@ -8,3 +8,4 @@ Disallow: /imagesource/
 Disallow: /accounts/
 Disallow: /admin/
 Disallow: /user/
+Disallow: /extends/payjs/

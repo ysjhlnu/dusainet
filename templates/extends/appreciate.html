@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load filter_utils %}
+{% block title %}赞赏 - 杜赛的个人网站{% endblock %}
+{% block content %}
+    <div class="container">
+        <h4 class="alert alert-success mt-4">小额赞赏</h4>
+        <br>
+        <div class="row align-items-center">
+            <div class="col appreciate-form">
+                <div class="row mb-4 appreciate">
+                    <div style="text-align: center" class="col">
+                        <h5>微信赞赏码</h5>
+                        <img src="{{ payjs_response.qrcode }}" style="max-width: 80%">
+                        <h5>金额: <span style="color: orange">{{ payjs_response.total_fee|unit_conversion }}</span> 元</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="text-muted mb-4 col-12 pre-pay" style="text-align: center">
+                    <p>我们的生活被框在了一个个熟悉的页面里</p>
+                    <p>独角兽们在赛道不断角逐</p>
+                    <p>它们是这时代的主角</p>
+                    <p>但还有这样一些一直在坚持的小人物</p>
+                    <p>通过微不足道的方式</p>
+                    <p>影响着这个世界</p>
+                </div>
+                <div class="paid-success" style="text-align: center; display: none">
+                    <p style="color: forestgreen;"><i class="far fa-check-circle"></i> 赞赏成功！感谢您的支持~</p>
+                    <p>将在 <span id="count_down" style="color: dodgerblue;"></span>
+                        <span style="color: dodgerblue;">秒</span> 后前往 <a
+                                href="{% url 'extends:sponsor-list' %}">赞赏者名册</a>
+                    </p>
+                </div>
+                <div class="paid-failed" style="text-align: center; display: none">
+                    <p>与支付系统通信似乎中断了..</p>
+                    <p>博主已知悉并会尽快抢修..</p>
+                    <p>您还可以通过<a href="/admiration/">赞赏码</a>打赏哦..</p>
+                    <p>感谢支持！</p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(() => {
+            // 支付状态轮询
+            const setInte = setInterval(() => {
+                let data = {
+                    'payjs_order_id': {% if code == 200 %}'{{ payjs_response.payjs_order_id }}'{% else %}''{% endif %}
+                };
+
+                if (!data.payjs_order_id) {
+                    paid_failed();
+                    clearInterval(setInte);
+                    return;
+                }
+
+                $.post("{% url 'extends:check-payment' %}", data, (res) => {
+                    if (res.status === 200 && res.is_paid === 'T') {
+                        $('div.pre-pay').hide();
+                        $('div.paid-success').fadeIn('slow');
+                        redirect_href();
+                        clearInterval(setInte);
+                    } else if (res.status === 500) {
+                        paid_failed();
+                        clearInterval(setInte);
+                    }
+                })
+            }, 5000);
+
+            const paid_failed = () => {
+                $('div.pre-pay').hide();
+                $('div.paid-failed').fadeIn('slow');
+            };
+
+            // redirect
+            const redirect_href = () => {
+                let count = 10;
+                const count_down = $('span#count_down').text(count);
+                const count_inte = setInterval(() => {
+                    if (count > 0) {
+                        count--;
+                        count_down.text(count);
+                    } else {
+                        window.location.replace("{% url 'extends:sponsor-list' %}");
+                        clearInterval(count_inte);
+                    }
+                }, 1000)
+            }
+        })
+    </script>
+{% endblock %}

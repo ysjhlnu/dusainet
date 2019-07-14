@@ -35,3 +35,9 @@ def time_since_zh(value):
 @register.filter(name='plain_text')
 def from_ckeditor_data_get_plain_text(value):
     return re.sub(r'(<[^>]+>)|&nbsp;', '', value)
+
+# 单位换算: 分 -> 元
+@register.filter(name='unit_conversion')
+def unit_conversion(value):
+    new_value_str = '{:.2f}'.format(int(value) / 100)
+    return new_value_str

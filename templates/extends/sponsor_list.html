@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load filter_utils %}
+{% load weibo_utils %}
+{% load get_userinfo %}
+{% block title %}赞赏者名册 - 杜赛的个人网站{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="mt-4 alert alert-warning">小小赞赏，手有余香。或许这并没有多少物质支撑，却是有爱的表达方式，告诉博主不是一个人在战斗。</div>
+        </div>
+        <div class="row justify-content-center">
+            <h5 class="mt-2" style="font-weight: bold; color: darkorange;">赞赏者名册</h5>
+            <table class="table table-bordered mt-2" style="text-align: center;">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">赞赏者</th>
+                    <th scope="col">金额</th>
+                    <th scope="col">留言</th>
+                    <th scope="col">时间</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for sponsor in sponsors %}
+                    <tr>
+                        <th scope="row">
+                            {% get_userinfo sponsor.user.id as userinfo %}
+                            {% if sponsor.user.socialaccount_set.all.0.get_avatar_url %}
+                                <!-- 第三方头像 -->
+                                <img src="{% translate_avatar_ssl sponsor.user.socialaccount_set.all.0.get_avatar_url %}"
+                                     alt="avatar"
+                                     style="width: 30px; border-radius: 20%">
+                            {% elif userinfo.avatar %}
+                                <!-- 本地头像 -->
+                                {% if 'static' in userinfo.avatar.url %}
+                                    <img src="{{ userinfo.avatar }}" alt="avatar"
+                                         style="width: 30px; border-radius: 20%">
+                                {% else %}
+                                    <img src="{{ userinfo.avatar.url }}" alt="avatar"
+                                         style="width: 30px; border-radius: 20%">
+                                {% endif %}
+                            {% endif %}
+
+                            {% if sponsor.user %}
+                                {{ sponsor.user.username }}
+                            {% elif sponsor.username %}
+                                {% if sponsor.username == '[游客]' %}
+                                    <span style="font-style: italic; color: gray; font-weight: normal">[游客]</span>
+                                {% else %}
+                                    {{ sponsor.username }}
+                                {% endif %}
+                            {% else %}
+                                <span style="font-style: italic; color: gray;">[游客]</span>
+                            {% endif %}
+                        </th>
+                        <td>
+                            <span style="font-weight: bold; color: #FF6767;">{{ sponsor.total_fee|unit_conversion }}</span>
+                        </td>
+                        <td style="max-width: 200px;">
+                            {% if sponsor.message %}
+                                {{ sponsor.message }}
+                            {% else %}
+                                小小赞赏鼓励博主
+                            {% endif %}
+                        </td>
+                        <td class="text-muted">
+                            {{ sponsor.created|timesince_zh }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

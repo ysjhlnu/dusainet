@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load filter_utils %}
 
 <style>
     div#article_body p img {
@@ -60,7 +61,8 @@
                     前往评论
                 </a>
                 {% if user.is_superuser %}
-                    <a href="{% url 'article:article_update' article.id %}" style="color: #00aaaa" class="hvr-grow no-underline">编辑</a>
+                    <a href="{% url 'article:article_update' article.id %}" style="color: #00aaaa"
+                       class="hvr-grow no-underline">编辑</a>
                 {% endif %}
             </p>
         </div>
@@ -92,16 +94,134 @@
                     {{ article.likes }}
                 </span>
             </button>
-            <button onclick="location.href='/admiration/'"
-                    class="btn btn-outline-success btn-sm hvr-icon-up"
-                    type="button"
-            >打赏
-                <i class="fas fa-coffee hvr-icon"></i>
-            </button>
+            {% if user.is_superuser %}
+                <button class="btn btn-outline-success btn-sm hvr-icon-up"
+                        type="button"
+                        data-toggle="modal"
+                        data-target="#zanshang_modal"
+                        onclick="load_sponsor_list(); this.onclick=null;"
+                >打赏
+                    <i class="fas fa-coffee hvr-icon"></i>
+                </button>
+            {% else %}
+                <button onclick="location.href='/admiration/'"
+                        class="btn btn-outline-success btn-sm hvr-icon-up"
+                        type="button"
+                >打赏
+                    <i class="fas fa-coffee hvr-icon"></i>
+                </button>
+            {% endif %}
+
+
         </div>
     </div>
     <br/>
     <br/>
+
+    <!-- zanshang_modal -->
+    <div class="modal fade" id="zanshang_modal" tabindex="-1" role="dialog"
+         aria-labelledby="zanshang_modal_title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="zanshang_modal_title">请博主喝杯咖啡</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div>
+                            <form action="{% url 'extends:payjs-qrpay' %}" method="post" target="_blank">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="total_fee">
+                                        <span style="font-weight: bold">金额<span style="color: red;">*</span>：</span>
+                                        <span style="color: darkorange; font-weight: bold; font-size: 2em;"
+                                              class="fee_number"
+                                        >8</span> 元
+                                    </label>
+                                    <input type="range" class="custom-range total_fee" id="total_fee" value="800"
+                                           name="total_fee"
+                                           min="100" max="5000" step="100">
+                                    <small>
+                                        <a onclick="random_amount()"
+                                           href="javascript:;"
+                                           class="no-underline hvr-grow text-muted"
+                                           style="float: right"
+                                        >试试手气</a>
+                                    </small>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="username"
+                                            {% if user.is_authenticated %}
+                                           hidden
+                                            {% endif %}><span style="font-weight: bold">昵称：</span></label>
+                                    <input type="text" class="form-control sponsor-username" id="username"
+                                           name="username"
+                                           aria-describedby="username" placeholder="大侠尊姓大名？"
+                                           value="[游客]"
+                                            {% if user.is_authenticated %}
+                                           hidden
+                                            {% endif %}
+
+                                    >
+                                </div>
+                                <div class="form-group">
+                                    <label for="message"><span style="font-weight: bold">留言：</span></label>
+                                    <input type="text" class="form-control sponsor-message" id="message" name="message"
+                                           aria-describedby="message" placeholder="请少于70字哦"
+                                           value="赞赏博主"
+                                    >
+                                </div>
+                                <input type="text" hidden name="article_id" value="{{ article.id }}" title="">
+                                <br>
+                                <div style="text-align: center">
+                                    <button type="submit"
+                                            class="btn btn-warning text-white hvr-grow sponsor-submit"
+                                            onclick="close_modal()"
+                                    >
+                                        少废话，快给朕二维码！
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body mt-4" style="text-align: center">
+                    <br>
+                    <br>
+                    <div style="font-weight: bold">
+                        <p>小站维护不易，创作高质量内容更是如此。</p>
+                        <p>千言万语，感谢你们的支持：</p>
+                    </div>
+                    <div style="text-align: center">
+                        <div class="spinner-border text-primary" role="status" id="part-sponsor-list">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <table class="table table-bordered mt-2" style="text-align: center;">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">赞赏者</th>
+                                        <th scope="col">金额</th>
+                                        <th scope="col">留言</th>
+                                        <th scope="col">时间</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="sponsors-tbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {% if pre_article %}
         <a class="btn btn-info btn-sm hvr-grow"
@@ -120,19 +240,8 @@
 </div>
 
 {% block script %}
-
     <script src="{% static 'progress_indicator/progress_indicator.js' %}"></script>
-
-    <script>
-        $('div#article_body img').parent('p').css({'text-align': 'center'});
-        $('div#article_body table').addClass('table table-bordered');
-        $('div#article_body thead').addClass('thead-light');
-
-        <!-- Author: mqyqingfeng -->
-        $(document).ready(function () {
-            let progressBar = new ProgressIndicator({color: '#1e90ff'});
-        })
-    </script>
+    <script src="{% static 'sponsor_handler.js' %}"></script>
     <script src="{% static 'animocons_likes.js' %}"></script>
     <script src="{% static 'animo_fireworks.js' %}"></script>
 {% endblock %}
