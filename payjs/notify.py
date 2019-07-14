@@ -16,6 +16,10 @@ class PayJSNotify:
 
         logger.debug('notify: {}'.format(notify))
 
+        for k, v in notify.items():
+            if type(v) is list:
+                notify.update({k: v[0]})
+
         print('------')
         print('2: ', notify)
         print('-------')
