@@ -177,7 +177,7 @@ def payjs_wechat_notify(request):
                 payment.is_paid = 'T'
                 payment.save()
             except:
-                logger.error('extends payjs_wechat_notify: get payment failed.')
+                logger.error('extends payjs_wechat_notify: get payment failed. order_id: {}'.format(order_id))
         elif return_code == '0':
             logger.error('extends payjs_wechat_notify: return_code is 0.')
         else:
