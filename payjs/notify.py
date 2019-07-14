@@ -44,7 +44,8 @@ class PayJSNotify:
         self.transaction_id = notify['transaction_id']
 
         self.openid = notify['openid']
-        self.attach = notify['attach']
+        if notify.get('attach'):
+            self.attach = notify['attach']
 
         try:
             self.time_end = datetime.strptime(notify['time_end'], '%Y-%m-%d %H:%M:%S')
