@@ -166,7 +166,10 @@ def check_payment(request):
 @csrf_exempt
 def payjs_wechat_notify(request):
     if request.method == 'POST':
-        data = json.dumps(request.POST)
+        data = request.POST
+        print('------')
+        print('1: ', data)
+        print('--------')
         notify = PayJSNotify(PAYJS_KEY, data)
         return_code = notify.return_code
         order_id = notify.payjs_order_id

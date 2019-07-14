@@ -41,8 +41,7 @@ def get_signature(key: str, data: dict):
     r = h.hexdigest().upper()
 
     print('---------')
-    print('calc data')
-    print(r)
+    print('4: ', d, r)
     print('----------')
 
     return r
@@ -58,9 +57,9 @@ def check_signature(key: str, data: dict, sign: str = None):
        """
     if sign is None:
         sign = data.get('sign')
+
         print('------------')
-        print('returned data')
-        print(data)
+        print('3: ', data, sign)
         print('-----------')
 
     if get_signature(key, data) == sign:

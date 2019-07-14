@@ -16,6 +16,9 @@ class PayJSNotify:
 
         logger.debug('notify: {}'.format(notify))
 
+        print('------')
+        print('2: ', notify)
+        print('-------')
         check_signature(key, notify)
 
         self.mchid = notify['mchid']
