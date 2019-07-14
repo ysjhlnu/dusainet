@@ -89,7 +89,7 @@ def payjs_QRpay(request):
         username = '[游客]'
         message = '赞赏博主'
 
-    if request.user.is_superuser():
+    if request.user.is_superuser:
         total_fee = 1
 
     # 扫码支付
