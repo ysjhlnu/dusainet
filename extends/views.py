@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 
 from .models import SiteMessage, Payment
 from comments.models import Comment
@@ -73,14 +74,14 @@ def payjs_QRpay(request):
         username = request.POST.get('username').strip()[:20]
         message = request.POST.get('message').strip()[:70]
         if not username:
-            username = '[匿名用户]'
+            username = '[游客]'
         if not message:
-            message = '小小赞赏鼓励博主'
+            message = '赞赏博主'
     except:
         logger.error('extends payjs_QRpay: get total_fee failed.')
         total_fee = 3000
-        username = '[匿名用户]'
-        message = '小小赞赏鼓励博主'
+        username = '[游客]'
+        message = '赞赏博主'
 
     # 扫码支付
     OUT_TRADE_NO = strftime("%Y%m%d%H%M%S", localtime()) + '-{}'.format(randint(10000, 99999))
@@ -102,8 +103,18 @@ def payjs_QRpay(request):
             payjs_order_id=payjs_response.payjs_order_id,
             body=BODY,
         )
+
         payment.username = username
         payment.message = message
+        try:
+            (article_id, user_id) = (int(request.POST.get('article_id')), request.user.id)
+            if article_id:
+                payment.article = ArticlesPost.objects.get(pk=article_id)
+            if user_id:
+                payment.user = User.objects.get(pk=user_id)
+                payment.username = User.objects.get(pk=user_id).username
+        except:
+            logger.error('extends payjs_QRpay: get ArticlesPost or User failed.')
         payment.save()
     else:
         logger.error(
@@ -113,6 +124,7 @@ def payjs_QRpay(request):
                 payjs_response.error_msg
             )
         )
+
     context = {
         'payjs_response': payjs_response
     }

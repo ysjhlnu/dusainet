@@ -32,7 +32,7 @@ class Payment(models.Model):
     username = models.CharField(max_length=20, blank=True)
 
     # 支付来源文章
-    paid_for_article = models.ForeignKey(
+    article = models.ForeignKey(
         ArticlesPost,
         related_name='payment',
         on_delete=models.SET_NULL,

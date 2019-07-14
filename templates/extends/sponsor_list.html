@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load filter_utils %}
+{% load weibo_utils %}
+{% load get_userinfo %}
 {% block title %}赞赏者名册 - 杜赛的个人网站{% endblock %}
 {% block content %}
     <div class="container">
@@ -23,12 +25,33 @@
                 {% for sponsor in sponsors %}
                     <tr>
                         <th scope="row">
+                            {% get_userinfo sponsor.user.id as userinfo %}
+                            {% if sponsor.user.socialaccount_set.all.0.get_avatar_url %}
+                                <!-- 第三方头像 -->
+                                <img src="{% translate_avatar_ssl sponsor.user.socialaccount_set.all.0.get_avatar_url %}"
+                                     alt="avatar"
+                                     style="width: 30px; border-radius: 20%">
+                            {% elif userinfo.avatar %}
+                                <!-- 本地头像 -->
+                                {% if 'static' in userinfo.avatar.url %}
+                                    <img src="{{ userinfo.avatar }}" alt="avatar"
+                                         style="width: 30px; border-radius: 20%">
+                                {% else %}
+                                    <img src="{{ userinfo.avatar.url }}" alt="avatar"
+                                         style="width: 30px; border-radius: 20%">
+                                {% endif %}
+                            {% endif %}
+
                             {% if sponsor.user %}
                                 {{ sponsor.user.username }}
                             {% elif sponsor.username %}
-                                {{ sponsor.username }}
+                                {% if sponsor.username == '[游客]' %}
+                                    <span style="font-style: italic; color: gray; font-weight: normal">[游客]</span>
+                                {% else %}
+                                    {{ sponsor.username }}
+                                {% endif %}
                             {% else %}
-                                <span style="font-style: italic; color: gray;">[匿名用户]</span>
+                                <span style="font-style: italic; color: gray;">[游客]</span>
                             {% endif %}
                         </th>
                         <td>
