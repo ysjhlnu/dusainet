@@ -20,6 +20,7 @@ urlpatterns = [
     path('admiration/', TemplateView.as_view(template_name='utils/admiration.html'), name='admiration'),
 
     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
+    path('ads.txt', TemplateView.as_view(template_name='ads.txt', content_type='text/plain')),
     path('favicon.ico', RedirectView.as_view(url='static/img/favicon.ico')),
 
     path('userinfo/', include('userinfo.urls', namespace='userinfo')),
