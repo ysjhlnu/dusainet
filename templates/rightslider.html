@@ -95,31 +95,38 @@
         </p>
     </div>
 </div>
+<!-- RSS -->
+<div class="card mb-4 mt-4 hvr-glow no-underline" style="display: flex">
+    <div class="card-body">
+        <p class="card-title text-muted">
+            <i class="fas fa-ad" style="color: darkorange;"></i> 推广
+        </p>
+        <div class="text-center">
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- ads -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:300px;height:250px"
+                 data-ad-client="ca-pub-1355716004535519"
+                 data-ad-slot="2787146024"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
 
+    <br/>
+    <br/>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- 首页侧边栏 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-1355716004535519"
-     data-ad-slot="3874925040"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-<br/>
-<br/>
-
-{% block script %}
-    <script>
-        $(() => {
-            $.get('{% url "article:get_columns_data" %}', (data) => {
-                for (let item in data) {
-                    let context = "<a href='/all/rss/" + data[item] + "' class=\"btn btn-outline-dark btn-block\">" + item + "</a>";
-                    $('#rss-columns').append(context)
-                }
+    {% block script %}
+        <script>
+            $(() => {
+                $.get('{% url "article:get_columns_data" %}', (data) => {
+                    for (let item in data) {
+                        let context = "<a href='/all/rss/" + data[item] + "' class=\"btn btn-outline-dark btn-block\">" + item + "</a>";
+                        $('#rss-columns').append(context)
+                    }
+                })
             })
-        })
-    </script>
-{% endblock %}
+        </script>
+    {% endblock %}
