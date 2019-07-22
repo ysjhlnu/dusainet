@@ -106,10 +106,6 @@
     <br>
     <br>
 
-    <!-- 知识产权署名 -->
-    {% include 'utils/license.html' %}
-
-
     <!-- zanshang_modal -->
     <div class="modal fade" id="zanshang_modal" tabindex="-1" role="dialog"
          aria-labelledby="zanshang_modal_title" aria-hidden="true">
@@ -225,7 +221,9 @@
         <br>
     {% endif %}
 
-    <div class="mt-4 mb-2">
+    <!-- 知识产权署名 -->
+    {% include 'utils/license.html' %}
+    <div class="mt-4">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <!-- 文章详情页面 -->
         <ins class="adsbygoogle"
@@ -236,7 +234,7 @@
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
-
+    <br>
     <!-- 评论模块 -->
     {% include 'comments/comment_module.html' %}
 </div>
