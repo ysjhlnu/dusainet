@@ -212,19 +212,33 @@
     </div>
 
     {% if pre_article %}
-        <a class="btn btn-info btn-sm hvr-grow"
-           href="{{ pre_article.get_absolute_url }}"><< {{ pre_article.course_title }}</a>
+        <a class="btn btn-sm hvr-bounce-to-right"
+           style="background-color: lightcyan; border-color: black;"
+           data-toggle="tooltip"
+           data-placement="top"
+           title="{{ pre_article.course_title }}"
+           href="{{ pre_article.get_absolute_url }}"
+        >
+            << 上一章
+        </a>
     {% endif %}
     {% if next_article %}
-        <a class="btn btn-info btn-sm hvr-grow" style="float: right;"
-           href="{{ next_article.get_absolute_url }}">{{ next_article.course_title }} >></a>
+        <a class="btn btn-sm hvr-bounce-to-left"
+           style="float: right; background-color: lightcyan;border-color: black;"
+           href="{{ next_article.get_absolute_url }}"
+           data-toggle="tooltip"
+           data-placement="top"
+           title="{{ next_article.course_title }}"
+        >
+            下一章 >>
+        </a>
         <br>
     {% endif %}
 
     <!-- 知识产权署名 -->
     {% include 'utils/license.html' %}
-
-    <div class="mt-4 mb-4">
+    <br>
+    <div class="mt-2 mb-2">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <!-- 文章详情页面 -->
         <ins class="adsbygoogle"
@@ -238,11 +252,17 @@
         </script>
     </div>
     <br>
+    <br>
     <!-- 评论模块 -->
     {% include 'comments/comment_module.html' %}
 </div>
 
 {% block script %}
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
     <script src="{% static 'progress_indicator/progress_indicator.js' %}"></script>
     <script src="{% static 'sponsor_handler.js' %}"></script>
     <script src="{% static 'animocons_likes.js' %}"></script>
