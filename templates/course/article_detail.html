@@ -34,13 +34,22 @@
             </div>
 
             <!-- 右目录 -->
-            <div class="col-2 card d-none d-lg-block collapse" id="right-sidebar" style="z-index: 1">
-                <div class="sidebar2" id="sidebar2">
-                    <div class="sidebar2__inner">
-                        {% include 'course/right_slider.html' %}
-                        {% include 'utils/notice_card.html' %}
+            <div class="col-2 card d-none d-lg-block collapse" id="right-sidebar"
+                 style="z-index: 1;">
+                    <div class="sidebar2" id="sidebar2">
+                        <div class="sidebar2__inner">
+                            {% include 'course/right_slider.html' %}
+                            {% include 'utils/notice_card.html' %}
+                            <!-- aliyun invite -->
+                            <div style="text-align: center" class="aliyun_invite">
+                                <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=m3bbolgr"
+                                   target="_blank"
+                                >
+                                    <img src="{% static 'img/aliyun_invite.png' %}" alt="" style="max-width: 100%">
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </div>
             </div>
 
         </div>
@@ -61,12 +70,22 @@
 
 
                 $(window).scroll(function () {
-                    if ($(this).scrollTop() > 500) {
-                        $('#notice_card').fadeOut(2000);
+                    if ($(this).scrollTop() > 1000) {
+                        $('#notice_card,.aliyun_invite').fadeOut(2000);
                     } else {
-                        $('#notice_card').stop().fadeIn(1000);
+                        $('#notice_card,.aliyun_invite').stop().fadeIn(1000);
                     }
                 }).scroll();
+            });
+
+            $('.aliyun_invite').on('mouseenter', function () {
+                this.index = layer.tips('本博客部署于阿里云<br/>此链接注册有折扣哦', this, {
+                    time: -1,
+                    maxWidth: 280,
+                    tips: [2, '#3369e8']
+                });
+            }).on('mouseleave', function () {
+                layer.close(this.index);
             });
         </script>
 
