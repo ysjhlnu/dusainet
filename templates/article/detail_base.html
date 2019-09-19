@@ -104,8 +104,9 @@
     </div>
 
     <br>
-    <br>
+    <div class="col" style="text-align: center" id="QR">
 
+    </div>
     <!-- zanshang_modal -->
     <div class="modal fade" id="zanshang_modal" tabindex="-1" role="dialog"
          aria-labelledby="zanshang_modal_title" aria-hidden="true">
@@ -210,46 +211,39 @@
             </div>
         </div>
     </div>
-
-    {% if pre_article %}
-        <a class="btn btn-sm hvr-bounce-to-right"
-           style="background-color: lightcyan; border-color: black;"
-           data-toggle="tooltip"
-           data-placement="top"
-           title="{{ pre_article.course_title }}"
-           href="{{ pre_article.get_absolute_url }}"
-        >
-            << 上一章
-        </a>
-    {% endif %}
-    {% if next_article %}
-        <a class="btn btn-sm hvr-bounce-to-left"
-           style="float: right; background-color: lightcyan;border-color: black;"
-           href="{{ next_article.get_absolute_url }}"
-           data-toggle="tooltip"
-           data-placement="top"
-           title="{{ next_article.course_title }}"
-        >
-            下一章 >>
-        </a>
-        <br>
-    {% endif %}
-
+    <div class="col-12">
+        {% if pre_article %}
+            <a class="btn btn-sm hvr-bounce-to-right"
+               style="background-color: lightcyan; border-color: black;"
+               data-toggle="tooltip"
+               data-placement="top"
+               title="{{ pre_article.course_title }}"
+               href="{{ pre_article.get_absolute_url }}"
+            >
+                << 上一章
+            </a>
+        {% endif %}
+        {% if next_article %}
+            <a class="btn btn-sm hvr-bounce-to-left"
+               style="float: right; background-color: lightcyan;border-color: black;"
+               href="{{ next_article.get_absolute_url }}"
+               data-toggle="tooltip"
+               data-placement="top"
+               title="{{ next_article.course_title }}"
+            >
+                下一章 >>
+            </a>
+            <br>
+        {% endif %}
+    </div>
     <!-- 知识产权署名 -->
     {% include 'utils/license.html' %}
-    <br>
-    <div class="mt-2 mb-2">
-        <!-- adsense  -->
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-1355716004535519"
-             data-ad-slot="3874925040"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+    <div style="text-align: center;" class="aliyun_invite_b">
+        <a href="https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=m3bbolgr"
+           class="hvr-float-shadow"
+           id="aliyun_link"
+           target="_blank"
+        ></a>
     </div>
     <br>
     <br>
@@ -260,7 +254,19 @@
 {% block script %}
     <script>
         $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
+            $('[data-toggle="tooltip"]').tooltip();
+            $('div#QR').append('<img src="/static/img/QR.jpg" alt="" style="max-height: 300px; max-width: 80%;">');
+            $('div a#aliyun_link').append('<img src="/static/img/aliyun_invite_b.png" alt="" style="max-width: 100%; border-radius: 8px;">');
+
+            $('.aliyun_invite_b').on('mouseenter', function () {
+                this.index = layer.tips('本博客部署于阿里云<br/>此链接注册有折扣哦', this, {
+                    time: -1,
+                    maxWidth: 280,
+                    tips: [3, '#3369e8']
+                });
+            }).on('mouseleave', function () {
+                layer.close(this.index);
+            });
         })
     </script>
     <script src="{% static 'progress_indicator/progress_indicator.js' %}"></script>

@@ -1,0 +1,30 @@
+{% load static %}
+<div class="card mb-4 mt-4 hvr-glow" style="display: flex">
+    <a href="javascript:void(0);"
+       class="card-text text-muted no-underline"
+       data-toggle="modal"
+       data-target="#QR"
+    >
+        <div class="card-body">
+            <p class="card-title text-muted">
+                <i class="fas fa-comment-dots" style="color: lightcoral;"></i> Django交流
+            </p>
+            <p class="mb-2">QQ群: 107143175</p>
+            <p class="mt-0 mb-0">博主微信: dusai0523</p>
+        </div>
+    </a>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="QR" tabindex="-1" role="dialog"
+     aria-labelledby="QRTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="{% static 'img/QR.jpg' %}"
+                     style="max-width: 100%"
+                     alt="img"
+                >
+            </div>
+        </div>
+    </div>
+</div>
