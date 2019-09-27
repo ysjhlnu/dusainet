@@ -169,7 +169,7 @@ else:
             'NAME': 'dusainet2',
             'USER': 'root',
             'PASSWORD': MYSQL_PASSWORD,
-            'HOST': '127.0.0.1',
+            'HOST': 'db',
             'PORT': '3306',
         }
     }
