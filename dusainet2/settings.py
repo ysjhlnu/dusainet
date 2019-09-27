@@ -21,7 +21,7 @@ if ENV.get('ENV') == 'dev':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost ', '.dusaiphoto.com', '.dusai.net', ENV.get('ALIYUN_IP')]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost ', '.dusaiphoto.com', '.dusai.net', ENV.get('ALIYUN_IP'), 'app']
 
 LOGGING = {
     'version': 1,
