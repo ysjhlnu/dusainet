@@ -38,7 +38,7 @@ class Course(models.Model):
 
     avatar_thumbnail = ProcessedImageField(
         upload_to='image/course/%Y%m%d',
-        processors=[ResizeToFill(256, 144)],
+        processors=[ResizeToFill(320, 200)],
         format='JPEG',
         options={'quality': 100},
         blank=True,
