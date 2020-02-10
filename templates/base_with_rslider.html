@@ -12,9 +12,13 @@
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
     <title>{% block title %}{% endblock %}</title>
 
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/hover.css/2.3.1/css/hover-min.css" rel="stylesheet">
+{#    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">#}
+{#    <link href="https://cdn.bootcss.com/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">#}
+{#    <link href="https://cdn.bootcss.com/hover.css/2.3.1/css/hover-min.css" rel="stylesheet">#}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.8.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/hover.css@2.3.1/css/hover.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'monokai.css' %}">
     <link rel="stylesheet" href="{% static 'personal_style.css' %}">
     <link rel="stylesheet" href="{% static 'icons.css' %}">
@@ -47,9 +51,12 @@
 
 </head>
 <body>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/popper.js/1.15.0/umd/popper.min.js"></script>
-<script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+{#<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>#}
+{#<script src="https://cdn.bootcss.com/popper.js/1.15.0/umd/popper.min.js"></script>#}
+{#<script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>#}
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.15.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
 <script src="{% static 'layer/layer.js' %}"></script>
 
 
@@ -68,8 +75,10 @@
 </div>
 {% include "footer.html" %}
 
-<script src="https://cdn.bootcss.com/mo-js/0.288.2/mo.min.js"></script>
-<script src="https://cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+{#<script src="https://cdn.bootcss.com/mo-js/0.288.2/mo.min.js"></script>#}
+{#<script src="https://cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>#}
+<script src="https://cdn.jsdelivr.net/npm/mo-js@0.288.2/build/mo.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@2.2.0/anime.min.js"></script>
 {% block script %}{% endblock %}
 </body>
 </html>
